@@ -26,7 +26,10 @@ jobs:
             -s0 \
             "+*.wiki.alcopa.cc/*" \
             -q
-          rsync -a --delete wiki_temp/wiki.alcopa.cc/ ./ || [ $? -eq 24 ]
+          rsync -a --delete \
+            --exclude='.git' \
+            --exclude='.github' \
+            wiki_temp/wiki.alcopa.cc/ ./ || [ $? -eq 24 ]
           rm -rf wiki_temp
 
       - name: Commit changes
