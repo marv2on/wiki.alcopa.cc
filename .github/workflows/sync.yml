@@ -18,10 +18,12 @@ jobs:
 
       - name: Download wiki
         run: |
-          wget --mirror --convert-links --adjust-extension \
-            --page-requisites --no-parent \
-            --no-host-directories \
-            -q https://wiki.alcopa.cc/
+            wget --mirror --convert-links --adjust-extension \
+              --page-requisites --no-parent \
+              --no-host-directories \
+              --user-agent="Mozilla/5.0" \
+              -e robots=off \
+              -q https://wiki.alcopa.cc/
 
       - name: Commit changes
         run: |
