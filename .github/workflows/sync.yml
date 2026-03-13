@@ -21,15 +21,13 @@ jobs:
           sudo apt-get install -y httrack
           httrack https://wiki.alcopa.cc/ \
             -O ./wiki_temp \
-            -r4 \
-            -%v \
-            -s0 \
-            "+*.wiki.alcopa.cc/*" \
-            -q
+            -r4 -%v -s0 \
+            "+*.wiki.alcopa.cc/*" -q
           rsync -a --delete \
             --exclude='.git' \
             --exclude='.github' \
             wiki_temp/wiki.alcopa.cc/ ./ || [ $? -eq 24 ]
+          cp docs/index.html ./index.html
           rm -rf wiki_temp
 
       - name: Commit changes
