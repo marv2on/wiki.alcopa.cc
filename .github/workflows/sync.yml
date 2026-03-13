@@ -18,12 +18,16 @@ jobs:
 
       - name: Download wiki
         run: |
-            wget --mirror --convert-links --adjust-extension \
-              --page-requisites --no-parent \
-              --no-host-directories \
-              --user-agent="Mozilla/5.0" \
-              -e robots=off \
-              -q https://wiki.alcopa.cc/
+          sudo apt-get install -y httrack
+          httrack https://wiki.alcopa.cc/ \
+            -O ./wiki_temp \
+            -r4 \
+            -%v \
+            -s0 \
+            "+*.wiki.alcopa.cc/*" \
+            -q
+          rsync -a --delete wiki_temp/wiki.alcopa.cc/ ./
+          rm -rf wiki_temp
 
       - name: Commit changes
         run: |
