@@ -40,7 +40,11 @@ jobs:
           rsync -a --delete \
             --exclude='.git' \
             --exclude='.github' \
+            --exclude='CNAME' \
             wiki_temp/wiki.alcopa.cc/ ./ || [ $? -eq 24 ]
+
+          # Записываем CNAME для GitHub Pages
+          echo "wikialcopa.isroot.in" > ./CNAME
 
           # Копируем index.html если есть docs/
           if [ -f docs/index.html ]; then
