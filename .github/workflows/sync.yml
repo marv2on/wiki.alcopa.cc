@@ -29,8 +29,6 @@ jobs:
           mkdir -p wiki_temp
           wget \
             --mirror \
-            --convert-links \
-            --adjust-extension \
             --page-requisites \
             --no-parent \
             --no-check-certificate \
