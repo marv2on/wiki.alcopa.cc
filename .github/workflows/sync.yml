@@ -1,13 +1,10 @@
 name: Sync Wiki
-
 on:
   schedule:
     - cron: '0 * * * *'
   workflow_dispatch:
-
 permissions:
   contents: write
-
 jobs:
   sync:
     runs-on: ubuntu-latest
@@ -18,22 +15,45 @@ jobs:
 
       - name: Download wiki
         run: |
-          sudo apt-get install -y httrack
-          httrack https://wiki.alcopa.cc/ \
-            -O ./wiki_temp \
-            -r4 -%v -s0 \
-            "+*.wiki.alcopa.cc/*" -q
+          # Получаем дату последнего обновления источника
+          LAST_MODIFIED=$(curl -sI https://wiki.alcopa.cc/ \
+            | grep -i '^last-modified:' \
+            | sed 's/last-modified: //I' \
+            | xargs -I{} date -d "{}" +'%d.%m.%Y %H:%M' 2>/dev/null || true)
+          # Если заголовок недоступен — берём текущее время
+          if [ -z "$LAST_MODIFIED" ]; then
+            LAST_MODIFIED=$(date +'%d.%m.%Y %H:%M')
+          fi
+          echo "SYNC_DATE=$LAST_MODIFIED" >> "$GITHUB_ENV"
+
+          mkdir -p wiki_temp
+          wget \
+            --mirror \
+            --convert-links \
+            --adjust-extension \
+            --page-requisites \
+            --no-parent \
+            --no-check-certificate \
+            --quiet \
+            --directory-prefix=wiki_temp \
+            https://wiki.alcopa.cc/
+
           rsync -a --delete \
             --exclude='.git' \
             --exclude='.github' \
             wiki_temp/wiki.alcopa.cc/ ./ || [ $? -eq 24 ]
-          cp docs/index.html ./index.html
+
+          # Копируем index.html если есть docs/
+          if [ -f docs/index.html ]; then
+            cp docs/index.html ./index.html
+          fi
+
           rm -rf wiki_temp
 
       - name: Commit changes
         run: |
-          git config user.name "github-actions"
+          git config user.name "actions-user"
           git config user.email "actions@github.com"
           git add -A
-          git diff --cached --quiet || git commit -m "sync: $(date +'%d.%m.%Y %H:%M')"
+          git diff --cached --quiet || git commit -m "sync: ${{ env.SYNC_DATE }}"
           git push
