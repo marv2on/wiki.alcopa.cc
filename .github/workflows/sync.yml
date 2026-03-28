@@ -13,31 +13,32 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Sync site
+      - name: Clean & Sync
         run: |
           LAST_MODIFIED=$(curl -sI https://wiki.alcopa.cc/ | grep -i '^last-modified:' | sed 's/last-modified: //I' | xargs -I{} date -d "{}" +'%d.%m.%Y %H:%M' 2>/dev/null || date +'%d.%m.%Y %H:%M')
           echo "SYNC_DATE=$LAST_MODIFIED" >> "$GITHUB_ENV"
 
-          # Полная очистка + зеркало
-          rm -rf /tmp/wiki_mirror
-          mkdir -p /tmp/wiki_mirror
+          # Полная очистка репо
+          git rm -rf . --ignore-unmatch
           
-          wget --mirror --convert-links --adjust-extension --page-requisites \
-            --no-parent --force-directories --directory-prefix=/tmp/wiki_mirror \
+          # Скачиваем в /tmp
+          mkdir -p /tmp/wiki
+          wget -r -np -nH --cut-dirs=1 --directory-prefix=/tmp/wiki \
+            --page-requisites --convert-links --adjust-extension \
             https://wiki.alcopa.cc/ -q
 
-          # Фикс Hugo структуры: все HTML без .html → dirname/index.html
-          find /tmp/wiki_mirror -name "*.html" -o -type f | while read f; do
-            if [[ "$f" != *.html ]] && grep -qi 'doctype html\|<html' "$f" 2>/dev/null; then
-              dir=$(dirname "$f")
+          # Фикс: все HTML файлы → dirname/index.html
+          cd /tmp/wiki
+          find . -type f \( -name "*.html" -o -path "*/index.html" \) | while read f; do
+            dir=$(dirname "$f")
+            if [[ "$f" != */index.html ]]; then
               mkdir -p "$dir/index.html.d"
               mv "$f" "$dir/index.html"
             fi
           done
 
           # Копируем в репо
-          rsync -a --delete /tmp/wiki_mirror/wiki.alcopa.cc/ ./ \
-            --exclude='.git' --exclude='.github' --exclude='CNAME'
+          rsync -a /tmp/wiki/ ./ --delete --exclude='.git' --exclude='.github'
 
       - name: Commit
         run: |
