@@ -45,6 +45,17 @@ jobs:
             exit 1
           fi
 
+          # Переносим файлы без расширения с HTML-контентом в dirname/index.html
+          find "$WIKI_TEMP/wiki.alcopa.cc" -type f | while read -r f; do
+            case "$f" in
+              *.html|*.css|*.js|*.png|*.jpg|*.jpeg|*.ico|*.svg|*.txt|*.webmanifest|*.json|*.xml|*.woff|*.woff2|*.ttf) continue ;;
+            esac
+            if head -c 30 "$f" 2>/dev/null | grep -qi 'doctype\|<html'; then
+              mkdir -p "$f"
+              mv "$f" "$f/index.html"
+            fi
+          done
+
           rsync -a --delete \
             --exclude='.git' \
             --exclude='.github' \
