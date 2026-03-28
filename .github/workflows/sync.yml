@@ -34,9 +34,10 @@ jobs:
             --page-requisites \
             --no-parent \
             --no-check-certificate \
-            --quiet \
+            --tries=3 \
+            --timeout=30 \
             --directory-prefix=wiki_temp \
-            https://wiki.alcopa.cc/
+            https://wiki.alcopa.cc/ || true
 
           rsync -a --delete \
             --exclude='.git' \
