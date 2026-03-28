@@ -25,20 +25,23 @@ jobs:
           fi
           echo "SYNC_DATE=$LAST_MODIFIED" >> "$GITHUB_ENV"
 
-          mkdir -p wiki_temp
+          WIKI_TEMP=/tmp/wiki_temp
+          mkdir -p "$WIKI_TEMP"
+
           wget \
             --mirror \
             --page-requisites \
             --convert-links \
+            --force-directories \
             --no-parent \
             --no-check-certificate \
             --tries=3 \
             --timeout=30 \
-            --directory-prefix=wiki_temp \
+            --directory-prefix="$WIKI_TEMP" \
             https://wiki.alcopa.cc/ || true
 
-          if [ ! -d wiki_temp/wiki.alcopa.cc ]; then
-            echo "::error::wget failed — wiki_temp/wiki.alcopa.cc not found, skipping rsync"
+          if [ ! -d "$WIKI_TEMP/wiki.alcopa.cc" ]; then
+            echo "::error::wget failed — $WIKI_TEMP/wiki.alcopa.cc not found"
             exit 1
           fi
 
@@ -46,10 +49,9 @@ jobs:
             --exclude='.git' \
             --exclude='.github' \
             --exclude='CNAME' \
-            wiki_temp/wiki.alcopa.cc/ ./
+            "$WIKI_TEMP/wiki.alcopa.cc/" ./
 
           echo "wikialcopa.isroot.in" > CNAME
-          rm -rf wiki_temp
 
       - name: Commit changes
         run: |
