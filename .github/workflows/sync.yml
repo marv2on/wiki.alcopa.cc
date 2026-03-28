@@ -13,49 +13,33 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Install HTTrack
-        run: sudo apt-get install -y httrack
-
-      - name: Download wiki
+      - name: Sync site
         run: |
-          LAST_MODIFIED=$(curl -sI https://wiki.alcopa.cc/ \
-            | grep -i '^last-modified:' \
-            | sed 's/last-modified: //I' \
-            | xargs -I{} date -d "{}" +'%d.%m.%Y %H:%M' 2>/dev/null || true)
-
-          if [ -z "$LAST_MODIFIED" ]; then
-            LAST_MODIFIED=$(date +'%d.%m.%Y %H:%M')
-          fi
+          LAST_MODIFIED=$(curl -sI https://wiki.alcopa.cc/ | grep -i '^last-modified:' | sed 's/last-modified: //I' | xargs -I{} date -d "{}" +'%d.%m.%Y %H:%M' 2>/dev/null || date +'%d.%m.%Y %H:%M')
           echo "SYNC_DATE=$LAST_MODIFIED" >> "$GITHUB_ENV"
 
-          httrack https://wiki.alcopa.cc/ \
-            --path /tmp/wiki_mirror \
-            --mirror \
-            --robots=0 \
-            --index \
-            --near \
-            --stay-on-same-domain \
-            --disable-security-limits \
-            --sockets=4 \
-            --connection-per-second=4 \
-            -%e0 \
-            -q || true
+          # Полная очистка + зеркало
+          rm -rf /tmp/wiki_mirror
+          mkdir -p /tmp/wiki_mirror
+          
+          wget --mirror --convert-links --adjust-extension --page-requisites \
+            --no-parent --force-directories --directory-prefix=/tmp/wiki_mirror \
+            https://wiki.alcopa.cc/ -q
 
-          if [ ! -d /tmp/wiki_mirror/wiki.alcopa.cc ]; then
-            echo "::error::httrack failed"
-            exit 1
-          fi
+          # Фикс Hugo структуры: все HTML без .html → dirname/index.html
+          find /tmp/wiki_mirror -name "*.html" -o -type f | while read f; do
+            if [[ "$f" != *.html ]] && grep -qi 'doctype html\|<html' "$f" 2>/dev/null; then
+              dir=$(dirname "$f")
+              mkdir -p "$dir/index.html.d"
+              mv "$f" "$dir/index.html"
+            fi
+          done
 
-          rsync -a --delete \
-            --exclude='.git' \
-            --exclude='.github' \
-            --exclude='CNAME' \
-            --exclude='hts-*' \
-            /tmp/wiki_mirror/wiki.alcopa.cc/ ./
+          # Копируем в репо
+          rsync -a --delete /tmp/wiki_mirror/wiki.alcopa.cc/ ./ \
+            --exclude='.git' --exclude='.github' --exclude='CNAME'
 
-          echo "wikialcopa.isroot.in" > CNAME
-
-      - name: Commit changes
+      - name: Commit
         run: |
           git config user.name "actions-user"
           git config user.email "actions@github.com"
