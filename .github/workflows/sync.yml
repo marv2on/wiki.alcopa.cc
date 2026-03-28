@@ -13,34 +13,37 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Clean & Sync
+      - name: Install HTTrack
+        run: sudo apt-get install -y httrack
+
+      - name: Download wiki
         run: |
-          LAST_MODIFIED=$(curl -sI https://wiki.alcopa.cc/ | grep -i '^last-modified:' | sed 's/last-modified: //I' | xargs -I{} date -d "{}" +'%d.%m.%Y %H:%M' 2>/dev/null || date +'%d.%m.%Y %H:%M')
-          echo "SYNC_DATE=$LAST_MODIFIED" >> "$GITHUB_ENV"
+          LAST_MODIFIED=$(curl -sI https://wiki.alcopa.cc/ \
+            | grep -i '^last-modified:' \
+            | sed 's/last-modified: //I' \
+            | xargs -I{} date -d "{}" +'%d.%m.%Y %H:%M' 2>/dev/null || true)
+          echo "SYNC_DATE=${LAST_MODIFIED:-$(date +'%d.%m.%Y %H:%M')}" >> "$GITHUB_ENV"
 
-          # Полная очистка репо
-          git rm -rf . --ignore-unmatch
-          
-          # Скачиваем в /tmp
-          mkdir -p /tmp/wiki
-          wget -r -np -nH --cut-dirs=1 --directory-prefix=/tmp/wiki \
-            --page-requisites --convert-links --adjust-extension \
-            https://wiki.alcopa.cc/ -q
+          httrack https://wiki.alcopa.cc/ \
+            --path /tmp/wiki_mirror \
+            --mirror \
+            --robots=0 \
+            --index \
+            --near \
+            --stay-on-same-domain \
+            --disable-security-limits \
+            -%e0 \
+            -q || true
 
-          # Фикс: все HTML файлы → dirname/index.html
-          cd /tmp/wiki
-          find . -type f \( -name "*.html" -o -path "*/index.html" \) | while read f; do
-            dir=$(dirname "$f")
-            if [[ "$f" != */index.html ]]; then
-              mkdir -p "$dir/index.html.d"
-              mv "$f" "$dir/index.html"
-            fi
-          done
+          if [ -d /tmp/wiki_mirror/wiki.alcopa.cc ]; then
+            rsync -a --delete \
+              --exclude='.git' \
+              --exclude='.github' \
+              --exclude='hts-*' \
+              /tmp/wiki_mirror/wiki.alcopa.cc/ ./
+          fi
 
-          # Копируем в репо
-          rsync -a /tmp/wiki/ ./ --delete --exclude='.git' --exclude='.github'
-
-      - name: Commit
+      - name: Commit changes
         run: |
           git config user.name "actions-user"
           git config user.email "actions@github.com"
