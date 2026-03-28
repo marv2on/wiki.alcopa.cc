@@ -15,12 +15,11 @@ jobs:
 
       - name: Download wiki
         run: |
-          # Получаем дату последнего обновления источника
           LAST_MODIFIED=$(curl -sI https://wiki.alcopa.cc/ \
             | grep -i '^last-modified:' \
             | sed 's/last-modified: //I' \
             | xargs -I{} date -d "{}" +'%d.%m.%Y %H:%M' 2>/dev/null || true)
-          # Если заголовок недоступен — берём текущее время
+
           if [ -z "$LAST_MODIFIED" ]; then
             LAST_MODIFIED=$(date +'%d.%m.%Y %H:%M')
           fi
@@ -30,6 +29,7 @@ jobs:
           wget \
             --mirror \
             --page-requisites \
+            --convert-links \
             --no-parent \
             --no-check-certificate \
             --tries=3 \
@@ -37,20 +37,18 @@ jobs:
             --directory-prefix=wiki_temp \
             https://wiki.alcopa.cc/ || true
 
+          if [ ! -d wiki_temp/wiki.alcopa.cc ]; then
+            echo "::error::wget failed — wiki_temp/wiki.alcopa.cc not found, skipping rsync"
+            exit 1
+          fi
+
           rsync -a --delete \
             --exclude='.git' \
             --exclude='.github' \
             --exclude='CNAME' \
-            wiki_temp/wiki.alcopa.cc/ ./ || [ $? -eq 24 ]
+            wiki_temp/wiki.alcopa.cc/ ./
 
-          # Записываем CNAME для GitHub Pages
-          echo "wikialcopa.isroot.in" > ./CNAME
-
-          # Копируем index.html если есть docs/
-          if [ -f docs/index.html ]; then
-            cp docs/index.html ./index.html
-          fi
-
+          echo "wikialcopa.isroot.in" > CNAME
           rm -rf wiki_temp
 
       - name: Commit changes
