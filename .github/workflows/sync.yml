@@ -13,6 +13,9 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Install HTTrack
+        run: sudo apt-get install -y httrack
+
       - name: Download wiki
         run: |
           LAST_MODIFIED=$(curl -sI https://wiki.alcopa.cc/ \
@@ -25,42 +28,30 @@ jobs:
           fi
           echo "SYNC_DATE=$LAST_MODIFIED" >> "$GITHUB_ENV"
 
-          WIKI_TEMP=/tmp/wiki_temp
-          mkdir -p "$WIKI_TEMP"
-
-          wget \
+          httrack https://wiki.alcopa.cc/ \
+            --path /tmp/wiki_mirror \
             --mirror \
-            --page-requisites \
-            --convert-links \
-            --force-directories \
-            --no-parent \
-            --no-check-certificate \
-            --tries=3 \
-            --timeout=30 \
-            --directory-prefix="$WIKI_TEMP" \
-            https://wiki.alcopa.cc/ || true
+            --robots=0 \
+            --index \
+            --near \
+            --stay-on-same-domain \
+            --disable-security-limits \
+            --sockets=4 \
+            --connection-per-second=4 \
+            -%e0 \
+            -q || true
 
-          if [ ! -d "$WIKI_TEMP/wiki.alcopa.cc" ]; then
-            echo "::error::wget failed — $WIKI_TEMP/wiki.alcopa.cc not found"
+          if [ ! -d /tmp/wiki_mirror/wiki.alcopa.cc ]; then
+            echo "::error::httrack failed"
             exit 1
           fi
-
-          # Переносим файлы без расширения с HTML-контентом в dirname/index.html
-          find "$WIKI_TEMP/wiki.alcopa.cc" -type f | while read -r f; do
-            case "$f" in
-              *.html|*.css|*.js|*.png|*.jpg|*.jpeg|*.ico|*.svg|*.txt|*.webmanifest|*.json|*.xml|*.woff|*.woff2|*.ttf) continue ;;
-            esac
-            if head -c 30 "$f" 2>/dev/null | grep -qi 'doctype\|<html'; then
-              mkdir -p "$f"
-              mv "$f" "$f/index.html"
-            fi
-          done
 
           rsync -a --delete \
             --exclude='.git' \
             --exclude='.github' \
             --exclude='CNAME' \
-            "$WIKI_TEMP/wiki.alcopa.cc/" ./
+            --exclude='hts-*' \
+            /tmp/wiki_mirror/wiki.alcopa.cc/ ./
 
           echo "wikialcopa.isroot.in" > CNAME
 
