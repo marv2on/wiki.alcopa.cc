@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
-<!-- Mirrored from wiki.alcopa.cc/docs/admin/bans/ by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 21 Apr 2026 11:05:19 GMT -->
+<!-- Mirrored from wiki.alcopa.cc/docs/balancers/modules/ by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 21 Apr 2026 11:05:28 GMT -->
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="robots" content="index, follow" />
@@ -10,68 +10,87 @@
 <link rel="icon" href="../../../favicon-32x32.png" type="image/png" sizes="32x32" />
 <link rel="apple-touch-icon" href="../../../apple-touch-icon.png" sizes="180x180" />
 <link fetchpriority="low" href="../../../site.webmanifest" rel="manifest" />
-<title>Блокировки – Al(co)pac Wiki</title>
-  <meta name="description" content="Вкладка «Блокировки» позволяет ограничивать доступ к серверу по различным критериям. Заблокированные пользователи и устройства получают ответ 403 Forbidden при любом запросе.
-Типы блокировок Тип Описание Пример значения IP Блокировка по точному IP-адресу 203.0.113.50 CIDR Блокировка по подсети (диапазон IP) 203.0.113.0/24 Device UID Блокировка по идентификатору устройства (8-символьный lampac_unic_id) a1b2c3d4 Telegram ID Блокировка по Telegram ID пользователя 123456789 Fingerprint Блокировка по отпечатку устройства (хэш параметров браузера) f7a3b2c1 Страна Блокировка по стране (ISO 3166-1 alpha-2). Требуется GeoIP-база. US Добавление блокировки Через вкладку «Блокировки» Нажмите «Добавить блокировку» Выберите тип из выпадающего списка Введите значение и причину (опционально) Нажмите «Добавить» Быстрая блокировка из карточки пользователя На вкладке Пользователи в карточке каждого пользователя есть кнопки быстрой блокировки:" /><link rel="canonical" href="index.html" itemprop="url" />
+<title>JS-модули источников – Al(co)pac Wiki</title>
+  <meta name="description" content="JS-модули — современный способ подключить новый источник контента без пересборки сервера и без Go-тулчейна у пользователя. Каждый модуль — это одна JavaScript-функция в изолированной песочнице (Goja), которая принимает HTTP-запрос от Lampa и возвращает JSON в формате плейлиста.
+JS-модули — это эволюция старых кастомных балансеров (Go-subprocess). Старый механизм продолжает работать для обратной совместимости, но новые источники лучше писать как JS-модули. Они проще, быстрее ставятся, работают hot-reload и не требуют Go на машине пользователя. Почему JS, а не Go Критерий Go-subprocess (custom balancers) JS-модуль (новый) Размер артефакта ~9 МБ бинарь на плагин 5–20 КБ .js файл Нужен Go на машине Да Нет Hot-reload После go build и restart subprocess Мгновенно, по кнопке в админке Запуск Отдельный процесс &#43; TCP Внутри основного процесса, in-process handler Порог входа Go, конкурентность, net/http JavaScript &#43; «fetch-like» API Deploy Скомпилировать 11 бинарей под каждую ОС Скопировать папку Редактирование IDE &#43; компилятор Прямо в браузере через админку Архитектура modules/ &lt;module-id&gt;/ manifest.json # метаданные &#43; схема настроек index.js # код модуля config.json # (опционально) сохранённые настройки пользователя &lt;любые файлы&gt; # иконки, README, тест-фикстуры… При старте lampac-go:" /><link rel="canonical" href="index.html" itemprop="url" />
 
-<meta property="og:title" content="Блокировки">
+<meta property="og:title" content="JS-модули источников">
 <meta
   property="og:description"
   content="
     
-      Вкладка «Блокировки» позволяет ограничивать доступ к серверу по различным критериям. Заблокированные пользователи и устройства получают ответ 403 Forbidden при любом запросе.
-Типы блокировок
+      JS-модули — современный способ подключить новый источник контента без пересборки сервера и без Go-тулчейна у пользователя. Каждый модуль — это одна JavaScript-функция в изолированной песочнице (Goja), которая принимает HTTP-запрос от Lampa и возвращает JSON в формате плейлиста.
+
+  
+
+  
+    JS-модули — это эволюция старых кастомных балансеров (Go-subprocess). Старый механизм продолжает работать для обратной совместимости, но новые источники лучше писать как JS-модули. Они проще, быстрее ставятся, работают hot-reload и не требуют Go на машине пользователя.
+  
+
+
+Почему JS, а не Go
     
   
       
-          Тип
-          Описание
-          Пример значения
+          Критерий
+          Go-subprocess (custom balancers)
+          JS-модуль (новый)
       
   
   
       
-          IP
-          Блокировка по точному IP-адресу
-          203.0.113.50
+          Размер артефакта
+          ~9 МБ бинарь на плагин
+          5–20 КБ .js файл
       
       
-          CIDR
-          Блокировка по подсети (диапазон IP)
-          203.0.113.0/24
+          Нужен Go на машине
+          Да
+          Нет
       
       
-          Device UID
-          Блокировка по идентификатору устройства (8-символьный lampac_unic_id)
-          a1b2c3d4
+          Hot-reload
+          После go build и restart subprocess
+          Мгновенно, по кнопке в админке
       
       
-          Telegram ID
-          Блокировка по Telegram ID пользователя
-          123456789
+          Запуск
+          Отдельный процесс &#43; TCP
+          Внутри основного процесса, in-process handler
       
       
-          Fingerprint
-          Блокировка по отпечатку устройства (хэш параметров браузера)
-          f7a3b2c1
+          Порог входа
+          Go, конкурентность, net/http
+          JavaScript &#43; «fetch-like» API
       
       
-          Страна
-          Блокировка по стране (ISO 3166-1 alpha-2). Требуется GeoIP-база.
-          US
+          Deploy
+          Скомпилировать 11 бинарей под каждую ОС
+          Скопировать папку
+      
+      
+          Редактирование
+          IDE &#43; компилятор
+          Прямо в браузере через админку
       
   
 
-Добавление блокировки
-    Через вкладку «Блокировки»
+Архитектура
     
-Нажмите «Добавить блокировку»
-Выберите тип из выпадающего списка
-Введите значение и причину (опционально)
-Нажмите «Добавить»
 
-Быстрая блокировка из карточки пользователя
-    На вкладке Пользователи в карточке каждого пользователя есть кнопки быстрой блокировки:
+modules/
+  &lt;module-id&gt;/
+    manifest.json     # метаданные &#43; схема настроек
+    index.js          # код модуля
+    config.json       # (опционально) сохранённые настройки пользователя
+    &lt;любые файлы&gt;     # иконки, README, тест-фикстуры…
+  
+    
+
+  
+
+
+При старте lampac-go:
     
   ">
 <meta
@@ -84,14 +103,14 @@
 
 
 
-  <meta itemprop="name" content="Блокировки">
-  <meta itemprop="description" content="Вкладка «Блокировки» позволяет ограничивать доступ к серверу по различным критериям. Заблокированные пользователи и устройства получают ответ 403 Forbidden при любом запросе.
-Типы блокировок Тип Описание Пример значения IP Блокировка по точному IP-адресу 203.0.113.50 CIDR Блокировка по подсети (диапазон IP) 203.0.113.0/24 Device UID Блокировка по идентификатору устройства (8-символьный lampac_unic_id) a1b2c3d4 Telegram ID Блокировка по Telegram ID пользователя 123456789 Fingerprint Блокировка по отпечатку устройства (хэш параметров браузера) f7a3b2c1 Страна Блокировка по стране (ISO 3166-1 alpha-2). Требуется GeoIP-база. US Добавление блокировки Через вкладку «Блокировки» Нажмите «Добавить блокировку» Выберите тип из выпадающего списка Введите значение и причину (опционально) Нажмите «Добавить» Быстрая блокировка из карточки пользователя На вкладке Пользователи в карточке каждого пользователя есть кнопки быстрой блокировки:">
-  <meta itemprop="wordCount" content="429">
+  <meta itemprop="name" content="JS-модули источников">
+  <meta itemprop="description" content="JS-модули — современный способ подключить новый источник контента без пересборки сервера и без Go-тулчейна у пользователя. Каждый модуль — это одна JavaScript-функция в изолированной песочнице (Goja), которая принимает HTTP-запрос от Lampa и возвращает JSON в формате плейлиста.
+JS-модули — это эволюция старых кастомных балансеров (Go-subprocess). Старый механизм продолжает работать для обратной совместимости, но новые источники лучше писать как JS-модули. Они проще, быстрее ставятся, работают hot-reload и не требуют Go на машине пользователя. Почему JS, а не Go Критерий Go-subprocess (custom balancers) JS-модуль (новый) Размер артефакта ~9 МБ бинарь на плагин 5–20 КБ .js файл Нужен Go на машине Да Нет Hot-reload После go build и restart subprocess Мгновенно, по кнопке в админке Запуск Отдельный процесс &#43; TCP Внутри основного процесса, in-process handler Порог входа Go, конкурентность, net/http JavaScript &#43; «fetch-like» API Deploy Скомпилировать 11 бинарей под каждую ОС Скопировать папку Редактирование IDE &#43; компилятор Прямо в браузере через админку Архитектура modules/ &lt;module-id&gt;/ manifest.json # метаданные &#43; схема настроек index.js # код модуля config.json # (опционально) сохранённые настройки пользователя &lt;любые файлы&gt; # иконки, README, тест-фикстуры… При старте lampac-go:">
+  <meta itemprop="wordCount" content="1528">
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="Блокировки">
-  <meta name="twitter:description" content="Вкладка «Блокировки» позволяет ограничивать доступ к серверу по различным критериям. Заблокированные пользователи и устройства получают ответ 403 Forbidden при любом запросе.
-Типы блокировок Тип Описание Пример значения IP Блокировка по точному IP-адресу 203.0.113.50 CIDR Блокировка по подсети (диапазон IP) 203.0.113.0/24 Device UID Блокировка по идентификатору устройства (8-символьный lampac_unic_id) a1b2c3d4 Telegram ID Блокировка по Telegram ID пользователя 123456789 Fingerprint Блокировка по отпечатку устройства (хэш параметров браузера) f7a3b2c1 Страна Блокировка по стране (ISO 3166-1 alpha-2). Требуется GeoIP-база. US Добавление блокировки Через вкладку «Блокировки» Нажмите «Добавить блокировку» Выберите тип из выпадающего списка Введите значение и причину (опционально) Нажмите «Добавить» Быстрая блокировка из карточки пользователя На вкладке Пользователи в карточке каждого пользователя есть кнопки быстрой блокировки:">
+  <meta name="twitter:title" content="JS-модули источников">
+  <meta name="twitter:description" content="JS-модули — современный способ подключить новый источник контента без пересборки сервера и без Go-тулчейна у пользователя. Каждый модуль — это одна JavaScript-функция в изолированной песочнице (Goja), которая принимает HTTP-запрос от Lampa и возвращает JSON в формате плейлиста.
+JS-модули — это эволюция старых кастомных балансеров (Go-subprocess). Старый механизм продолжает работать для обратной совместимости, но новые источники лучше писать как JS-модули. Они проще, быстрее ставятся, работают hot-reload и не требуют Go на машине пользователя. Почему JS, а не Go Критерий Go-subprocess (custom balancers) JS-модуль (новый) Размер артефакта ~9 МБ бинарь на плагин 5–20 КБ .js файл Нужен Go на машине Да Нет Hot-reload После go build и restart subprocess Мгновенно, по кнопке в админке Запуск Отдельный процесс &#43; TCP Внутри основного процесса, in-process handler Порог входа Go, конкурентность, net/http JavaScript &#43; «fetch-like» API Deploy Скомпилировать 11 бинарей под каждую ОС Скопировать папку Редактирование IDE &#43; компилятор Прямо в браузере через админку Архитектура modules/ &lt;module-id&gt;/ manifest.json # метаданные &#43; схема настроек index.js # код модуля config.json # (опционально) сохранённые настройки пользователя &lt;любые файлы&gt; # иконки, README, тест-фикстуры… При старте lampac-go:">
 
     <link rel="preload" href="../../../css/compiled/main.min.860421afd86baea436520550e3f5b912c5d0ca8bfec32b073ac5871b3ae0ca74.css" as="style" integrity="sha256-hgQhr9hrrqQ2UgVQ4/W5EsXQyov&#43;wysHOsWHGzrgynQ=" />
     <link href="../../../css/compiled/main.min.860421afd86baea436520550e3f5b912c5d0ca8bfec32b073ac5871b3ae0ca74.css" rel="stylesheet" integrity="sha256-hgQhr9hrrqQ2UgVQ4/W5EsXQyov&#43;wysHOsWHGzrgynQ=" />
@@ -258,10 +277,10 @@
               
             </li></ul>
       </div>
-            </li><li class="hx:flex hx:flex-col open"><a
+            </li><li class="hx:flex hx:flex-col "><a
     class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
-    href="../index.html"
+    href="../../admin/index.html"
     
   >Админ-панель
         <span class="hextra-sidebar-collapsible-button"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="hx:h-[18px] hx:min-w-[18px] hx:rounded-xs hx:p-0.5 hx:hover:bg-gray-800/5 hx:dark:hover:bg-gray-100/5"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" class="hx:origin-center hx:transition-transform hx:rtl:-rotate-180"></path></svg></span>
@@ -270,7 +289,7 @@
         <ul class='hx:relative hx:flex hx:flex-col hx:gap-1 hx:before:absolute hx:before:inset-y-1 hx:before:w-px hx:before:bg-gray-200 hx:before:content-[""] hx:ltr:ml-3 hx:ltr:pl-3 hx:ltr:before:left-0 hx:rtl:mr-3 hx:rtl:pr-3 hx:rtl:before:right-0 hx:dark:before:bg-neutral-800'><li class="hx:flex hx:flex-col "><a
     class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
-    href="../users/index.html"
+    href="../../admin/users/index.html"
     
   >Пользователи
     </a>
@@ -278,7 +297,7 @@
             </li><li class="hx:flex hx:flex-col "><a
     class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
-    href="../balancers/index.html"
+    href="../../admin/balancers/index.html"
     
   >Балансеры
     </a>
@@ -286,7 +305,7 @@
             </li><li class="hx:flex hx:flex-col "><a
     class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
-    href="../modules/index.html"
+    href="../../admin/modules/index.html"
     
   >Модули
     </a>
@@ -294,7 +313,7 @@
             </li><li class="hx:flex hx:flex-col "><a
     class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
-    href="../plugins/index.html"
+    href="../../admin/plugins/index.html"
     
   >Плагины
     </a>
@@ -302,7 +321,7 @@
             </li><li class="hx:flex hx:flex-col "><a
     class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
-    href="../proxy/index.html"
+    href="../../admin/proxy/index.html"
     
   >Проксирование
     </a>
@@ -310,7 +329,7 @@
             </li><li class="hx:flex hx:flex-col "><a
     class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
-    href="../tg-settings/index.html"
+    href="../../admin/tg-settings/index.html"
     
   >TG Настройки
     </a>
@@ -318,7 +337,7 @@
             </li><li class="hx:flex hx:flex-col "><a
     class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
-    href="../server/index.html"
+    href="../../admin/server/index.html"
     
   >Сервер
     </a>
@@ -326,7 +345,7 @@
             </li><li class="hx:flex hx:flex-col "><a
     class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
-    href="../broadcast/index.html"
+    href="../../admin/broadcast/index.html"
     
   >Рассылка
     </a>
@@ -334,69 +353,18 @@
             </li><li class="hx:flex hx:flex-col "><a
     class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
-    href="../config/index.html"
+    href="../../admin/config/index.html"
     
   >Конфиг
     </a>
               
-            </li><li class="hx:flex hx:flex-col open"><a
+            </li><li class="hx:flex hx:flex-col "><a
     class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
-      hextra-sidebar-active-item hx:bg-primary-100 hx:font-semibold hx:text-primary-800 hx:contrast-more:border hx:contrast-more:border-primary-500 hx:dark:bg-primary-400/10 hx:dark:text-primary-600 hx:contrast-more:dark:border-primary-500"
-    href="index.html"
+      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+    href="../../admin/bans/index.html"
     
   >Блокировки
     </a>
-  
-    <ul class='hx:flex hx:flex-col hx:gap-1 hx:relative hx:before:absolute hx:before:inset-y-1 hx:before:w-px hx:before:bg-gray-200 hx:before:content-[""] hx:dark:before:bg-neutral-800 hx:ltr:pl-3 hx:ltr:before:left-0 hx:rtl:pr-3 hx:rtl:before:right-0 hx:ltr:ml-3 hx:rtl:mr-3'><li>
-              <a
-                href="#%d1%82%d0%b8%d0%bf%d1%8b-%d0%b1%d0%bb%d0%be%d0%ba%d0%b8%d1%80%d0%be%d0%b2%d0%be%d0%ba"
-                class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50"
-              >Типы блокировок</a>
-            </li>
-          <li>
-              <a
-                href="#%d0%b4%d0%be%d0%b1%d0%b0%d0%b2%d0%bb%d0%b5%d0%bd%d0%b8%d0%b5-%d0%b1%d0%bb%d0%be%d0%ba%d0%b8%d1%80%d0%be%d0%b2%d0%ba%d0%b8"
-                class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50"
-              >Добавление блокировки</a>
-            </li>
-          <li>
-              <a
-                href="#%d1%82%d0%b0%d0%b1%d0%bb%d0%b8%d1%86%d0%b0-%d0%b1%d0%bb%d0%be%d0%ba%d0%b8%d1%80%d0%be%d0%b2%d0%be%d0%ba"
-                class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50"
-              >Таблица блокировок</a>
-            </li>
-          <li>
-              <a
-                href="#%d1%83%d0%b4%d0%b0%d0%bb%d0%b5%d0%bd%d0%b8%d0%b5-%d0%b1%d0%bb%d0%be%d0%ba%d0%b8%d1%80%d0%be%d0%b2%d0%ba%d0%b8"
-                class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50"
-              >Удаление блокировки</a>
-            </li>
-          <li>
-              <a
-                href="#%d0%ba%d0%b0%d0%ba-%d1%80%d0%b0%d0%b1%d0%be%d1%82%d0%b0%d0%b5%d1%82-%d0%bf%d1%80%d0%be%d0%b2%d0%b5%d1%80%d0%ba%d0%b0"
-                class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50"
-              >Как работает проверка</a>
-            </li>
-          <li>
-              <a
-                href="#geoip-%d0%b1%d0%bb%d0%be%d0%ba%d0%b8%d1%80%d0%be%d0%b2%d0%ba%d0%b0-%d0%bf%d0%be-%d1%81%d1%82%d1%80%d0%b0%d0%bd%d0%b5"
-                class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50"
-              >GeoIP (блокировка по стране)</a>
-            </li>
-          <li>
-              <a
-                href="#%d1%85%d1%80%d0%b0%d0%bd%d0%b5%d0%bd%d0%b8%d0%b5-%d0%b4%d0%b0%d0%bd%d0%bd%d1%8b%d1%85"
-                class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50"
-              >Хранение данных</a>
-            </li>
-          <li>
-              <a
-                href="#api"
-                class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50"
-              >API</a>
-            </li>
-          </ul>
-  
               
             </li></ul>
       </div>
@@ -459,10 +427,10 @@
               
             </li></ul>
       </div>
-            </li><li class="hx:flex hx:flex-col "><a
+            </li><li class="hx:flex hx:flex-col open"><a
     class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
-    href="../../balancers/index.html"
+    href="../index.html"
     
   >Балансеры
         <span class="hextra-sidebar-collapsible-button"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="hx:h-[18px] hx:min-w-[18px] hx:rounded-xs hx:p-0.5 hx:hover:bg-gray-800/5 hx:dark:hover:bg-gray-100/5"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" class="hx:origin-center hx:transition-transform hx:rtl:-rotate-180"></path></svg></span>
@@ -471,23 +439,74 @@
         <ul class='hx:relative hx:flex hx:flex-col hx:gap-1 hx:before:absolute hx:before:inset-y-1 hx:before:w-px hx:before:bg-gray-200 hx:before:content-[""] hx:ltr:ml-3 hx:ltr:pl-3 hx:ltr:before:left-0 hx:rtl:mr-3 hx:rtl:pr-3 hx:rtl:before:right-0 hx:dark:before:bg-neutral-800'><li class="hx:flex hx:flex-col "><a
     class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
-    href="../../balancers/list/index.html"
+    href="../list/index.html"
     
   >Полный список модулей
     </a>
               
-            </li><li class="hx:flex hx:flex-col "><a
+            </li><li class="hx:flex hx:flex-col open"><a
     class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
-      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
-    href="../../balancers/modules/index.html"
+      hextra-sidebar-active-item hx:bg-primary-100 hx:font-semibold hx:text-primary-800 hx:contrast-more:border hx:contrast-more:border-primary-500 hx:dark:bg-primary-400/10 hx:dark:text-primary-600 hx:contrast-more:dark:border-primary-500"
+    href="index.html"
     
   >JS-модули источников
     </a>
+  
+    <ul class='hx:flex hx:flex-col hx:gap-1 hx:relative hx:before:absolute hx:before:inset-y-1 hx:before:w-px hx:before:bg-gray-200 hx:before:content-[""] hx:dark:before:bg-neutral-800 hx:ltr:pl-3 hx:ltr:before:left-0 hx:rtl:pr-3 hx:rtl:before:right-0 hx:ltr:ml-3 hx:rtl:mr-3'><li>
+              <a
+                href="#%d0%bf%d0%be%d1%87%d0%b5%d0%bc%d1%83-js-%d0%b0-%d0%bd%d0%b5-go"
+                class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50"
+              >Почему JS, а не Go</a>
+            </li>
+          <li>
+              <a
+                href="#%d0%b0%d1%80%d1%85%d0%b8%d1%82%d0%b5%d0%ba%d1%82%d1%83%d1%80%d0%b0"
+                class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50"
+              >Архитектура</a>
+            </li>
+          <li>
+              <a
+                href="#manifestjson"
+                class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50"
+              >manifest.json</a>
+            </li>
+          <li>
+              <a
+                href="#api-%d0%bf%d0%b5%d1%81%d0%be%d1%87%d0%bd%d0%b8%d1%86%d1%8b"
+                class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50"
+              >API песочницы</a>
+            </li>
+          <li>
+              <a
+                href="#%d0%ba%d0%be%d0%bd%d1%82%d1%80%d0%b0%d0%ba%d1%82-handleinv"
+                class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50"
+              >Контракт handle(inv)</a>
+            </li>
+          <li>
+              <a
+                href="#%d1%84%d0%be%d1%80%d0%bc%d0%b0%d1%82-%d0%be%d1%82%d0%b2%d0%b5%d1%82%d0%b0-lampa"
+                class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50"
+              >Формат ответа Lampa</a>
+            </li>
+          <li>
+              <a
+                href="#%d0%bf%d0%be%d0%bb%d0%bd%d1%8b%d0%b9-%d0%bf%d1%80%d0%b8%d0%bc%d0%b5%d1%80-%d0%bc%d0%be%d0%b4%d1%83%d0%bb%d1%8f"
+                class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50"
+              >Полный пример модуля</a>
+            </li>
+          <li>
+              <a
+                href="#%d0%b4%d0%b0%d0%bb%d1%8c%d1%88%d0%b5"
+                class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50"
+              >Дальше</a>
+            </li>
+          </ul>
+  
               
             </li><li class="hx:flex hx:flex-col "><a
     class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
-    href="../../balancers/module-guide/index.html"
+    href="../module-guide/index.html"
     
   >Гайд — свой модуль за 30 минут
     </a>
@@ -495,7 +514,7 @@
             </li><li class="hx:flex hx:flex-col "><a
     class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
-    href="../../balancers/custom/index.html"
+    href="../custom/index.html"
     
   >Кастомные балансеры (Go)
     </a>
@@ -503,7 +522,7 @@
             </li><li class="hx:flex hx:flex-col "><a
     class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
-    href="../../balancers/ukrainian-sources/index.html"
+    href="../ukrainian-sources/index.html"
     
   >Украинские источники
     </a>
@@ -770,10 +789,10 @@
               
             </li></ul>
       </div></li>
-          <li class="open"><a
+          <li class=""><a
     class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
-    href="../index.html"
+    href="../../admin/index.html"
     
   >Админ-панель
         <span class="hextra-sidebar-collapsible-button"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="hx:h-[18px] hx:min-w-[18px] hx:rounded-xs hx:p-0.5 hx:hover:bg-gray-800/5 hx:dark:hover:bg-gray-100/5"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" class="hx:origin-center hx:transition-transform hx:rtl:-rotate-180"></path></svg></span>
@@ -781,7 +800,7 @@
         <ul class='hx:relative hx:flex hx:flex-col hx:gap-1 hx:before:absolute hx:before:inset-y-1 hx:before:w-px hx:before:bg-gray-200 hx:before:content-[""] hx:ltr:ml-3 hx:ltr:pl-3 hx:ltr:before:left-0 hx:rtl:mr-3 hx:rtl:pr-3 hx:rtl:before:right-0 hx:dark:before:bg-neutral-800'><li class="hx:flex hx:flex-col "><a
     class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
-    href="../users/index.html"
+    href="../../admin/users/index.html"
     
   >Пользователи
     </a>
@@ -789,7 +808,7 @@
             </li><li class="hx:flex hx:flex-col "><a
     class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
-    href="../balancers/index.html"
+    href="../../admin/balancers/index.html"
     
   >Балансеры
     </a>
@@ -797,7 +816,7 @@
             </li><li class="hx:flex hx:flex-col "><a
     class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
-    href="../modules/index.html"
+    href="../../admin/modules/index.html"
     
   >Модули
     </a>
@@ -805,7 +824,7 @@
             </li><li class="hx:flex hx:flex-col "><a
     class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
-    href="../plugins/index.html"
+    href="../../admin/plugins/index.html"
     
   >Плагины
     </a>
@@ -813,7 +832,7 @@
             </li><li class="hx:flex hx:flex-col "><a
     class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
-    href="../proxy/index.html"
+    href="../../admin/proxy/index.html"
     
   >Проксирование
     </a>
@@ -821,7 +840,7 @@
             </li><li class="hx:flex hx:flex-col "><a
     class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
-    href="../tg-settings/index.html"
+    href="../../admin/tg-settings/index.html"
     
   >TG Настройки
     </a>
@@ -829,7 +848,7 @@
             </li><li class="hx:flex hx:flex-col "><a
     class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
-    href="../server/index.html"
+    href="../../admin/server/index.html"
     
   >Сервер
     </a>
@@ -837,7 +856,7 @@
             </li><li class="hx:flex hx:flex-col "><a
     class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
-    href="../broadcast/index.html"
+    href="../../admin/broadcast/index.html"
     
   >Рассылка
     </a>
@@ -845,15 +864,15 @@
             </li><li class="hx:flex hx:flex-col "><a
     class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
-    href="../config/index.html"
+    href="../../admin/config/index.html"
     
   >Конфиг
     </a>
               
-            </li><li class="hx:flex hx:flex-col open"><a
+            </li><li class="hx:flex hx:flex-col "><a
     class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
-      hextra-sidebar-active-item hx:bg-primary-100 hx:font-semibold hx:text-primary-800 hx:contrast-more:border hx:contrast-more:border-primary-500 hx:dark:bg-primary-400/10 hx:dark:text-primary-600 hx:contrast-more:dark:border-primary-500"
-    href="index.html"
+      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+    href="../../admin/bans/index.html"
     
   >Блокировки
     </a>
@@ -918,10 +937,10 @@
               
             </li></ul>
       </div></li>
-          <li class=""><a
+          <li class="open"><a
     class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
-    href="../../balancers/index.html"
+    href="../index.html"
     
   >Балансеры
         <span class="hextra-sidebar-collapsible-button"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="hx:h-[18px] hx:min-w-[18px] hx:rounded-xs hx:p-0.5 hx:hover:bg-gray-800/5 hx:dark:hover:bg-gray-100/5"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" class="hx:origin-center hx:transition-transform hx:rtl:-rotate-180"></path></svg></span>
@@ -929,15 +948,15 @@
         <ul class='hx:relative hx:flex hx:flex-col hx:gap-1 hx:before:absolute hx:before:inset-y-1 hx:before:w-px hx:before:bg-gray-200 hx:before:content-[""] hx:ltr:ml-3 hx:ltr:pl-3 hx:ltr:before:left-0 hx:rtl:mr-3 hx:rtl:pr-3 hx:rtl:before:right-0 hx:dark:before:bg-neutral-800'><li class="hx:flex hx:flex-col "><a
     class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
-    href="../../balancers/list/index.html"
+    href="../list/index.html"
     
   >Полный список модулей
     </a>
               
-            </li><li class="hx:flex hx:flex-col "><a
+            </li><li class="hx:flex hx:flex-col open"><a
     class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
-      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
-    href="../../balancers/modules/index.html"
+      hextra-sidebar-active-item hx:bg-primary-100 hx:font-semibold hx:text-primary-800 hx:contrast-more:border hx:contrast-more:border-primary-500 hx:dark:bg-primary-400/10 hx:dark:text-primary-600 hx:contrast-more:dark:border-primary-500"
+    href="index.html"
     
   >JS-модули источников
     </a>
@@ -945,7 +964,7 @@
             </li><li class="hx:flex hx:flex-col "><a
     class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
-    href="../../balancers/module-guide/index.html"
+    href="../module-guide/index.html"
     
   >Гайд — свой модуль за 30 минут
     </a>
@@ -953,7 +972,7 @@
             </li><li class="hx:flex hx:flex-col "><a
     class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
-    href="../../balancers/custom/index.html"
+    href="../custom/index.html"
     
   >Кастомные балансеры (Go)
     </a>
@@ -961,7 +980,7 @@
             </li><li class="hx:flex hx:flex-col "><a
     class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
-    href="../../balancers/ukrainian-sources/index.html"
+    href="../ukrainian-sources/index.html"
     
   >Украинские источники
     </a>
@@ -1235,51 +1254,107 @@
 <nav class="hextra-toc hx:order-last hx:hidden hx:w-64 hx:shrink-0 hx:xl:block hx:print:hidden hx:px-4" aria-label="table of contents">
     <div class="hextra-scrollbar hx:sticky hx:top-16 hx:overflow-y-auto hx:pr-4 hx:pt-6 hx:text-sm [hyphens:auto] hx:max-h-[calc(100vh-var(--navbar-height)-env(safe-area-inset-bottom))] hx:ltr:-mr-4 hx:rtl:-ml-4"><p class="hx:mb-4 hx:font-semibold hx:tracking-tight">На этой странице</p><ul>
       <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
-        <a class="hx:font-medium hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#%d1%82%d0%b8%d0%bf%d1%8b-%d0%b1%d0%bb%d0%be%d0%ba%d0%b8%d1%80%d0%be%d0%b2%d0%be%d0%ba">Типы блокировок
+        <a class="hx:font-medium hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#%d0%bf%d0%be%d1%87%d0%b5%d0%bc%d1%83-js-%d0%b0-%d0%bd%d0%b5-go">Почему JS, а не Go
         </a>
       </li>
       <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
-        <a class="hx:font-medium hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#%d0%b4%d0%be%d0%b1%d0%b0%d0%b2%d0%bb%d0%b5%d0%bd%d0%b8%d0%b5-%d0%b1%d0%bb%d0%be%d0%ba%d0%b8%d1%80%d0%be%d0%b2%d0%ba%d0%b8">Добавление блокировки
+        <a class="hx:font-medium hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#%d0%b0%d1%80%d1%85%d0%b8%d1%82%d0%b5%d0%ba%d1%82%d1%83%d1%80%d0%b0">Архитектура
         </a>
       </li>
       <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
-        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#%d1%87%d0%b5%d1%80%d0%b5%d0%b7-%d0%b2%d0%ba%d0%bb%d0%b0%d0%b4%d0%ba%d1%83-%d0%b1%d0%bb%d0%be%d0%ba%d0%b8%d1%80%d0%be%d0%b2%d0%ba%d0%b8">Через вкладку «Блокировки»
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#%d0%bf%d1%80%d0%b8%d0%be%d1%80%d0%b8%d1%82%d0%b5%d1%82-%d0%bc%d0%b0%d1%80%d1%88%d1%80%d1%83%d1%82%d0%be%d0%b2">Приоритет маршрутов
         </a>
       </li>
       <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
-        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#%d0%b1%d1%8b%d1%81%d1%82%d1%80%d0%b0%d1%8f-%d0%b1%d0%bb%d0%be%d0%ba%d0%b8%d1%80%d0%be%d0%b2%d0%ba%d0%b0-%d0%b8%d0%b7-%d0%ba%d0%b0%d1%80%d1%82%d0%be%d1%87%d0%ba%d0%b8-%d0%bf%d0%be%d0%bb%d1%8c%d0%b7%d0%be%d0%b2%d0%b0%d1%82%d0%b5%d0%bb%d1%8f">Быстрая блокировка из карточки пользователя
+        <a class="hx:font-medium hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#manifestjson">manifest.json
         </a>
       </li>
       <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
-        <a class="hx:font-medium hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#%d1%82%d0%b0%d0%b1%d0%bb%d0%b8%d1%86%d0%b0-%d0%b1%d0%bb%d0%be%d0%ba%d0%b8%d1%80%d0%be%d0%b2%d0%be%d0%ba">Таблица блокировок
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#%d0%bf%d0%be%d0%bb%d0%bd%d0%b0%d1%8f-%d1%81%d1%85%d0%b5%d0%bc%d0%b0">Полная схема
         </a>
       </li>
       <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
-        <a class="hx:font-medium hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#%d1%83%d0%b4%d0%b0%d0%bb%d0%b5%d0%bd%d0%b8%d0%b5-%d0%b1%d0%bb%d0%be%d0%ba%d0%b8%d1%80%d0%be%d0%b2%d0%ba%d0%b8">Удаление блокировки
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#configfield">ConfigField
         </a>
       </li>
       <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
-        <a class="hx:font-medium hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#%d0%ba%d0%b0%d0%ba-%d1%80%d0%b0%d0%b1%d0%be%d1%82%d0%b0%d0%b5%d1%82-%d0%bf%d1%80%d0%be%d0%b2%d0%b5%d1%80%d0%ba%d0%b0">Как работает проверка
+        <a class="hx:font-medium hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#api-%d0%bf%d0%b5%d1%81%d0%be%d1%87%d0%bd%d0%b8%d1%86%d1%8b">API песочницы
         </a>
       </li>
       <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
-        <a class="hx:font-medium hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#geoip-%d0%b1%d0%bb%d0%be%d0%ba%d0%b8%d1%80%d0%be%d0%b2%d0%ba%d0%b0-%d0%bf%d0%be-%d1%81%d1%82%d1%80%d0%b0%d0%bd%d0%b5">GeoIP (блокировка по стране)
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#http--http-%d0%ba%d0%bb%d0%b8%d0%b5%d0%bd%d1%82">http — HTTP-клиент
         </a>
       </li>
       <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
-        <a class="hx:font-medium hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#%d1%85%d1%80%d0%b0%d0%bd%d0%b5%d0%bd%d0%b8%d0%b5-%d0%b4%d0%b0%d0%bd%d0%bd%d1%8b%d1%85">Хранение данных
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#proxy--%d0%bf%d1%80%d0%be%d0%ba%d1%81%d0%b8%d1%80%d0%be%d0%b2%d0%b0%d0%bd%d0%b8%d0%b5-%d1%81%d1%82%d1%80%d0%b8%d0%bc%d0%be%d0%b2">proxy — проксирование стримов
         </a>
       </li>
       <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
-        <a class="hx:font-medium hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#api">API
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#cache--per-module-%d0%ba%d1%8d%d1%88">cache — per-module кэш
         </a>
       </li>
       <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
-        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#%d0%b4%d0%be%d0%b1%d0%b0%d0%b2%d0%bb%d0%b5%d0%bd%d0%b8%d0%b5-%d0%bf%d1%80%d0%b0%d0%b2%d0%b8%d0%bb%d0%b0">Добавление правила
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#util--%d1%83%d1%82%d0%b8%d0%bb%d0%b8%d1%82%d1%8b">util — утилиты
         </a>
       </li>
       <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
-        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#%d1%83%d0%b4%d0%b0%d0%bb%d0%b5%d0%bd%d0%b8%d0%b5-%d0%bf%d1%80%d0%b0%d0%b2%d0%b8%d0%bb%d0%b0">Удаление правила
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#btoa--atob--base64">btoa / atob — base64
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#console--log--%d0%bb%d0%be%d0%b3%d0%b8%d1%80%d0%be%d0%b2%d0%b0%d0%bd%d0%b8%d0%b5">console / log — логирование
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#manifest--%d0%b2%d0%b0%d1%88-manifestjson">manifest — ваш manifest.json
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-medium hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#%d0%ba%d0%be%d0%bd%d1%82%d1%80%d0%b0%d0%ba%d1%82-handleinv">Контракт handle(inv)
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#inv--%d0%ba%d0%be%d0%bd%d1%82%d0%b5%d0%ba%d1%81%d1%82-%d0%b2%d1%8b%d0%b7%d0%be%d0%b2%d0%b0">inv — контекст вызова
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#%d0%be%d1%82%d0%b2%d0%b5%d1%82">Ответ
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-medium hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#%d1%84%d0%be%d1%80%d0%bc%d0%b0%d1%82-%d0%be%d1%82%d0%b2%d0%b5%d1%82%d0%b0-lampa">Формат ответа Lampa
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#checksearch--%d0%b5%d1%81%d1%82%d1%8c-%d0%bb%d0%b8-%d1%87%d1%82%d0%be-%d1%82%d0%be-%d0%b4%d0%bb%d1%8f-%d1%8d%d1%82%d0%be%d0%b3%d0%be-%d1%82%d0%b0%d0%b9%d1%82%d0%bb%d0%b0">checksearch — есть ли что-то для этого тайтла
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#%d1%81%d0%bf%d0%b8%d1%81%d0%be%d0%ba-%d0%bf%d0%be%d1%85%d0%be%d0%b6%d0%b8%d1%85-similar">Список похожих (similar)
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#%d1%84%d0%b8%d0%bb%d1%8c%d0%bc-movie">Фильм (movie)
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#%d1%81%d0%bf%d0%b8%d1%81%d0%be%d0%ba-%d1%81%d0%b5%d0%b7%d0%be%d0%bd%d0%be%d0%b2-season">Список сезонов (season)
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#%d1%81%d0%bf%d0%b8%d1%81%d0%be%d0%ba-%d1%81%d0%b5%d1%80%d0%b8%d0%b9-episode">Список серий (episode)
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#%d0%bf%d0%be%d0%bb%d1%8f-%d0%b7%d0%b0%d0%bf%d0%b8%d1%81%d0%b5%d0%b9">Поля записей
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-medium hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#%d0%bf%d0%be%d0%bb%d0%bd%d1%8b%d0%b9-%d0%bf%d1%80%d0%b8%d0%bc%d0%b5%d1%80-%d0%bc%d0%be%d0%b4%d1%83%d0%bb%d1%8f">Полный пример модуля
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-medium hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#%d0%b4%d0%b0%d0%bb%d1%8c%d1%88%d0%b5">Дальше
         </a>
       </li></ul>
       <div class="hx:mt-8 hx:border-t hx:bg-white hx:pt-8 hx:shadow-[0_-12px_16px_white] hx:dark:bg-dark hx:dark:shadow-[0_-12px_16px_#111] hx:sticky hx:bottom-0 hx:flex hx:flex-col hx:items-start hx:gap-2 hx:pb-8 hx:border-gray-200 hx:dark:border-neutral-800 hx:contrast-more:border-t hx:contrast-more:border-neutral-400 hx:contrast-more:shadow-none hx:contrast-more:dark:border-neutral-400">
@@ -1301,122 +1376,77 @@
           <a href="../../index.html">Введение</a>
         </div><svg class="hx:w-3.5 hx:shrink-0 hx:rtl:-rotate-180" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
         <div class="hx:whitespace-nowrap hx:transition-colors hx:min-w-[24px] hx:overflow-hidden hx:text-ellipsis hx:hover:text-gray-900 hx:dark:hover:text-gray-100">
-          <a href="../index.html">Админ-панель</a>
-        </div><svg class="hx:w-3.5 hx:shrink-0 hx:rtl:-rotate-180" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg><div class="hx:whitespace-nowrap hx:transition-colors hx:font-medium hx:text-gray-700 hx:contrast-more:font-bold hx:contrast-more:text-current hx:dark:text-gray-100 hx:contrast-more:dark:text-current">Блокировки</div>
+          <a href="../index.html">Балансеры</a>
+        </div><svg class="hx:w-3.5 hx:shrink-0 hx:rtl:-rotate-180" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg><div class="hx:whitespace-nowrap hx:transition-colors hx:font-medium hx:text-gray-700 hx:contrast-more:font-bold hx:contrast-more:text-current hx:dark:text-gray-100 hx:contrast-more:dark:text-current">JS-модули источников</div>
   </div>
 
         <div class="content">
-          <h1>Блокировки</h1>
-          <p>Вкладка «Блокировки» позволяет ограничивать доступ к серверу по различным критериям. Заблокированные пользователи и устройства получают ответ <code>403 Forbidden</code> при любом запросе.</p>
-<h2>Типы блокировок<span class="hx:absolute hx:-mt-20" id="типы-блокировок"></span>
-    <a href="#%d1%82%d0%b8%d0%bf%d1%8b-%d0%b1%d0%bb%d0%be%d0%ba%d0%b8%d1%80%d0%be%d0%b2%d0%be%d0%ba" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><table>
-  <thead>
-      <tr>
-          <th>Тип</th>
-          <th>Описание</th>
-          <th>Пример значения</th>
-      </tr>
-  </thead>
-  <tbody>
-      <tr>
-          <td><strong>IP</strong></td>
-          <td>Блокировка по точному IP-адресу</td>
-          <td><code>203.0.113.50</code></td>
-      </tr>
-      <tr>
-          <td><strong>CIDR</strong></td>
-          <td>Блокировка по подсети (диапазон IP)</td>
-          <td><code>203.0.113.0/24</code></td>
-      </tr>
-      <tr>
-          <td><strong>Device UID</strong></td>
-          <td>Блокировка по идентификатору устройства (8-символьный <code>lampac_unic_id</code>)</td>
-          <td><code>a1b2c3d4</code></td>
-      </tr>
-      <tr>
-          <td><strong>Telegram ID</strong></td>
-          <td>Блокировка по Telegram ID пользователя</td>
-          <td><code>123456789</code></td>
-      </tr>
-      <tr>
-          <td><strong>Fingerprint</strong></td>
-          <td>Блокировка по отпечатку устройства (хэш параметров браузера)</td>
-          <td><code>f7a3b2c1</code></td>
-      </tr>
-      <tr>
-          <td><strong>Страна</strong></td>
-          <td>Блокировка по стране (ISO 3166-1 alpha-2). Требуется GeoIP-база.</td>
-          <td><code>US</code></td>
-      </tr>
-  </tbody>
-</table>
-<h2>Добавление блокировки<span class="hx:absolute hx:-mt-20" id="добавление-блокировки"></span>
-    <a href="#%d0%b4%d0%be%d0%b1%d0%b0%d0%b2%d0%bb%d0%b5%d0%bd%d0%b8%d0%b5-%d0%b1%d0%bb%d0%be%d0%ba%d0%b8%d1%80%d0%be%d0%b2%d0%ba%d0%b8" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><h3>Через вкладку «Блокировки»<span class="hx:absolute hx:-mt-20" id="через-вкладку-блокировки"></span>
-    <a href="#%d1%87%d0%b5%d1%80%d0%b5%d0%b7-%d0%b2%d0%ba%d0%bb%d0%b0%d0%b4%d0%ba%d1%83-%d0%b1%d0%bb%d0%be%d0%ba%d0%b8%d1%80%d0%be%d0%b2%d0%ba%d0%b8" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><ol>
-<li>Нажмите <strong>«Добавить блокировку»</strong></li>
-<li>Выберите тип из выпадающего списка</li>
-<li>Введите значение и причину (опционально)</li>
-<li>Нажмите <strong>«Добавить»</strong></li>
-</ol>
-<h3>Быстрая блокировка из карточки пользователя<span class="hx:absolute hx:-mt-20" id="быстрая-блокировка-из-карточки-пользователя"></span>
-    <a href="#%d0%b1%d1%8b%d1%81%d1%82%d1%80%d0%b0%d1%8f-%d0%b1%d0%bb%d0%be%d0%ba%d0%b8%d1%80%d0%be%d0%b2%d0%ba%d0%b0-%d0%b8%d0%b7-%d0%ba%d0%b0%d1%80%d1%82%d0%be%d1%87%d0%ba%d0%b8-%d0%bf%d0%be%d0%bb%d1%8c%d0%b7%d0%be%d0%b2%d0%b0%d1%82%d0%b5%d0%bb%d1%8f" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><p>На вкладке <a href="../users/index.html">Пользователи</a> в карточке каждого пользователя есть кнопки быстрой блокировки:</p>
-<ul>
-<li>🚫 <strong>TG</strong> — заблокировать по Telegram ID</li>
-<li>🚫 <strong>UID</strong> — заблокировать конкретное устройство</li>
-<li>🚫 <strong>IP</strong> — заблокировать по последнему известному IP устройства</li>
-<li>🚫 <strong>FP</strong> — заблокировать по отпечатку устройства</li>
-</ul>
+          <h1>JS-модули источников</h1>
+          <p>JS-модули — современный способ подключить новый источник контента <strong>без пересборки</strong> сервера и <strong>без Go-тулчейна у пользователя</strong>. Каждый модуль — это одна JavaScript-функция в изолированной песочнице (Goja), которая принимает HTTP-запрос от Lampa и возвращает JSON в формате плейлиста.</p>
 <div class="hx:overflow-x-auto hx:mt-6 hx:flex hx:rounded-lg hx:border hx:py-2 hx:ltr:pr-4 hx:rtl:pl-4 hx:contrast-more:border-current hx:contrast-more:dark:border-current hx:border-blue-200 hx:bg-blue-100 hx:text-blue-900 hx:dark:border-blue-200/30 hx:dark:bg-blue-900/30 hx:dark:text-blue-200">
   <div class="hx:ltr:pl-3 hx:ltr:pr-2 hx:rtl:pr-3 hx:rtl:pl-2"><svg height=1.2em class="hx:inline-block hx:align-middle" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div>
 
   <div class="hx:w-full hx:min-w-0 hx:leading-7">
-    <div class="hx:mt-6 hx:leading-7 hx:first:mt-0">IP-адрес и отпечаток отображаются в карточке устройства только после хотя бы одного запроса от этого устройства.</div>
+    <div class="hx:mt-6 hx:leading-7 hx:first:mt-0">JS-модули — это эволюция старых <a href="../custom/index.html">кастомных балансеров</a> (Go-subprocess). Старый механизм продолжает работать для обратной совместимости, но новые источники лучше писать как JS-модули. Они проще, быстрее ставятся, работают hot-reload и не требуют Go на машине пользователя.</div>
   </div>
 </div>
 
-<h2>Таблица блокировок<span class="hx:absolute hx:-mt-20" id="таблица-блокировок"></span>
-    <a href="#%d1%82%d0%b0%d0%b1%d0%bb%d0%b8%d1%86%d0%b0-%d0%b1%d0%bb%d0%be%d0%ba%d0%b8%d1%80%d0%be%d0%b2%d0%be%d0%ba" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><p>Таблица отображает все активные правила:</p>
-<table>
+<h2>Почему JS, а не Go<span class="hx:absolute hx:-mt-20" id="почему-js-а-не-go"></span>
+    <a href="#%d0%bf%d0%be%d1%87%d0%b5%d0%bc%d1%83-js-%d0%b0-%d0%bd%d0%b5-go" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><table>
   <thead>
       <tr>
-          <th>Поле</th>
-          <th>Описание</th>
+          <th>Критерий</th>
+          <th>Go-subprocess (custom balancers)</th>
+          <th>JS-модуль (новый)</th>
       </tr>
   </thead>
   <tbody>
       <tr>
-          <td>Тип</td>
-          <td>IP / CIDR / UID / TG ID / Fingerprint / Страна</td>
+          <td>Размер артефакта</td>
+          <td>~9 МБ бинарь на плагин</td>
+          <td>5–20 КБ <code>.js</code> файл</td>
       </tr>
       <tr>
-          <td>Значение</td>
-          <td>Заблокированный идентификатор</td>
+          <td>Нужен Go на машине</td>
+          <td><strong>Да</strong></td>
+          <td>Нет</td>
       </tr>
       <tr>
-          <td>Причина</td>
-          <td>Комментарий администратора</td>
+          <td>Hot-reload</td>
+          <td>После <code>go build</code> и restart subprocess</td>
+          <td>Мгновенно, по кнопке в админке</td>
       </tr>
       <tr>
-          <td>Дата</td>
-          <td>Когда создана блокировка</td>
+          <td>Запуск</td>
+          <td>Отдельный процесс + TCP</td>
+          <td>Внутри основного процесса, in-process handler</td>
       </tr>
       <tr>
-          <td>Действие</td>
-          <td>Кнопка удаления правила</td>
+          <td>Порог входа</td>
+          <td>Go, конкурентность, net/http</td>
+          <td>JavaScript + «fetch-like» API</td>
+      </tr>
+      <tr>
+          <td>Deploy</td>
+          <td>Скомпилировать 11 бинарей под каждую ОС</td>
+          <td>Скопировать папку</td>
+      </tr>
+      <tr>
+          <td>Редактирование</td>
+          <td>IDE + компилятор</td>
+          <td>Прямо в браузере через админку</td>
       </tr>
   </tbody>
 </table>
-<p>В верхней части отображается статистика — количество правил по каждому типу.</p>
-<h2>Удаление блокировки<span class="hx:absolute hx:-mt-20" id="удаление-блокировки"></span>
-    <a href="#%d1%83%d0%b4%d0%b0%d0%bb%d0%b5%d0%bd%d0%b8%d0%b5-%d0%b1%d0%bb%d0%be%d0%ba%d0%b8%d1%80%d0%be%d0%b2%d0%ba%d0%b8" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><p>Нажмите кнопку удаления (🗑️) рядом с правилом и подтвердите действие. Доступ восстанавливается мгновенно.</p>
-<h2>Как работает проверка<span class="hx:absolute hx:-mt-20" id="как-работает-проверка"></span>
-    <a href="#%d0%ba%d0%b0%d0%ba-%d1%80%d0%b0%d0%b1%d0%be%d1%82%d0%b0%d0%b5%d1%82-%d0%bf%d1%80%d0%be%d0%b2%d0%b5%d1%80%d0%ba%d0%b0" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><p>Проверка выполняется на уровне middleware авторизации — <strong>до</strong> обработки любого запроса:</p>
-<div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+<h2>Архитектура<span class="hx:absolute hx:-mt-20" id="архитектура"></span>
+    <a href="#%d0%b0%d1%80%d1%85%d0%b8%d1%82%d0%b5%d0%ba%d1%82%d1%83%d1%80%d0%b0" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
 
-<div><pre><code>Запрос → TG Auth Gate → Проверка бана → Обработка запроса
-                              ↓
-                         403 Forbidden
-                         {&#34;error&#34;:&#34;blocked&#34;,&#34;reason&#34;:&#34;...&#34;}</code></pre></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+<div><pre><code>modules/
+  &lt;module-id&gt;/
+    manifest.json     # метаданные &#43; схема настроек
+    index.js          # код модуля
+    config.json       # (опционально) сохранённые настройки пользователя
+    &lt;любые файлы&gt;     # иконки, README, тест-фикстуры…</code></pre></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
   <button
     class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
     title="Скопировать код"
@@ -1426,76 +1456,148 @@
   </button>
 </div>
 </div>
-<p>Проверяются все идентификаторы одновременно:</p>
+<p>При старте <code>lampac-go</code>:</p>
 <ol>
-<li>IP-адрес клиента → против IP и CIDR правил</li>
-<li>UID устройства → против UID правил</li>
-<li>Telegram ID (из токена) → против TG ID правил</li>
-<li>Fingerprint (из параметра <code>fp</code>) → против Fingerprint правил</li>
-<li>Страна (из GeoIP по IP) → против Country правил</li>
+<li>Сканирует <code>modules/</code> — ищет поддиректории с <code>manifest.json</code></li>
+<li>Компилирует <code>index.js</code> через <a href="https://github.com/dop251/goja"target="_blank" rel="noopener">Goja</a> (pure-Go реализация ECMAScript 5.1+)</li>
+<li>Регистрирует HTTP-handler на <code>/lite/&lt;id&gt;</code> (и всех саб-путях <code>/lite/&lt;id&gt;/...</code>)</li>
+<li>Если в манифесте указан <code>quality</code> — добавляет бейдж в выдачу (<code>「FHD」</code>, <code>「4K」</code>)</li>
 </ol>
-<p>Если хотя бы одно правило срабатывает — запрос блокируется.</p>
-<h2>GeoIP (блокировка по стране)<span class="hx:absolute hx:-mt-20" id="geoip-блокировка-по-стране"></span>
-    <a href="#geoip-%d0%b1%d0%bb%d0%be%d0%ba%d0%b8%d1%80%d0%be%d0%b2%d0%ba%d0%b0-%d0%bf%d0%be-%d1%81%d1%82%d1%80%d0%b0%d0%bd%d0%b5" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><p>Для блокировки по стране необходима база GeoLite2-Country от MaxMind:</p>
+<p>При каждом запросе <code>/lite/&lt;id&gt;?...</code>:</p>
 <ol>
-<li>Зарегистрируйтесь на <a href="https://www.maxmind.com/en/geolite2/signup"target="_blank" rel="noopener">maxmind.com</a></li>
-<li>Скачайте <code>GeoLite2-Country.mmdb</code></li>
-<li>Поместите файл в <code>database/GeoLite2-Country.mmdb</code> (относительно корня установки)</li>
-<li>Перезапустите сервер</li>
+<li>Создаётся новый инстанс Goja VM (изолирован от других запросов)</li>
+<li>Вызывается глобальная функция <code>handle(inv)</code> модуля</li>
+<li>Возвращённое значение сериализуется в JSON и отдаётся клиенту</li>
 </ol>
-<div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
-
-<div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># Пример для стандартной установки</span>
-</span></span><span class="line"><span class="cl">cp GeoLite2-Country.mmdb /opt/lampac/database/
-</span></span><span class="line"><span class="cl">systemctl restart alcopac</span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
-  <button
-    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
-    title="Скопировать код"
-  >
-    <div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
-<div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
-  </button>
-</div>
-</div>
+<h3>Приоритет маршрутов<span class="hx:absolute hx:-mt-20" id="приоритет-маршрутов"></span>
+    <a href="#%d0%bf%d1%80%d0%b8%d0%be%d1%80%d0%b8%d1%82%d0%b5%d1%82-%d0%bc%d0%b0%d1%80%d1%88%d1%80%d1%83%d1%82%d0%be%d0%b2" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><p>JS-модули <strong>перехватывают</strong> встроенные Go-балансеры с таким же ID. Если у вас установлен и <strong>включён</strong> модуль <code>starlight</code>, то <code>/lite/starlight</code> будет идти в JS, а не в Go-код. Выключение модуля в админке возвращает поведение встроенного балансера.</p>
 <div class="hx:overflow-x-auto hx:mt-6 hx:flex hx:rounded-lg hx:border hx:py-2 hx:ltr:pr-4 hx:rtl:pl-4 hx:contrast-more:border-current hx:contrast-more:dark:border-current hx:border-amber-200 hx:bg-amber-100 hx:text-amber-900 hx:dark:border-amber-200/30 hx:dark:bg-amber-900/30 hx:dark:text-amber-200">
   <div class="hx:ltr:pl-3 hx:ltr:pr-2 hx:rtl:pr-3 hx:rtl:pl-2"><svg height=1.2em class="hx:inline-block hx:align-middle" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg></div>
 
   <div class="hx:w-full hx:min-w-0 hx:leading-7">
-    <div class="hx:mt-6 hx:leading-7 hx:first:mt-0">Без файла <code>GeoLite2-Country.mmdb</code> блокировка по стране не работает — правила типа «Страна» просто игнорируются. Остальные типы блокировок работают без GeoIP.</div>
+    <div class="hx:mt-6 hx:leading-7 hx:first:mt-0">ID модуля должен совпадать с route, который вы хотите обслуживать. Например, <code>modules/starlight/</code> → <code>/lite/starlight</code>. Использовать зарезервированные имена (<code>events</code>) нельзя — модуль не загрузится.</div>
   </div>
 </div>
 
-<h2>Хранение данных<span class="hx:absolute hx:-mt-20" id="хранение-данных"></span>
-    <a href="#%d1%85%d1%80%d0%b0%d0%bd%d0%b5%d0%bd%d0%b8%d0%b5-%d0%b4%d0%b0%d0%bd%d0%bd%d1%8b%d1%85" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><p>Правила блокировок хранятся в JSON-файле <code>database/tgauth/bans.json</code>. Для быстрой проверки используются предрассчитанные индексы (пересоздаются при каждом добавлении/удалении правила).</p>
-<h2>API<span class="hx:absolute hx:-mt-20" id="api"></span>
-    <a href="#api" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><p>Для автоматизации доступен REST API (требуется авторизация администратора):</p>
-<table>
+<h2>manifest.json<span class="hx:absolute hx:-mt-20" id="manifestjson"></span>
+    <a href="#manifestjson" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><p>Минимальный манифест:</p>
+<div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+
+<div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;id&#34;</span><span class="p">:</span> <span class="s2">&#34;mysource&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;name&#34;</span><span class="p">:</span> <span class="s2">&#34;My Source&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;version&#34;</span><span class="p">:</span> <span class="s2">&#34;1.0.0&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;entry&#34;</span><span class="p">:</span> <span class="s2">&#34;index.js&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;content_types&#34;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&#34;movie&#34;</span><span class="p">,</span> <span class="s2">&#34;serial&#34;</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+  <button
+    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+    title="Скопировать код"
+  >
+    <div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
+<div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
+  </button>
+</div>
+</div>
+<h3>Полная схема<span class="hx:absolute hx:-mt-20" id="полная-схема"></span>
+    <a href="#%d0%bf%d0%be%d0%bb%d0%bd%d0%b0%d1%8f-%d1%81%d1%85%d0%b5%d0%bc%d0%b0" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><table>
   <thead>
       <tr>
-          <th>Метод</th>
-          <th>URL</th>
+          <th>Поле</th>
+          <th>Тип</th>
           <th>Описание</th>
       </tr>
   </thead>
   <tbody>
       <tr>
-          <td><code>GET</code></td>
-          <td><code>/cp_XXXXX/api/bans</code></td>
-          <td>Список всех правил и статистика</td>
+          <td><code>id</code></td>
+          <td>string, <strong>обязательно</strong></td>
+          <td>ID модуля и имя маршрута (<code>[a-z][a-z0-9_]{1,31}</code>)</td>
       </tr>
       <tr>
-          <td><code>POST</code></td>
-          <td><code>/cp_XXXXX/api/bans</code></td>
-          <td>Добавить или удалить правило</td>
+          <td><code>name</code></td>
+          <td>string</td>
+          <td>Отображаемое название (по умолчанию = <code>id</code>)</td>
+      </tr>
+      <tr>
+          <td><code>version</code></td>
+          <td>string</td>
+          <td>SemVer (по умолчанию <code>0.0.0</code>)</td>
+      </tr>
+      <tr>
+          <td><code>author</code></td>
+          <td>string</td>
+          <td>Автор/команда</td>
+      </tr>
+      <tr>
+          <td><code>description</code></td>
+          <td>string</td>
+          <td>Описание для карточки в админке</td>
+      </tr>
+      <tr>
+          <td><code>icon</code></td>
+          <td>string</td>
+          <td>Путь к файлу иконки внутри папки модуля</td>
+      </tr>
+      <tr>
+          <td><code>entry</code></td>
+          <td>string</td>
+          <td>Имя JS-файла (по умолчанию <code>index.js</code>)</td>
+      </tr>
+      <tr>
+          <td><code>content_types</code></td>
+          <td>string[]</td>
+          <td><code>movie</code>, <code>serial</code>, <code>anime</code>, <code>tv</code></td>
+      </tr>
+      <tr>
+          <td><code>quality</code></td>
+          <td>string</td>
+          <td>Бейдж в выдаче: <code>SD</code>, <code>HD</code>, <code>FHD</code>, <code>4K</code></td>
+      </tr>
+      <tr>
+          <td><code>languages</code></td>
+          <td>string[]</td>
+          <td>Коды языков контента (<code>uk</code>, <code>ru</code>, <code>en</code>, <code>ja</code>, …)</td>
+      </tr>
+      <tr>
+          <td><code>anime</code></td>
+          <td>bool</td>
+          <td>Пометить как аниме-источник (влияет на фильтрацию по <code>original_language</code>)</td>
+      </tr>
+      <tr>
+          <td><code>ukrainian</code></td>
+          <td>bool</td>
+          <td>Маркер украинского источника (для фильтра в админке)</td>
+      </tr>
+      <tr>
+          <td><code>tags</code></td>
+          <td>string[]</td>
+          <td>Произвольные теги для фильтрации</td>
+      </tr>
+      <tr>
+          <td><code>repository</code></td>
+          <td>string</td>
+          <td>Ссылка на исходники (GitHub и т.п.)</td>
+      </tr>
+      <tr>
+          <td><code>config_schema</code></td>
+          <td><code>ConfigField[]</code></td>
+          <td>Поля настроек, показываемые в админке</td>
       </tr>
   </tbody>
 </table>
-<h3>Добавление правила<span class="hx:absolute hx:-mt-20" id="добавление-правила"></span>
-    <a href="#%d0%b4%d0%be%d0%b1%d0%b0%d0%b2%d0%bb%d0%b5%d0%bd%d0%b8%d0%b5-%d0%bf%d1%80%d0%b0%d0%b2%d0%b8%d0%bb%d0%b0" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+<h3>ConfigField<span class="hx:absolute hx:-mt-20" id="configfield"></span>
+    <a href="#configfield" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
 
-<div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">curl -X POST <span class="s2">&#34;http://IP:PORT/cp_XXXXX/api/bans&#34;</span> <span class="se">\
-</span></span></span><span class="line"><span class="cl">  -H <span class="s2">&#34;Content-Type: application/json&#34;</span> <span class="se">\
-</span></span></span><span class="line"><span class="cl">  -d <span class="s1">&#39;{&#34;action&#34;:&#34;add&#34;,&#34;type&#34;:&#34;ip&#34;,&#34;value&#34;:&#34;203.0.113.50&#34;,&#34;reason&#34;:&#34;спам&#34;}&#39;</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+<div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;key&#34;</span><span class="p">:</span> <span class="s2">&#34;host&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;label&#34;</span><span class="p">:</span> <span class="s2">&#34;Хост API&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;type&#34;</span><span class="p">:</span> <span class="s2">&#34;string&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;default&#34;</span><span class="p">:</span> <span class="s2">&#34;https://example.com&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;description&#34;</span><span class="p">:</span> <span class="s2">&#34;Базовый URL источника&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;placeholder&#34;</span><span class="p">:</span> <span class="s2">&#34;https://...&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;secret&#34;</span><span class="p">:</span> <span class="kc">false</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
   <button
     class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
     title="Скопировать код"
@@ -1505,12 +1607,44 @@
   </button>
 </div>
 </div>
-<h3>Удаление правила<span class="hx:absolute hx:-mt-20" id="удаление-правила"></span>
-    <a href="#%d1%83%d0%b4%d0%b0%d0%bb%d0%b5%d0%bd%d0%b8%d0%b5-%d0%bf%d1%80%d0%b0%d0%b2%d0%b8%d0%bb%d0%b0" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+<table>
+  <thead>
+      <tr>
+          <th>Поле</th>
+          <th>Значения</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>type</code></td>
+          <td><code>string</code>, <code>int</code>, <code>number</code>, <code>bool</code>, <code>secret</code>, <code>textarea</code></td>
+      </tr>
+      <tr>
+          <td><code>secret</code></td>
+          <td><code>true</code> — поле шифруется и маскируется в UI (<code>••••••</code>)</td>
+      </tr>
+  </tbody>
+</table>
+<p>Значения, которые пользователь задал в админке, сохраняются в <code>modules/&lt;id&gt;/config.json</code> и приходят в JS как <code>inv.config</code>.</p>
+<h2>API песочницы<span class="hx:absolute hx:-mt-20" id="api-песочницы"></span>
+    <a href="#api-%d0%bf%d0%b5%d1%81%d0%be%d1%87%d0%bd%d0%b8%d1%86%d1%8b" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><p>Внутри <code>index.js</code> доступны глобальные объекты:</p>
+<h3><code>http</code> — HTTP-клиент<span class="hx:absolute hx:-mt-20" id="http--http-клиент"></span>
+    <a href="#http--http-%d0%ba%d0%bb%d0%b8%d0%b5%d0%bd%d1%82" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
 
-<div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">curl -X POST <span class="s2">&#34;http://IP:PORT/cp_XXXXX/api/bans&#34;</span> <span class="se">\
-</span></span></span><span class="line"><span class="cl">  -H <span class="s2">&#34;Content-Type: application/json&#34;</span> <span class="se">\
-</span></span></span><span class="line"><span class="cl">  -d <span class="s1">&#39;{&#34;action&#34;:&#34;remove&#34;,&#34;id&#34;:&#34;uuid-правила&#34;}&#39;</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+<div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="cl"><span class="kd">var</span> <span class="nx">res</span> <span class="o">=</span> <span class="nx">http</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;https://example.com/api&#39;</span><span class="p">,</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">headers</span><span class="o">:</span> <span class="p">{</span> <span class="s1">&#39;Accept&#39;</span><span class="o">:</span> <span class="s1">&#39;application/json&#39;</span><span class="p">,</span> <span class="s1">&#39;X-Token&#39;</span><span class="o">:</span> <span class="s1">&#39;...&#39;</span> <span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">userAgent</span><span class="o">:</span> <span class="s1">&#39;MyBot/1.0&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">referer</span><span class="o">:</span> <span class="s1">&#39;https://example.com/&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="p">});</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="p">(</span><span class="nx">res</span><span class="p">.</span><span class="nx">ok</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="kd">var</span> <span class="nx">data</span> <span class="o">=</span> <span class="nx">res</span><span class="p">.</span><span class="nx">json</span><span class="p">();</span>       <span class="c1">// распарсить как JSON (бросит исключение при ошибке)
+</span></span></span><span class="line"><span class="cl">  <span class="c1">// или res.text    — тело как строка
+</span></span></span><span class="line"><span class="cl">  <span class="c1">// res.status      — код
+</span></span></span><span class="line"><span class="cl">  <span class="c1">// res.headers     — объект с первой value каждого заголовка (lowercase)
+</span></span></span><span class="line"><span class="cl">  <span class="c1">// res.cookies     — [{name, value}, ...]
+</span></span></span><span class="line"><span class="cl">  <span class="c1">// res.duration_ms
+</span></span></span><span class="line"><span class="cl"><span class="p">}</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
   <button
     class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
     title="Скопировать код"
@@ -1520,14 +1654,521 @@
   </button>
 </div>
 </div>
+<table>
+  <thead>
+      <tr>
+          <th>Метод</th>
+          <th>Назначение</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>http.get(url, opts?)</code></td>
+          <td>GET</td>
+      </tr>
+      <tr>
+          <td><code>http.post(url, opts?)</code></td>
+          <td>POST</td>
+      </tr>
+      <tr>
+          <td><code>http.put(url, opts?)</code></td>
+          <td>PUT</td>
+      </tr>
+      <tr>
+          <td><code>http.delete(url, opts?)</code></td>
+          <td>DELETE</td>
+      </tr>
+      <tr>
+          <td><code>http.head(url, opts?)</code></td>
+          <td>HEAD</td>
+      </tr>
+      <tr>
+          <td><code>http.request(method, url, opts?)</code></td>
+          <td>произвольный метод</td>
+      </tr>
+  </tbody>
+</table>
+<p><strong><code>opts</code> могут содержать:</strong></p>
+<table>
+  <thead>
+      <tr>
+          <th>Поле</th>
+          <th>Пример</th>
+          <th>Описание</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>headers</code></td>
+          <td><code>{Accept:'...', 'X-Foo':'bar'}</code></td>
+          <td>HTTP-заголовки</td>
+      </tr>
+      <tr>
+          <td><code>body</code></td>
+          <td><code>'raw'</code> или <code>{json:true}</code></td>
+          <td>Тело (строка или JSON-объект)</td>
+      </tr>
+      <tr>
+          <td><code>form</code></td>
+          <td><code>{q:'foo', page:1}</code></td>
+          <td>Форма <code>x-www-form-urlencoded</code></td>
+      </tr>
+      <tr>
+          <td><code>userAgent</code></td>
+          <td><code>'Mozilla/5.0 ...'</code></td>
+          <td>User-Agent</td>
+      </tr>
+      <tr>
+          <td><code>referer</code></td>
+          <td><code>'https://example.com/'</code></td>
+          <td>Referer</td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Важно:</strong> <code>http.get</code> <strong>не бросает исключение</strong> при сетевой ошибке — он возвращает <code>{ok:false, error:'...', status:0}</code>. Всегда проверяйте <code>res.ok</code>.</p>
+<p><strong>Лимиты:</strong></p>
+<ul>
+<li>Таймаут запроса — 30 секунд (совокупно для всех HTTP-вызовов в одном invoke)</li>
+<li>Макс. размер ответа — 8 МБ</li>
+<li>User-Agent по умолчанию — <code>Mozilla/5.0 ... Chrome/120.0</code> (можно переопределить)</li>
+</ul>
+<h3><code>proxy</code> — проксирование стримов<span class="hx:absolute hx:-mt-20" id="proxy--проксирование-стримов"></span>
+    <a href="#proxy--%d0%bf%d1%80%d0%be%d0%ba%d1%81%d0%b8%d1%80%d0%be%d0%b2%d0%b0%d0%bd%d0%b8%d0%b5-%d1%81%d1%82%d1%80%d0%b8%d0%bc%d0%be%d0%b2" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+
+<div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="cl"><span class="kd">var</span> <span class="nx">safe</span> <span class="o">=</span> <span class="nx">proxy</span><span class="p">.</span><span class="nx">url</span><span class="p">(</span><span class="nx">streamUrl</span><span class="p">,</span> <span class="s1">&#39;mysource&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// → http://your-server/proxy/&lt;encrypted&gt;.m3u8
+</span></span></span><span class="line"><span class="cl"><span class="c1">//   сервер проксирует трафик к источнику, пряча реальный URL
+</span></span></span><span class="line"><span class="cl"><span class="c1">//   и обходя Origin/Referer-ограничения CDN
+</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+  <button
+    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+    title="Скопировать код"
+  >
+    <div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
+<div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
+  </button>
+</div>
+</div>
+<p>Когда нужно пробросить <strong>специфические заголовки</strong> в CDN (например <code>Origin</code>, кастомный <code>Authorization</code>):</p>
+<div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+
+<div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="cl"><span class="kd">var</span> <span class="nx">safe</span> <span class="o">=</span> <span class="nx">proxy</span><span class="p">.</span><span class="nx">urlWithHeaders</span><span class="p">(</span><span class="nx">streamUrl</span><span class="p">,</span> <span class="s1">&#39;mysource&#39;</span><span class="p">,</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="s1">&#39;Origin&#39;</span><span class="o">:</span> <span class="s1">&#39;https://cdn-origin.example.com&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="s1">&#39;Referer&#39;</span><span class="o">:</span> <span class="s1">&#39;https://player.example.com/&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="p">});</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+  <button
+    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+    title="Скопировать код"
+  >
+    <div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
+<div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
+  </button>
+</div>
+</div>
+<p>Прокси работает для любых HLS/MP4/DASH-стримов. Второй аргумент <code>plugin</code> используется для учёта трафика в статистике админки.</p>
+<h3><code>cache</code> — per-module кэш<span class="hx:absolute hx:-mt-20" id="cache--per-module-кэш"></span>
+    <a href="#cache--per-module-%d0%ba%d1%8d%d1%88" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+
+<div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="cl"><span class="kd">var</span> <span class="nx">cached</span> <span class="o">=</span> <span class="nx">cache</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;search:&#39;</span> <span class="o">+</span> <span class="nx">query</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="p">(</span><span class="nx">cached</span> <span class="o">===</span> <span class="kc">undefined</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">cached</span> <span class="o">=</span> <span class="nx">fetchSomething</span><span class="p">(</span><span class="nx">query</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">cache</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;search:&#39;</span> <span class="o">+</span> <span class="nx">query</span><span class="p">,</span> <span class="nx">cached</span><span class="p">,</span> <span class="mi">600</span><span class="p">);</span>  <span class="c1">// TTL 600 секунд
+</span></span></span><span class="line"><span class="cl"><span class="p">}</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+  <button
+    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+    title="Скопировать код"
+  >
+    <div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
+<div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
+  </button>
+</div>
+</div>
+<table>
+  <thead>
+      <tr>
+          <th>Метод</th>
+          <th>Описание</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>cache.get(key)</code></td>
+          <td>Получить (возвращает <code>undefined</code> при промахе)</td>
+      </tr>
+      <tr>
+          <td><code>cache.set(key, value, ttlSeconds)</code></td>
+          <td>Сохранить</td>
+      </tr>
+      <tr>
+          <td><code>cache.delete(key)</code></td>
+          <td>Удалить ключ</td>
+      </tr>
+      <tr>
+          <td><code>cache.clear()</code></td>
+          <td>Очистить весь кэш модуля</td>
+      </tr>
+  </tbody>
+</table>
+<p>Кэш живёт в RAM, <strong>не переживает перезагрузку</strong> сервера. Изолирован по модулям (ключи не конфликтуют).</p>
+<h3><code>util</code> — утилиты<span class="hx:absolute hx:-mt-20" id="util--утилиты"></span>
+    <a href="#util--%d1%83%d1%82%d0%b8%d0%bb%d0%b8%d1%82%d1%8b" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+
+<div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="cl"><span class="nx">util</span><span class="p">.</span><span class="nx">urlencode</span><span class="p">(</span><span class="nx">s</span><span class="p">)</span>     <span class="c1">// encodeURIComponent
+</span></span></span><span class="line"><span class="cl"><span class="nx">util</span><span class="p">.</span><span class="nx">urldecode</span><span class="p">(</span><span class="nx">s</span><span class="p">)</span>     <span class="c1">// decodeURIComponent
+</span></span></span><span class="line"><span class="cl"><span class="nx">util</span><span class="p">.</span><span class="nx">md5</span><span class="p">(</span><span class="nx">s</span><span class="p">)</span>           <span class="c1">// hex-строка
+</span></span></span><span class="line"><span class="cl"><span class="nx">util</span><span class="p">.</span><span class="nx">sha1</span><span class="p">(</span><span class="nx">s</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="nx">util</span><span class="p">.</span><span class="nx">sha256</span><span class="p">(</span><span class="nx">s</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="nx">util</span><span class="p">.</span><span class="nx">hexEncode</span><span class="p">(</span><span class="nx">s</span><span class="p">)</span>     <span class="c1">// string → hex
+</span></span></span><span class="line"><span class="cl"><span class="nx">util</span><span class="p">.</span><span class="nx">hexDecode</span><span class="p">(</span><span class="nx">hex</span><span class="p">)</span>   <span class="c1">// hex → string
+</span></span></span><span class="line"><span class="cl"><span class="nx">util</span><span class="p">.</span><span class="nx">trim</span><span class="p">(</span><span class="nx">s</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="nx">util</span><span class="p">.</span><span class="nx">sleep</span><span class="p">(</span><span class="nx">ms</span><span class="p">)</span>        <span class="c1">// поспать (с учётом глобального таймаута)
+</span></span></span><span class="line"><span class="cl"><span class="nx">util</span><span class="p">.</span><span class="nx">buildEpisodeIdent</span><span class="p">(</span><span class="nx">base</span><span class="p">,</span> <span class="nx">s</span><span class="p">,</span> <span class="nx">e</span><span class="p">,</span> <span class="nx">t</span><span class="p">)</span>  <span class="c1">// &#34;base_s_e_t&#34; для Lampa ident
+</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+  <button
+    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+    title="Скопировать код"
+  >
+    <div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
+<div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
+  </button>
+</div>
+</div>
+<h3><code>btoa</code> / <code>atob</code> — base64<span class="hx:absolute hx:-mt-20" id="btoa--atob--base64"></span>
+    <a href="#btoa--atob--base64" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+
+<div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="cl"><span class="nx">atob</span><span class="p">(</span><span class="s1">&#39;SGVsbG8=&#39;</span><span class="p">)</span>              <span class="c1">// → &#34;Hello&#34;
+</span></span></span><span class="line"><span class="cl"><span class="nx">btoa</span><span class="p">(</span><span class="s1">&#39;Hello&#39;</span><span class="p">)</span>                 <span class="c1">// → &#34;SGVsbG8=&#34;
+</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+  <button
+    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+    title="Скопировать код"
+  >
+    <div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
+<div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
+  </button>
+</div>
+</div>
+<p><code>atob</code> понимает как стандартный base64, так и url-safe без padding.</p>
+<h3><code>console</code> / <code>log</code> — логирование<span class="hx:absolute hx:-mt-20" id="console--log--логирование"></span>
+    <a href="#console--log--%d0%bb%d0%be%d0%b3%d0%b8%d1%80%d0%be%d0%b2%d0%b0%d0%bd%d0%b8%d0%b5" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+
+<div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="cl"><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;fetched&#39;</span><span class="p">,</span> <span class="nx">count</span><span class="p">,</span> <span class="s1">&#39;items&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="nx">console</span><span class="p">.</span><span class="nx">warn</span><span class="p">(</span><span class="s1">&#39;unexpected format:&#39;</span><span class="p">,</span> <span class="nx">data</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="s1">&#39;CDN returned&#39;</span><span class="p">,</span> <span class="nx">res</span><span class="p">.</span><span class="nx">status</span><span class="p">);</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+  <button
+    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+    title="Скопировать код"
+  >
+    <div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
+<div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
+  </button>
+</div>
+</div>
+<p>Логи видны в админке на вкладке <strong>Модули → конкретный модуль → Логи</strong>, а также в общем логе <code>lampac-go</code>. Ring-buffer на 500 записей на модуль.</p>
+<h3><code>manifest</code> — ваш manifest.json<span class="hx:absolute hx:-mt-20" id="manifest--ваш-manifestjson"></span>
+    <a href="#manifest--%d0%b2%d0%b0%d1%88-manifestjson" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+
+<div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="cl"><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">manifest</span><span class="p">.</span><span class="nx">version</span><span class="p">,</span> <span class="nx">manifest</span><span class="p">.</span><span class="nx">quality</span><span class="p">);</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+  <button
+    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+    title="Скопировать код"
+  >
+    <div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
+<div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
+  </button>
+</div>
+</div>
+<p>Глобальный readonly-объект с данными из <code>manifest.json</code>.</p>
+<h2>Контракт <code>handle(inv)</code><span class="hx:absolute hx:-mt-20" id="контракт-handleinv"></span>
+    <a href="#%d0%ba%d0%be%d0%bd%d1%82%d1%80%d0%b0%d0%ba%d1%82-handleinv" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><p>Каждый модуль должен экспортировать функцию <code>handle(inv)</code>. Это единственная точка входа.</p>
+<h3><code>inv</code> — контекст вызова<span class="hx:absolute hx:-mt-20" id="inv--контекст-вызова"></span>
+    <a href="#inv--%d0%ba%d0%be%d0%bd%d1%82%d0%b5%d0%ba%d1%81%d1%82-%d0%b2%d1%8b%d0%b7%d0%be%d0%b2%d0%b0" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+
+<div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="cl"><span class="kd">function</span> <span class="nx">handle</span><span class="p">(</span><span class="nx">inv</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="c1">// inv.query       — { title: &#39;Inception&#39;, year: &#39;2010&#39;, ... } (HTTP query params)
+</span></span></span><span class="line"><span class="cl">  <span class="c1">// inv.headers     — { accept: &#39;...&#39;, ... } (lowercase)
+</span></span></span><span class="line"><span class="cl">  <span class="c1">// inv.host        — &#39;http://lampac.example.com:888&#39; (URL самого сервера)
+</span></span></span><span class="line"><span class="cl">  <span class="c1">// inv.requestIP   — IP клиента
+</span></span></span><span class="line"><span class="cl">  <span class="c1">// inv.path        — &#39;mysource/play&#39; (без /lite/ префикса)
+</span></span></span><span class="line"><span class="cl">  <span class="c1">// inv.life        — true для автоматической выдачи (`?life=true`)
+</span></span></span><span class="line"><span class="cl">  <span class="c1">// inv.checksearch — true для проверки доступности (`?checksearch=true`)
+</span></span></span><span class="line"><span class="cl">  <span class="c1">// inv.userAgent
+</span></span></span><span class="line"><span class="cl">  <span class="c1">// inv.config      — объект с настройками из config_schema
+</span></span></span><span class="line"><span class="cl"><span class="p">}</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+  <button
+    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+    title="Скопировать код"
+  >
+    <div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
+<div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
+  </button>
+</div>
+</div>
+<h3>Ответ<span class="hx:absolute hx:-mt-20" id="ответ"></span>
+    <a href="#%d0%be%d1%82%d0%b2%d0%b5%d1%82" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><p>Возвращайте обычный JS-объект/массив — runtime сериализует его в JSON и отдаёт клиенту. Поддерживаемые форматы описаны в разделе «Формат ответа» далее.</p>
+<h2>Формат ответа Lampa<span class="hx:absolute hx:-mt-20" id="формат-ответа-lampa"></span>
+    <a href="#%d1%84%d0%be%d1%80%d0%bc%d0%b0%d1%82-%d0%be%d1%82%d0%b2%d0%b5%d1%82%d0%b0-lampa" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><p>Lampa ожидает один из нескольких «типов» ответа в зависимости от этапа:</p>
+<h3><code>checksearch</code> — есть ли что-то для этого тайтла<span class="hx:absolute hx:-mt-20" id="checksearch--есть-ли-что-то-для-этого-тайтла"></span>
+    <a href="#checksearch--%d0%b5%d1%81%d1%82%d1%8c-%d0%bb%d0%b8-%d1%87%d1%82%d0%be-%d1%82%d0%be-%d0%b4%d0%bb%d1%8f-%d1%8d%d1%82%d0%be%d0%b3%d0%be-%d1%82%d0%b0%d0%b9%d1%82%d0%bb%d0%b0" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+
+<div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="cl"><span class="k">if</span> <span class="p">(</span><span class="nx">inv</span><span class="p">.</span><span class="nx">checksearch</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="kd">var</span> <span class="nx">results</span> <span class="o">=</span> <span class="nx">searchAPI</span><span class="p">(</span><span class="nx">query</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="nx">results</span><span class="p">.</span><span class="nx">length</span> <span class="o">&gt;</span> <span class="mi">0</span>
+</span></span><span class="line"><span class="cl">    <span class="o">?</span> <span class="p">{</span> <span class="nx">rch</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span> <span class="nx">type</span><span class="o">:</span> <span class="s1">&#39;movie&#39;</span><span class="p">,</span> <span class="nx">quality</span><span class="o">:</span> <span class="s1">&#39;FHD&#39;</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="o">:</span> <span class="p">{</span> <span class="nx">rch</span><span class="o">:</span> <span class="kc">false</span> <span class="p">};</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+  <button
+    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+    title="Скопировать код"
+  >
+    <div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
+<div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
+  </button>
+</div>
+</div>
+<p>Клиент дёргает этот эндпоинт, чтобы решить — показывать источник в выдаче или нет.</p>
+<h3>Список похожих (<code>similar</code>)<span class="hx:absolute hx:-mt-20" id="список-похожих-similar"></span>
+    <a href="#%d1%81%d0%bf%d0%b8%d1%81%d0%be%d0%ba-%d0%bf%d0%be%d1%85%d0%be%d0%b6%d0%b8%d1%85-similar" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><p>Когда одному поиску совпадает несколько тайтлов — пусть пользователь выберет:</p>
+<div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+
+<div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="cl"><span class="k">return</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">type</span><span class="o">:</span> <span class="s1">&#39;similar&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">data</span><span class="o">:</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">title</span><span class="o">:</span> <span class="s1">&#39;Interstellar&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">year</span><span class="o">:</span> <span class="mi">2014</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">poster</span><span class="o">:</span> <span class="s1">&#39;https://.../poster.jpg&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">url</span><span class="o">:</span> <span class="nx">inv</span><span class="p">.</span><span class="nx">host</span> <span class="o">+</span> <span class="s1">&#39;/lite/mysource?href=&#39;</span> <span class="o">+</span> <span class="nx">util</span><span class="p">.</span><span class="nx">urlencode</span><span class="p">(</span><span class="nx">detailURL</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">},</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// ...
+</span></span></span><span class="line"><span class="cl">  <span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+  <button
+    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+    title="Скопировать код"
+  >
+    <div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
+<div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
+  </button>
+</div>
+</div>
+<h3>Фильм (<code>movie</code>)<span class="hx:absolute hx:-mt-20" id="фильм-movie"></span>
+    <a href="#%d1%84%d0%b8%d0%bb%d1%8c%d0%bc-movie" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><p>Один или несколько вариантов озвучки одного фильма:</p>
+<div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+
+<div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="cl"><span class="k">return</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">type</span><span class="o">:</span> <span class="s1">&#39;movie&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">data</span><span class="o">:</span> <span class="p">[{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">method</span><span class="o">:</span> <span class="s1">&#39;play&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">url</span><span class="o">:</span> <span class="nx">proxy</span><span class="p">.</span><span class="nx">url</span><span class="p">(</span><span class="nx">streamURL</span><span class="p">,</span> <span class="s1">&#39;mysource&#39;</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">stream</span><span class="o">:</span> <span class="nx">proxy</span><span class="p">.</span><span class="nx">url</span><span class="p">(</span><span class="nx">streamURL</span><span class="p">,</span> <span class="s1">&#39;mysource&#39;</span><span class="p">),</span>  <span class="c1">// дубль для совместимости
+</span></span></span><span class="line"><span class="cl">    <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;Украинская озвучка&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">title</span><span class="o">:</span> <span class="s1">&#39;Interstellar (2014)&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">quality</span><span class="o">:</span> <span class="p">{</span> <span class="s1">&#39;1080p&#39;</span><span class="o">:</span> <span class="nx">proxy</span><span class="p">.</span><span class="nx">url</span><span class="p">(</span><span class="nx">hd</span><span class="p">,</span> <span class="s1">&#39;mysource&#39;</span><span class="p">),</span> <span class="s1">&#39;720p&#39;</span><span class="o">:</span> <span class="nx">proxy</span><span class="p">.</span><span class="nx">url</span><span class="p">(</span><span class="nx">sd</span><span class="p">,</span> <span class="s1">&#39;mysource&#39;</span><span class="p">)</span> <span class="p">},</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">qualitys</span><span class="o">:</span> <span class="p">{</span> <span class="cm">/* то же самое — legacy */</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}]</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+  <button
+    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+    title="Скопировать код"
+  >
+    <div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
+<div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
+  </button>
+</div>
+</div>
+<h3>Список сезонов (<code>season</code>)<span class="hx:absolute hx:-mt-20" id="список-сезонов-season"></span>
+    <a href="#%d1%81%d0%bf%d0%b8%d1%81%d0%be%d0%ba-%d1%81%d0%b5%d0%b7%d0%be%d0%bd%d0%be%d0%b2-season" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+
+<div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="cl"><span class="k">return</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">type</span><span class="o">:</span> <span class="s1">&#39;season&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">data</span><span class="o">:</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">method</span><span class="o">:</span> <span class="s1">&#39;link&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">id</span><span class="o">:</span> <span class="mi">1</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">url</span><span class="o">:</span> <span class="nx">inv</span><span class="p">.</span><span class="nx">host</span> <span class="o">+</span> <span class="s1">&#39;/lite/mysource?href=...&amp;s=1&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;1 сезон&#39;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">},</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// ...
+</span></span></span><span class="line"><span class="cl">  <span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+  <button
+    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+    title="Скопировать код"
+  >
+    <div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
+<div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
+  </button>
+</div>
+</div>
+<h3>Список серий (<code>episode</code>)<span class="hx:absolute hx:-mt-20" id="список-серий-episode"></span>
+    <a href="#%d1%81%d0%bf%d0%b8%d1%81%d0%be%d0%ba-%d1%81%d0%b5%d1%80%d0%b8%d0%b9-episode" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+
+<div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="cl"><span class="k">return</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">type</span><span class="o">:</span> <span class="s1">&#39;episode&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">data</span><span class="o">:</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">method</span><span class="o">:</span> <span class="s1">&#39;play&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">url</span><span class="o">:</span> <span class="nx">proxy</span><span class="p">.</span><span class="nx">url</span><span class="p">(</span><span class="nx">streamURL</span><span class="p">,</span> <span class="s1">&#39;mysource&#39;</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">stream</span><span class="o">:</span> <span class="nx">proxy</span><span class="p">.</span><span class="nx">url</span><span class="p">(</span><span class="nx">streamURL</span><span class="p">,</span> <span class="s1">&#39;mysource&#39;</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;Эпизод 1&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">title</span><span class="o">:</span> <span class="s1">&#39;Foundation S01E01&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">s</span><span class="o">:</span> <span class="mi">1</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">e</span><span class="o">:</span> <span class="mi">1</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="p">],</span>
+</span></span><span class="line"><span class="cl">  <span class="c1">// опционально — переключатель озвучек/субтитров:
+</span></span></span><span class="line"><span class="cl">  <span class="nx">voice</span><span class="o">:</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span> <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;Дубляж&#39;</span><span class="p">,</span> <span class="nx">active</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>  <span class="nx">url</span><span class="o">:</span> <span class="nx">inv</span><span class="p">.</span><span class="nx">host</span> <span class="o">+</span> <span class="s1">&#39;/lite/mysource?...&amp;t=dub&#39;</span> <span class="p">},</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span> <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;Субтитры&#39;</span><span class="p">,</span> <span class="nx">active</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span> <span class="nx">url</span><span class="o">:</span> <span class="nx">inv</span><span class="p">.</span><span class="nx">host</span> <span class="o">+</span> <span class="s1">&#39;/lite/mysource?...&amp;t=sub&#39;</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+  <button
+    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+    title="Скопировать код"
+  >
+    <div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
+<div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
+  </button>
+</div>
+</div>
+<h3>Поля записей<span class="hx:absolute hx:-mt-20" id="поля-записей"></span>
+    <a href="#%d0%bf%d0%be%d0%bb%d1%8f-%d0%b7%d0%b0%d0%bf%d0%b8%d1%81%d0%b5%d0%b9" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><table>
+  <thead>
+      <tr>
+          <th>Поле</th>
+          <th>Назначение</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>method</code></td>
+          <td><code>play</code> — прямой стрим; <code>link</code> — переход на другой URL; <code>call</code> — запросить JSON по URL и продолжить</td>
+      </tr>
+      <tr>
+          <td><code>url</code></td>
+          <td>Поток (HLS/MP4/DASH) или URL для <code>link</code>/<code>call</code></td>
+      </tr>
+      <tr>
+          <td><code>stream</code></td>
+          <td>Дубль <code>url</code> для старых клиентов</td>
+      </tr>
+      <tr>
+          <td><code>name</code></td>
+          <td>Короткое имя (отображается в списке)</td>
+      </tr>
+      <tr>
+          <td><code>title</code></td>
+          <td>Полное название (в плеере)</td>
+      </tr>
+      <tr>
+          <td><code>s</code>, <code>e</code></td>
+          <td>Номер сезона / эпизода</td>
+      </tr>
+      <tr>
+          <td><code>quality</code> / <code>qualitys</code></td>
+          <td>Мапа <code>{quality: url}</code> для переключения качеств</td>
+      </tr>
+      <tr>
+          <td><code>poster</code></td>
+          <td>URL постера</td>
+      </tr>
+  </tbody>
+</table>
+<h2>Полный пример модуля<span class="hx:absolute hx:-mt-20" id="полный-пример-модуля"></span>
+    <a href="#%d0%bf%d0%be%d0%bb%d0%bd%d1%8b%d0%b9-%d0%bf%d1%80%d0%b8%d0%bc%d0%b5%d1%80-%d0%bc%d0%be%d0%b4%d1%83%d0%bb%d1%8f" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><p>Минимальный, но функциональный модуль для API, возвращающего JSON:</p>
+<p><strong><code>modules/hello/manifest.json</code></strong>:</p>
+<div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+
+<div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;id&#34;</span><span class="p">:</span> <span class="s2">&#34;hello&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;name&#34;</span><span class="p">:</span> <span class="s2">&#34;Hello Source&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;version&#34;</span><span class="p">:</span> <span class="s2">&#34;1.0.0&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;description&#34;</span><span class="p">:</span> <span class="s2">&#34;Demo JS module&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;content_types&#34;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&#34;movie&#34;</span><span class="p">],</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;quality&#34;</span><span class="p">:</span> <span class="s2">&#34;FHD&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;config_schema&#34;</span><span class="p">:</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span><span class="nt">&#34;key&#34;</span><span class="p">:</span> <span class="s2">&#34;host&#34;</span><span class="p">,</span> <span class="nt">&#34;label&#34;</span><span class="p">:</span> <span class="s2">&#34;API host&#34;</span><span class="p">,</span> <span class="nt">&#34;default&#34;</span><span class="p">:</span> <span class="s2">&#34;https://api.example.com&#34;</span><span class="p">},</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span><span class="nt">&#34;key&#34;</span><span class="p">:</span> <span class="s2">&#34;token&#34;</span><span class="p">,</span> <span class="nt">&#34;label&#34;</span><span class="p">:</span> <span class="s2">&#34;Token&#34;</span><span class="p">,</span> <span class="nt">&#34;secret&#34;</span><span class="p">:</span> <span class="kc">true</span><span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+  <button
+    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+    title="Скопировать код"
+  >
+    <div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
+<div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
+  </button>
+</div>
+</div>
+<p><strong><code>modules/hello/index.js</code></strong>:</p>
+<div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+
+<div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="cl"><span class="kd">function</span> <span class="nx">cfg</span><span class="p">(</span><span class="nx">inv</span><span class="p">,</span> <span class="nx">k</span><span class="p">){</span> <span class="k">return</span> <span class="p">(</span><span class="nx">inv</span><span class="p">.</span><span class="nx">config</span> <span class="o">&amp;&amp;</span> <span class="nx">inv</span><span class="p">.</span><span class="nx">config</span><span class="p">[</span><span class="nx">k</span><span class="p">])</span> <span class="o">||</span> <span class="s1">&#39;&#39;</span><span class="p">;</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">function</span> <span class="nx">search</span><span class="p">(</span><span class="nx">inv</span><span class="p">,</span> <span class="nx">title</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">  <span class="kd">var</span> <span class="nx">url</span> <span class="o">=</span> <span class="nx">cfg</span><span class="p">(</span><span class="nx">inv</span><span class="p">,</span> <span class="s1">&#39;host&#39;</span><span class="p">).</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/\/+$/</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;/search?q=&#39;</span> <span class="o">+</span> <span class="nx">util</span><span class="p">.</span><span class="nx">urlencode</span><span class="p">(</span><span class="nx">title</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="kd">var</span> <span class="nx">res</span> <span class="o">=</span> <span class="nx">http</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="nx">url</span><span class="p">,</span> <span class="p">{</span> <span class="nx">headers</span><span class="o">:</span> <span class="p">{</span> <span class="s1">&#39;X-Token&#39;</span><span class="o">:</span> <span class="nx">cfg</span><span class="p">(</span><span class="nx">inv</span><span class="p">,</span><span class="s1">&#39;token&#39;</span><span class="p">)</span> <span class="p">}});</span>
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">res</span><span class="p">.</span><span class="nx">ok</span><span class="p">)</span> <span class="p">{</span> <span class="nx">console</span><span class="p">.</span><span class="nx">warn</span><span class="p">(</span><span class="s1">&#39;hello: API&#39;</span><span class="p">,</span> <span class="nx">res</span><span class="p">.</span><span class="nx">status</span><span class="p">);</span> <span class="k">return</span> <span class="p">[];</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="nx">res</span><span class="p">.</span><span class="nx">json</span><span class="p">().</span><span class="nx">results</span> <span class="o">||</span> <span class="p">[];</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">function</span> <span class="nx">handle</span><span class="p">(</span><span class="nx">inv</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="nx">inv</span><span class="p">.</span><span class="nx">checksearch</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">var</span> <span class="nx">r</span> <span class="o">=</span> <span class="nx">search</span><span class="p">(</span><span class="nx">inv</span><span class="p">,</span> <span class="nx">inv</span><span class="p">.</span><span class="nx">query</span><span class="p">.</span><span class="nx">title</span> <span class="o">||</span> <span class="nx">inv</span><span class="p">.</span><span class="nx">query</span><span class="p">.</span><span class="nx">original_title</span> <span class="o">||</span> <span class="s1">&#39;&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="nx">r</span><span class="p">.</span><span class="nx">length</span> <span class="o">?</span> <span class="p">{</span> <span class="nx">rch</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span> <span class="nx">type</span><span class="o">:</span> <span class="s1">&#39;movie&#39;</span><span class="p">,</span> <span class="nx">quality</span><span class="o">:</span> <span class="nx">manifest</span><span class="p">.</span><span class="nx">quality</span> <span class="p">}</span> <span class="o">:</span> <span class="p">{</span> <span class="nx">rch</span><span class="o">:</span> <span class="kc">false</span> <span class="p">};</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="kd">var</span> <span class="nx">title</span> <span class="o">=</span> <span class="p">(</span><span class="nx">inv</span><span class="p">.</span><span class="nx">query</span><span class="p">.</span><span class="nx">title</span> <span class="o">||</span> <span class="s1">&#39;&#39;</span><span class="p">).</span><span class="nx">trim</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">title</span><span class="p">)</span> <span class="k">return</span> <span class="p">{</span> <span class="nx">type</span><span class="o">:</span> <span class="s1">&#39;movie&#39;</span><span class="p">,</span> <span class="nx">data</span><span class="o">:</span> <span class="p">[]</span> <span class="p">};</span>
+</span></span><span class="line"><span class="cl">  <span class="kd">var</span> <span class="nx">results</span> <span class="o">=</span> <span class="nx">search</span><span class="p">(</span><span class="nx">inv</span><span class="p">,</span> <span class="nx">title</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">type</span><span class="o">:</span> <span class="s1">&#39;movie&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">data</span><span class="o">:</span> <span class="nx">results</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">r</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">      <span class="k">return</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">method</span><span class="o">:</span> <span class="s1">&#39;play&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">url</span><span class="o">:</span> <span class="nx">proxy</span><span class="p">.</span><span class="nx">url</span><span class="p">(</span><span class="nx">r</span><span class="p">.</span><span class="nx">stream_url</span><span class="p">,</span> <span class="s1">&#39;hello&#39;</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">stream</span><span class="o">:</span> <span class="nx">proxy</span><span class="p">.</span><span class="nx">url</span><span class="p">(</span><span class="nx">r</span><span class="p">.</span><span class="nx">stream_url</span><span class="p">,</span> <span class="s1">&#39;hello&#39;</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">name</span><span class="o">:</span> <span class="nx">r</span><span class="p">.</span><span class="nx">title</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">title</span><span class="o">:</span> <span class="nx">r</span><span class="p">.</span><span class="nx">title</span> <span class="o">+</span> <span class="s1">&#39; (&#39;</span> <span class="o">+</span> <span class="nx">r</span><span class="p">.</span><span class="nx">year</span> <span class="o">+</span> <span class="s1">&#39;)&#39;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">};</span>
+</span></span><span class="line"><span class="cl">    <span class="p">})</span>
+</span></span><span class="line"><span class="cl">  <span class="p">};</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+  <button
+    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+    title="Скопировать код"
+  >
+    <div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
+<div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
+  </button>
+</div>
+</div>
+<p>Положите обе файла в <code>modules/hello/</code>, зайдите в админку → <strong>Модули</strong> → увидите карточку. Включите, откройте <code>/lite/hello?title=Test&amp;checksearch=true</code> — должно вернуть <code>{rch:true,...}</code> если API отвечает.</p>
+<h2>Дальше<span class="hx:absolute hx:-mt-20" id="дальше"></span>
+    <a href="#%d0%b4%d0%b0%d0%bb%d1%8c%d1%88%d0%b5" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><div class="hextra-cards hx:mt-4 hx:gap-4 hx:grid not-prose" style="--hextra-cards-grid-cols: 3;">
+  <a
+    class="hextra-card hx:group hx:flex hx:flex-col hx:justify-start hx:overflow-hidden hx:rounded-lg hx:border hx:border-gray-200 hx:text-current hx:no-underline hx:dark:shadow-none hx:hover:shadow-gray-100 hx:dark:hover:shadow-none hx:shadow-gray-100 hx:active:shadow-sm hx:active:shadow-gray-200 hx:transition-all hx:duration-200 hx:hover:border-gray-300 hx:bg-transparent hx:shadow-xs hx:dark:border-neutral-800 hx:hover:bg-slate-50 hx:hover:shadow-md hx:dark:hover:border-neutral-700 hx:dark:hover:bg-neutral-900"href="../module-guide/index.html"
+      ><span class="hextra-card-icon hx:flex hx:font-semibold hx:items-start hx:gap-2 hx:pt-4 hx:px-4 hx:text-gray-700 hx:hover:text-gray-900 hx:dark:text-neutral-200 hx:dark:hover:text-neutral-50"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path d="M12 14l9-5-9-5-9 5 9 5z"/><path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222"/></svg>Пошаговое руководство</span><div class="hextra-card-subtitle hx:line-clamp-3 hx:text-sm hx:font-normal hx:text-gray-500 hx:dark:text-gray-400 hx:px-4 hx:mb-4 hx:mt-2">От пустой папки до рабочего модуля: поиск → эпизоды → плеер</div></a>
+  <a
+    class="hextra-card hx:group hx:flex hx:flex-col hx:justify-start hx:overflow-hidden hx:rounded-lg hx:border hx:border-gray-200 hx:text-current hx:no-underline hx:dark:shadow-none hx:hover:shadow-gray-100 hx:dark:hover:shadow-none hx:shadow-gray-100 hx:active:shadow-sm hx:active:shadow-gray-200 hx:transition-all hx:duration-200 hx:hover:border-gray-300 hx:bg-transparent hx:shadow-xs hx:dark:border-neutral-800 hx:hover:bg-slate-50 hx:hover:shadow-md hx:dark:hover:border-neutral-700 hx:dark:hover:bg-neutral-900"href="../../admin/modules/index.html"
+      ><span class="hextra-card-icon hx:flex hx:font-semibold hx:items-start hx:gap-2 hx:pt-4 hx:px-4 hx:text-gray-700 hx:hover:text-gray-900 hx:dark:text-neutral-200 hx:dark:hover:text-neutral-50"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>Вкладка «Модули» в админке</span><div class="hextra-card-subtitle hx:line-clamp-3 hx:text-sm hx:font-normal hx:text-gray-500 hx:dark:text-gray-400 hx:px-4 hx:mb-4 hx:mt-2">Установка, редактор, логи, настройки</div></a>
+  <a
+    class="hextra-card hx:group hx:flex hx:flex-col hx:justify-start hx:overflow-hidden hx:rounded-lg hx:border hx:border-gray-200 hx:text-current hx:no-underline hx:dark:shadow-none hx:hover:shadow-gray-100 hx:dark:hover:shadow-none hx:shadow-gray-100 hx:active:shadow-sm hx:active:shadow-gray-200 hx:transition-all hx:duration-200 hx:hover:border-gray-300 hx:bg-transparent hx:shadow-xs hx:dark:border-neutral-800 hx:hover:bg-slate-50 hx:hover:shadow-md hx:dark:hover:border-neutral-700 hx:dark:hover:bg-neutral-900"href="../ukrainian-sources/index.html"
+      ><span class="hextra-card-icon hx:flex hx:font-semibold hx:items-start hx:gap-2 hx:pt-4 hx:px-4 hx:text-gray-700 hx:hover:text-gray-900 hx:dark:text-neutral-200 hx:dark:hover:text-neutral-50"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M3 21v-4m0 0V5a2 2 0 012-2h6.5l1 1H21l-3 6 3 6h-8.5l-1-1H5a2 2 0 00-2 2zm9-13.5V9"/></svg>Украинские источники</span><div class="hextra-card-subtitle hx:line-clamp-3 hx:text-sm hx:font-normal hx:text-gray-500 hx:dark:text-gray-400 hx:px-4 hx:mb-4 hx:mt-2">11 модулей, портированных из Go-балансеров</div></a>
+</div>
+
 
         </div>
         <div class="hx:mt-16"></div>
         <div class="hx:mb-8 hx:flex hx:items-center hx:border-t hx:pt-8 hx:border-gray-200 hx:dark:border-neutral-800 hx:contrast-more:border-neutral-400 hx:dark:contrast-more:border-neutral-400 hx:print:hidden"><a
-        href="../config/index.html"
-        title="Конфиг"
+        href="../list/index.html"
+        title="Полный список модулей"
         class="hx:flex hx:max-w-[50%] hx:items-center hx:gap-1 hx:py-4 hx:text-base hx:font-medium hx:text-gray-600 hx:transition-colors [word-break:break-word] hx:hover:text-primary-600 hx:dark:text-gray-300 hx:md:text-lg hx:ltr:pr-4 hx:rtl:pl-4"
-      ><svg class="hx:inline hx:h-5 hx:shrink-0 hx:ltr:rotate-180" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>Конфиг</a></div>
+      ><svg class="hx:inline hx:h-5 hx:shrink-0 hx:ltr:rotate-180" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>Полный список модулей</a><a
+        href="../module-guide/index.html"
+        title="Гайд — свой модуль за 30 минут"
+        class="hx:flex hx:max-w-[50%] hx:items-center hx:gap-1 hx:py-4 hx:text-base hx:font-medium hx:text-gray-600 hx:transition-colors [word-break:break-word] hx:hover:text-primary-600 hx:dark:text-gray-300 hx:md:text-lg hx:ltr:ml-auto hx:ltr:pl-4 hx:ltr:text-right hx:rtl:mr-auto hx:rtl:pr-4 hx:rtl:text-left"
+      >Гайд — свой модуль за 30 минут<svg class="hx:inline hx:h-5 hx:shrink-0 hx:rtl:-rotate-180" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg></a></div>
         
       </main>
     </article>
@@ -1544,5 +2185,5 @@
         <script defer src="../../../en.search.min.f193b44840cc2e87b97c0c80d6975880cc7f1211ddb89e5ac51ce34372225eab.js" integrity="sha256-8ZO0SEDMLoe5fAyA1pdYgMx/EhHduJ5axRzjQ3IiXqs="></script>
   </body>
 
-<!-- Mirrored from wiki.alcopa.cc/docs/admin/bans/ by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 21 Apr 2026 11:05:19 GMT -->
+<!-- Mirrored from wiki.alcopa.cc/docs/balancers/modules/ by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 21 Apr 2026 11:05:31 GMT -->
 </html>

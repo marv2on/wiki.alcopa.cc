@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
-<!-- Mirrored from wiki.alcopa.cc/docs/plugins/alice/ by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 21 Apr 2026 11:05:50 GMT -->
+<!-- Mirrored from wiki.alcopa.cc/docs/balancers/ukrainian-sources/ by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 21 Apr 2026 11:05:31 GMT -->
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="robots" content="index, follow" />
@@ -10,34 +10,125 @@
 <link rel="icon" href="../../../favicon-32x32.png" type="image/png" sizes="32x32" />
 <link rel="apple-touch-icon" href="../../../apple-touch-icon.png" sizes="180x180" />
 <link fetchpriority="low" href="../../../site.webmanifest" rel="manifest" />
-<title>Яндекс Алиса – Al(co)pac Wiki</title>
-  <meta name="description" content=" 0.3 NEW — Голосовое управление Lampa через Яндекс Алису. Интеграция с Яндекс Алисой позволяет искать и запускать фильмы/сериалы голосом через Яндекс Станцию или приложение Алиса.
-Настройка 1. Создание навыка Перейдите в Яндекс Диалоги Создайте новый навык Укажите Webhook URL: https://ваш-сервер/api/alice/webhook 2. Конфигурация сервера [alice] enable = true # skill_id = &#34;&#34; # опционально: валидация входящих запросов по skill_id Использование Привязка аккаунта В Telegram-боте нажмите 🔊 Алиса или отправьте /alice Бот покажет 4-значный PIN-код Скажите Алисе: «Запусти навык [название]» Назовите PIN-код голосом Аккаунт привязан — Алиса запомнит ваше устройство Голосовые команды После привязки скажите Алисе:" /><link rel="canonical" href="index.html" itemprop="url" />
+<title>Украинские источники – Al(co)pac Wiki</title>
+  <meta name="description" content="В lampac-go идут 11 готовых JS-модулей украинских источников, портированные из внутренних Go-балансеров. Все находятся в modules/ и включаются через админку.
+JS-модули перехватывают соответствующие Go-балансеры с тем же ID (starlight → /lite/starlight идёт в JS). Выключите модуль в админке — и роут вернётся к встроенному Go-коду, если он есть. Матрица источников Модуль Тип Источник Особенности uafilmme Фильмы &#43; сериалы uafilm.me (REST API) Пагинация сезонов/эпизодов, matching по IMDB/TMDB starlight Сериалы / TV teleportal.ua (tp-back.starlight.digital) Live-search &#43; hash-based player-api bamboo Аниме / дорама bambooua.com HTML-scrape, sub/dub треки unimay Аниме api.unimay.media/v1 Чистый REST, HLS master eneyida Фильмы &#43; сериалы eneyida.tv DLE-поиск, iframe → Playerjs animeon Аниме animeon.club REST, fundubs (озвучки), translations mikai Аниме api.mikai.me/v1 Множественные озвучки (teams) &#43; субтитры klonfun Фильмы &#43; сериалы klon.fun HTML &#43; Playerjs tree kinoukr Фильмы &#43; сериалы kinoukr.tv xfsearch (Cloudflare-bypass), ashdi/tortuga iframe ashdi Озвучка ashdi.vip Wormhole API (imdb_id, без токена) uaflix Фильмы &#43; сериалы uafix.net Упрощённая реализация, без DLE-auth и uTLS Установка по умолчанию Модули поставляются в папке modules/ вместе с сервером. После первого запуска появятся в админке → Модули." /><link rel="canonical" href="index.html" itemprop="url" />
 
-<meta property="og:title" content="Яндекс Алиса">
+<meta property="og:title" content="Украинские источники">
 <meta
   property="og:description"
   content="
     
+      В lampac-go идут 11 готовых JS-модулей украинских источников, портированные из внутренних Go-балансеров. Все находятся в modules/ и включаются через админку.
+
+  
+
+  
+    JS-модули перехватывают соответствующие Go-балансеры с тем же ID (starlight → /lite/starlight идёт в JS). Выключите модуль в админке — и роут вернётся к встроенному Go-коду, если он есть.
+  
+
+
+Матрица источников
+    
+  
       
+          Модуль
+          Тип
+          Источник
+          Особенности
+      
+  
+  
+      
+          uafilmme
+          Фильмы &#43; сериалы
+          uafilm.me (REST API)
+          Пагинация сезонов/эпизодов, matching по IMDB/TMDB
+      
+      
+          starlight
+          Сериалы / TV
+          teleportal.ua (tp-back.starlight.digital)
+          Live-search &#43; hash-based player-api
+      
+      
+          bamboo
+          Аниме / дорама
+          bambooua.com
+          HTML-scrape, sub/dub треки
+      
+      
+          unimay
+          Аниме
+          api.unimay.media/v1
+          Чистый REST, HLS master
+      
+      
+          eneyida
+          Фильмы &#43; сериалы
+          eneyida.tv
+          DLE-поиск, iframe → Playerjs
+      
+      
+          animeon
+          Аниме
+          animeon.club
+          REST, fundubs (озвучки), translations
+      
+      
+          mikai
+          Аниме
+          api.mikai.me/v1
+          Множественные озвучки (teams) &#43; субтитры
+      
+      
+          klonfun
+          Фильмы &#43; сериалы
+          klon.fun
+          HTML &#43; Playerjs tree
+      
+      
+          kinoukr
+          Фильмы &#43; сериалы
+          kinoukr.tv
+          xfsearch (Cloudflare-bypass), ashdi/tortuga iframe
+      
+      
+          ashdi
+          Озвучка
+          ashdi.vip
+          Wormhole API (imdb_id, без токена)
+      
+      
+          uaflix
+          Фильмы &#43; сериалы
+          uafix.net
+          Упрощённая реализация, без DLE-auth и uTLS
+      
+  
+
+Установка по умолчанию
+    Модули поставляются в папке modules/ вместе с сервером. После первого запуска появятся в админке → Модули.
     
   ">
 <meta
   property="og:type"
   content="
-    website
+    article
   ">
-<meta property="og:url" content="index.html">
+<meta property="og:url" content="index.html"><meta property="article:section" content="docs">
 
 
-  <meta itemprop="name" content="Яндекс Алиса">
-  <meta itemprop="description" content="0.3 NEW — Голосовое управление Lampa через Яндекс Алису. Интеграция с Яндекс Алисой позволяет искать и запускать фильмы/сериалы голосом через Яндекс Станцию или приложение Алиса.
-Настройка 1. Создание навыка Перейдите в Яндекс Диалоги Создайте новый навык Укажите Webhook URL: https://ваш-сервер/api/alice/webhook 2. Конфигурация сервера [alice] enable = true # skill_id = &#34;&#34; # опционально: валидация входящих запросов по skill_id Использование Привязка аккаунта В Telegram-боте нажмите 🔊 Алиса или отправьте /alice Бот покажет 4-значный PIN-код Скажите Алисе: «Запусти навык [название]» Назовите PIN-код голосом Аккаунт привязан — Алиса запомнит ваше устройство Голосовые команды После привязки скажите Алисе:">
-  <meta itemprop="wordCount" content="145">
+
+
+  <meta itemprop="name" content="Украинские источники">
+  <meta itemprop="description" content="В lampac-go идут 11 готовых JS-модулей украинских источников, портированные из внутренних Go-балансеров. Все находятся в modules/ и включаются через админку.
+JS-модули перехватывают соответствующие Go-балансеры с тем же ID (starlight → /lite/starlight идёт в JS). Выключите модуль в админке — и роут вернётся к встроенному Go-коду, если он есть. Матрица источников Модуль Тип Источник Особенности uafilmme Фильмы &#43; сериалы uafilm.me (REST API) Пагинация сезонов/эпизодов, matching по IMDB/TMDB starlight Сериалы / TV teleportal.ua (tp-back.starlight.digital) Live-search &#43; hash-based player-api bamboo Аниме / дорама bambooua.com HTML-scrape, sub/dub треки unimay Аниме api.unimay.media/v1 Чистый REST, HLS master eneyida Фильмы &#43; сериалы eneyida.tv DLE-поиск, iframe → Playerjs animeon Аниме animeon.club REST, fundubs (озвучки), translations mikai Аниме api.mikai.me/v1 Множественные озвучки (teams) &#43; субтитры klonfun Фильмы &#43; сериалы klon.fun HTML &#43; Playerjs tree kinoukr Фильмы &#43; сериалы kinoukr.tv xfsearch (Cloudflare-bypass), ashdi/tortuga iframe ashdi Озвучка ashdi.vip Wormhole API (imdb_id, без токена) uaflix Фильмы &#43; сериалы uafix.net Упрощённая реализация, без DLE-auth и uTLS Установка по умолчанию Модули поставляются в папке modules/ вместе с сервером. После первого запуска появятся в админке → Модули.">
+  <meta itemprop="wordCount" content="790">
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="Яндекс Алиса">
-  <meta name="twitter:description" content="0.3 NEW — Голосовое управление Lampa через Яндекс Алису. Интеграция с Яндекс Алисой позволяет искать и запускать фильмы/сериалы голосом через Яндекс Станцию или приложение Алиса.
-Настройка 1. Создание навыка Перейдите в Яндекс Диалоги Создайте новый навык Укажите Webhook URL: https://ваш-сервер/api/alice/webhook 2. Конфигурация сервера [alice] enable = true # skill_id = &#34;&#34; # опционально: валидация входящих запросов по skill_id Использование Привязка аккаунта В Telegram-боте нажмите 🔊 Алиса или отправьте /alice Бот покажет 4-значный PIN-код Скажите Алисе: «Запусти навык [название]» Назовите PIN-код голосом Аккаунт привязан — Алиса запомнит ваше устройство Голосовые команды После привязки скажите Алисе:">
+  <meta name="twitter:title" content="Украинские источники">
+  <meta name="twitter:description" content="В lampac-go идут 11 готовых JS-модулей украинских источников, портированные из внутренних Go-балансеров. Все находятся в modules/ и включаются через админку.
+JS-модули перехватывают соответствующие Go-балансеры с тем же ID (starlight → /lite/starlight идёт в JS). Выключите модуль в админке — и роут вернётся к встроенному Go-коду, если он есть. Матрица источников Модуль Тип Источник Особенности uafilmme Фильмы &#43; сериалы uafilm.me (REST API) Пагинация сезонов/эпизодов, matching по IMDB/TMDB starlight Сериалы / TV teleportal.ua (tp-back.starlight.digital) Live-search &#43; hash-based player-api bamboo Аниме / дорама bambooua.com HTML-scrape, sub/dub треки unimay Аниме api.unimay.media/v1 Чистый REST, HLS master eneyida Фильмы &#43; сериалы eneyida.tv DLE-поиск, iframe → Playerjs animeon Аниме animeon.club REST, fundubs (озвучки), translations mikai Аниме api.mikai.me/v1 Множественные озвучки (teams) &#43; субтитры klonfun Фильмы &#43; сериалы klon.fun HTML &#43; Playerjs tree kinoukr Фильмы &#43; сериалы kinoukr.tv xfsearch (Cloudflare-bypass), ashdi/tortuga iframe ashdi Озвучка ashdi.vip Wormhole API (imdb_id, без токена) uaflix Фильмы &#43; сериалы uafix.net Упрощённая реализация, без DLE-auth и uTLS Установка по умолчанию Модули поставляются в папке modules/ вместе с сервером. После первого запуска появятся в админке → Модули.">
 
     <link rel="preload" href="../../../css/compiled/main.min.860421afd86baea436520550e3f5b912c5d0ca8bfec32b073ac5871b3ae0ca74.css" as="style" integrity="sha256-hgQhr9hrrqQ2UgVQ4/W5EsXQyov&#43;wysHOsWHGzrgynQ=" />
     <link href="../../../css/compiled/main.min.860421afd86baea436520550e3f5b912c5d0ca8bfec32b073ac5871b3ae0ca74.css" rel="stylesheet" integrity="sha256-hgQhr9hrrqQ2UgVQ4/W5EsXQyov&#43;wysHOsWHGzrgynQ=" />
@@ -354,10 +445,10 @@
               
             </li></ul>
       </div>
-            </li><li class="hx:flex hx:flex-col "><a
+            </li><li class="hx:flex hx:flex-col open"><a
     class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
-    href="../../balancers/index.html"
+    href="../index.html"
     
   >Балансеры
         <span class="hextra-sidebar-collapsible-button"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="hx:h-[18px] hx:min-w-[18px] hx:rounded-xs hx:p-0.5 hx:hover:bg-gray-800/5 hx:dark:hover:bg-gray-100/5"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" class="hx:origin-center hx:transition-transform hx:rtl:-rotate-180"></path></svg></span>
@@ -366,7 +457,7 @@
         <ul class='hx:relative hx:flex hx:flex-col hx:gap-1 hx:before:absolute hx:before:inset-y-1 hx:before:w-px hx:before:bg-gray-200 hx:before:content-[""] hx:ltr:ml-3 hx:ltr:pl-3 hx:ltr:before:left-0 hx:rtl:mr-3 hx:rtl:pr-3 hx:rtl:before:right-0 hx:dark:before:bg-neutral-800'><li class="hx:flex hx:flex-col "><a
     class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
-    href="../../balancers/list/index.html"
+    href="../list/index.html"
     
   >Полный список модулей
     </a>
@@ -374,7 +465,7 @@
             </li><li class="hx:flex hx:flex-col "><a
     class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
-    href="../../balancers/modules/index.html"
+    href="../modules/index.html"
     
   >JS-модули источников
     </a>
@@ -382,7 +473,7 @@
             </li><li class="hx:flex hx:flex-col "><a
     class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
-    href="../../balancers/module-guide/index.html"
+    href="../module-guide/index.html"
     
   >Гайд — свой модуль за 30 минут
     </a>
@@ -390,18 +481,51 @@
             </li><li class="hx:flex hx:flex-col "><a
     class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
-    href="../../balancers/custom/index.html"
+    href="../custom/index.html"
     
   >Кастомные балансеры (Go)
     </a>
               
-            </li><li class="hx:flex hx:flex-col "><a
+            </li><li class="hx:flex hx:flex-col open"><a
     class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
-      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
-    href="../../balancers/ukrainian-sources/index.html"
+      hextra-sidebar-active-item hx:bg-primary-100 hx:font-semibold hx:text-primary-800 hx:contrast-more:border hx:contrast-more:border-primary-500 hx:dark:bg-primary-400/10 hx:dark:text-primary-600 hx:contrast-more:dark:border-primary-500"
+    href="index.html"
     
   >Украинские источники
     </a>
+  
+    <ul class='hx:flex hx:flex-col hx:gap-1 hx:relative hx:before:absolute hx:before:inset-y-1 hx:before:w-px hx:before:bg-gray-200 hx:before:content-[""] hx:dark:before:bg-neutral-800 hx:ltr:pl-3 hx:ltr:before:left-0 hx:rtl:pr-3 hx:rtl:before:right-0 hx:ltr:ml-3 hx:rtl:mr-3'><li>
+              <a
+                href="#%d0%bc%d0%b0%d1%82%d1%80%d0%b8%d1%86%d0%b0-%d0%b8%d1%81%d1%82%d0%be%d1%87%d0%bd%d0%b8%d0%ba%d0%be%d0%b2"
+                class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50"
+              >Матрица источников</a>
+            </li>
+          <li>
+              <a
+                href="#%d1%83%d1%81%d1%82%d0%b0%d0%bd%d0%be%d0%b2%d0%ba%d0%b0-%d0%bf%d0%be-%d1%83%d0%bc%d0%be%d0%bb%d1%87%d0%b0%d0%bd%d0%b8%d1%8e"
+                class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50"
+              >Установка по умолчанию</a>
+            </li>
+          <li>
+              <a
+                href="#%d0%b4%d0%b5%d1%82%d0%b0%d0%bb%d0%b8-%d0%bc%d0%be%d0%b4%d1%83%d0%bb%d0%b5%d0%b9"
+                class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50"
+              >Детали модулей</a>
+            </li>
+          <li>
+              <a
+                href="#%d0%ba%d0%b0%d0%ba-%d0%bf%d0%be%d0%bd%d1%8f%d1%82%d1%8c-%d1%87%d1%82%d0%be-%d1%81%d0%bb%d0%be%d0%bc%d0%b0%d0%bd%d0%be"
+                class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50"
+              >Как понять что сломано</a>
+            </li>
+          <li>
+              <a
+                href="#%d0%b2%d0%ba%d0%bb%d0%b0%d0%b4-%d0%b2-%d0%bc%d0%be%d0%b4%d1%83%d0%bb%d0%b8"
+                class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50"
+              >Вклад в модули</a>
+            </li>
+          </ul>
+  
               
             </li></ul>
       </div>
@@ -467,10 +591,10 @@
               
             </li></ul>
       </div>
-            </li><li class="hx:flex hx:flex-col open"><a
+            </li><li class="hx:flex hx:flex-col "><a
     class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
-    href="../index.html"
+    href="../../plugins/index.html"
     
   >Плагины
         <span class="hextra-sidebar-collapsible-button"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="hx:h-[18px] hx:min-w-[18px] hx:rounded-xs hx:p-0.5 hx:hover:bg-gray-800/5 hx:dark:hover:bg-gray-100/5"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" class="hx:origin-center hx:transition-transform hx:rtl:-rotate-180"></path></svg></span>
@@ -479,44 +603,23 @@
         <ul class='hx:relative hx:flex hx:flex-col hx:gap-1 hx:before:absolute hx:before:inset-y-1 hx:before:w-px hx:before:bg-gray-200 hx:before:content-[""] hx:ltr:ml-3 hx:ltr:pl-3 hx:ltr:before:left-0 hx:rtl:mr-3 hx:rtl:pr-3 hx:rtl:before:right-0 hx:dark:before:bg-neutral-800'><li class="hx:flex hx:flex-col "><a
     class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
-    href="../remote/index.html"
+    href="../../plugins/remote/index.html"
     
   >Пульт 🎮
     </a>
               
-            </li><li class="hx:flex hx:flex-col open"><a
+            </li><li class="hx:flex hx:flex-col "><a
     class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
-      hextra-sidebar-active-item hx:bg-primary-100 hx:font-semibold hx:text-primary-800 hx:contrast-more:border hx:contrast-more:border-primary-500 hx:dark:bg-primary-400/10 hx:dark:text-primary-600 hx:contrast-more:dark:border-primary-500"
-    href="index.html"
+      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+    href="../../plugins/alice/index.html"
     
   >Яндекс Алиса
     </a>
-  
-    <ul class='hx:flex hx:flex-col hx:gap-1 hx:relative hx:before:absolute hx:before:inset-y-1 hx:before:w-px hx:before:bg-gray-200 hx:before:content-[""] hx:dark:before:bg-neutral-800 hx:ltr:pl-3 hx:ltr:before:left-0 hx:rtl:pr-3 hx:rtl:before:right-0 hx:ltr:ml-3 hx:rtl:mr-3'><li>
-              <a
-                href="#%d0%bd%d0%b0%d1%81%d1%82%d1%80%d0%be%d0%b9%d0%ba%d0%b0"
-                class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50"
-              >Настройка</a>
-            </li>
-          <li>
-              <a
-                href="#%d0%b8%d1%81%d0%bf%d0%be%d0%bb%d1%8c%d0%b7%d0%be%d0%b2%d0%b0%d0%bd%d0%b8%d0%b5"
-                class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50"
-              >Использование</a>
-            </li>
-          <li>
-              <a
-                href="#%d1%82%d1%80%d0%b5%d0%b1%d0%be%d0%b2%d0%b0%d0%bd%d0%b8%d1%8f"
-                class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50"
-              >Требования</a>
-            </li>
-          </ul>
-  
               
             </li><li class="hx:flex hx:flex-col "><a
     class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
-    href="../iptv/index.html"
+    href="../../plugins/iptv/index.html"
     
   >IPTV
     </a>
@@ -524,7 +627,7 @@
             </li><li class="hx:flex hx:flex-col "><a
     class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
-    href="../dlna/index.html"
+    href="../../plugins/dlna/index.html"
     
   >DLNA
     </a>
@@ -532,7 +635,7 @@
             </li><li class="hx:flex hx:flex-col "><a
     class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
-    href="../xsearch/index.html"
+    href="../../plugins/xsearch/index.html"
     
   >XSearch
     </a>
@@ -540,7 +643,7 @@
             </li><li class="hx:flex hx:flex-col "><a
     class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
-    href="../sisi/index.html"
+    href="../../plugins/sisi/index.html"
     
   >Sisi (18&#43;)
     </a>
@@ -548,7 +651,7 @@
             </li><li class="hx:flex hx:flex-col "><a
     class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
-    href="../msx/index.html"
+    href="../../plugins/msx/index.html"
     
   >MSX (Media Station X)
     </a>
@@ -556,7 +659,7 @@
             </li><li class="hx:flex hx:flex-col "><a
     class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
-    href="../calendar/index.html"
+    href="../../plugins/calendar/index.html"
     
   >Календарь
     </a>
@@ -564,7 +667,7 @@
             </li><li class="hx:flex hx:flex-col "><a
     class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
-    href="../skip-intro/index.html"
+    href="../../plugins/skip-intro/index.html"
     
   >Пропуск интро
     </a>
@@ -572,7 +675,7 @@
             </li><li class="hx:flex hx:flex-col "><a
     class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
-    href="../opensubs/index.html"
+    href="../../plugins/opensubs/index.html"
     
   >Субтитры (OpenSubtitles)
     </a>
@@ -580,7 +683,7 @@
             </li><li class="hx:flex hx:flex-col "><a
     class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
-    href="../antidpi/index.html"
+    href="../../plugins/antidpi/index.html"
     
   >AntiDPI
     </a>
@@ -834,10 +937,10 @@
               
             </li></ul>
       </div></li>
-          <li class=""><a
+          <li class="open"><a
     class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
-    href="../../balancers/index.html"
+    href="../index.html"
     
   >Балансеры
         <span class="hextra-sidebar-collapsible-button"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="hx:h-[18px] hx:min-w-[18px] hx:rounded-xs hx:p-0.5 hx:hover:bg-gray-800/5 hx:dark:hover:bg-gray-100/5"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" class="hx:origin-center hx:transition-transform hx:rtl:-rotate-180"></path></svg></span>
@@ -845,7 +948,7 @@
         <ul class='hx:relative hx:flex hx:flex-col hx:gap-1 hx:before:absolute hx:before:inset-y-1 hx:before:w-px hx:before:bg-gray-200 hx:before:content-[""] hx:ltr:ml-3 hx:ltr:pl-3 hx:ltr:before:left-0 hx:rtl:mr-3 hx:rtl:pr-3 hx:rtl:before:right-0 hx:dark:before:bg-neutral-800'><li class="hx:flex hx:flex-col "><a
     class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
-    href="../../balancers/list/index.html"
+    href="../list/index.html"
     
   >Полный список модулей
     </a>
@@ -853,7 +956,7 @@
             </li><li class="hx:flex hx:flex-col "><a
     class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
-    href="../../balancers/modules/index.html"
+    href="../modules/index.html"
     
   >JS-модули источников
     </a>
@@ -861,7 +964,7 @@
             </li><li class="hx:flex hx:flex-col "><a
     class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
-    href="../../balancers/module-guide/index.html"
+    href="../module-guide/index.html"
     
   >Гайд — свой модуль за 30 минут
     </a>
@@ -869,15 +972,15 @@
             </li><li class="hx:flex hx:flex-col "><a
     class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
-    href="../../balancers/custom/index.html"
+    href="../custom/index.html"
     
   >Кастомные балансеры (Go)
     </a>
               
-            </li><li class="hx:flex hx:flex-col "><a
+            </li><li class="hx:flex hx:flex-col open"><a
     class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
-      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
-    href="../../balancers/ukrainian-sources/index.html"
+      hextra-sidebar-active-item hx:bg-primary-100 hx:font-semibold hx:text-primary-800 hx:contrast-more:border hx:contrast-more:border-primary-500 hx:dark:bg-primary-400/10 hx:dark:text-primary-600 hx:contrast-more:dark:border-primary-500"
+    href="index.html"
     
   >Украинские источники
     </a>
@@ -943,10 +1046,10 @@
               
             </li></ul>
       </div></li>
-          <li class="open"><a
+          <li class=""><a
     class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
-    href="../index.html"
+    href="../../plugins/index.html"
     
   >Плагины
         <span class="hextra-sidebar-collapsible-button"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="hx:h-[18px] hx:min-w-[18px] hx:rounded-xs hx:p-0.5 hx:hover:bg-gray-800/5 hx:dark:hover:bg-gray-100/5"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" class="hx:origin-center hx:transition-transform hx:rtl:-rotate-180"></path></svg></span>
@@ -954,15 +1057,15 @@
         <ul class='hx:relative hx:flex hx:flex-col hx:gap-1 hx:before:absolute hx:before:inset-y-1 hx:before:w-px hx:before:bg-gray-200 hx:before:content-[""] hx:ltr:ml-3 hx:ltr:pl-3 hx:ltr:before:left-0 hx:rtl:mr-3 hx:rtl:pr-3 hx:rtl:before:right-0 hx:dark:before:bg-neutral-800'><li class="hx:flex hx:flex-col "><a
     class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
-    href="../remote/index.html"
+    href="../../plugins/remote/index.html"
     
   >Пульт 🎮
     </a>
               
-            </li><li class="hx:flex hx:flex-col open"><a
+            </li><li class="hx:flex hx:flex-col "><a
     class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
-      hextra-sidebar-active-item hx:bg-primary-100 hx:font-semibold hx:text-primary-800 hx:contrast-more:border hx:contrast-more:border-primary-500 hx:dark:bg-primary-400/10 hx:dark:text-primary-600 hx:contrast-more:dark:border-primary-500"
-    href="index.html"
+      hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+    href="../../plugins/alice/index.html"
     
   >Яндекс Алиса
     </a>
@@ -970,7 +1073,7 @@
             </li><li class="hx:flex hx:flex-col "><a
     class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
-    href="../iptv/index.html"
+    href="../../plugins/iptv/index.html"
     
   >IPTV
     </a>
@@ -978,7 +1081,7 @@
             </li><li class="hx:flex hx:flex-col "><a
     class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
-    href="../dlna/index.html"
+    href="../../plugins/dlna/index.html"
     
   >DLNA
     </a>
@@ -986,7 +1089,7 @@
             </li><li class="hx:flex hx:flex-col "><a
     class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
-    href="../xsearch/index.html"
+    href="../../plugins/xsearch/index.html"
     
   >XSearch
     </a>
@@ -994,7 +1097,7 @@
             </li><li class="hx:flex hx:flex-col "><a
     class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
-    href="../sisi/index.html"
+    href="../../plugins/sisi/index.html"
     
   >Sisi (18&#43;)
     </a>
@@ -1002,7 +1105,7 @@
             </li><li class="hx:flex hx:flex-col "><a
     class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
-    href="../msx/index.html"
+    href="../../plugins/msx/index.html"
     
   >MSX (Media Station X)
     </a>
@@ -1010,7 +1113,7 @@
             </li><li class="hx:flex hx:flex-col "><a
     class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
-    href="../calendar/index.html"
+    href="../../plugins/calendar/index.html"
     
   >Календарь
     </a>
@@ -1018,7 +1121,7 @@
             </li><li class="hx:flex hx:flex-col "><a
     class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
-    href="../skip-intro/index.html"
+    href="../../plugins/skip-intro/index.html"
     
   >Пропуск интро
     </a>
@@ -1026,7 +1129,7 @@
             </li><li class="hx:flex hx:flex-col "><a
     class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
-    href="../opensubs/index.html"
+    href="../../plugins/opensubs/index.html"
     
   >Субтитры (OpenSubtitles)
     </a>
@@ -1034,7 +1137,7 @@
             </li><li class="hx:flex hx:flex-col "><a
     class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] [word-break:break-word]
       hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
-    href="../antidpi/index.html"
+    href="../../plugins/antidpi/index.html"
     
   >AntiDPI
     </a>
@@ -1151,31 +1254,83 @@
 <nav class="hextra-toc hx:order-last hx:hidden hx:w-64 hx:shrink-0 hx:xl:block hx:print:hidden hx:px-4" aria-label="table of contents">
     <div class="hextra-scrollbar hx:sticky hx:top-16 hx:overflow-y-auto hx:pr-4 hx:pt-6 hx:text-sm [hyphens:auto] hx:max-h-[calc(100vh-var(--navbar-height)-env(safe-area-inset-bottom))] hx:ltr:-mr-4 hx:rtl:-ml-4"><p class="hx:mb-4 hx:font-semibold hx:tracking-tight">На этой странице</p><ul>
       <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
-        <a class="hx:font-medium hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#%d0%bd%d0%b0%d1%81%d1%82%d1%80%d0%be%d0%b9%d0%ba%d0%b0">Настройка
+        <a class="hx:font-medium hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#%d0%bc%d0%b0%d1%82%d1%80%d0%b8%d1%86%d0%b0-%d0%b8%d1%81%d1%82%d0%be%d1%87%d0%bd%d0%b8%d0%ba%d0%be%d0%b2">Матрица источников
         </a>
       </li>
       <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
-        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#1-%d1%81%d0%be%d0%b7%d0%b4%d0%b0%d0%bd%d0%b8%d0%b5-%d0%bd%d0%b0%d0%b2%d1%8b%d0%ba%d0%b0">1. Создание навыка
+        <a class="hx:font-medium hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#%d1%83%d1%81%d1%82%d0%b0%d0%bd%d0%be%d0%b2%d0%ba%d0%b0-%d0%bf%d0%be-%d1%83%d0%bc%d0%be%d0%bb%d1%87%d0%b0%d0%bd%d0%b8%d1%8e">Установка по умолчанию
         </a>
       </li>
       <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
-        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#2-%d0%ba%d0%be%d0%bd%d1%84%d0%b8%d0%b3%d1%83%d1%80%d0%b0%d1%86%d0%b8%d1%8f-%d1%81%d0%b5%d1%80%d0%b2%d0%b5%d1%80%d0%b0">2. Конфигурация сервера
+        <a class="hx:font-medium hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#%d0%b4%d0%b5%d1%82%d0%b0%d0%bb%d0%b8-%d0%bc%d0%be%d0%b4%d1%83%d0%bb%d0%b5%d0%b9">Детали модулей
         </a>
       </li>
       <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
-        <a class="hx:font-medium hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#%d0%b8%d1%81%d0%bf%d0%be%d0%bb%d1%8c%d0%b7%d0%be%d0%b2%d0%b0%d0%bd%d0%b8%d0%b5">Использование
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#uafilmme">uafilmme
         </a>
       </li>
       <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
-        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#%d0%bf%d1%80%d0%b8%d0%b2%d1%8f%d0%b7%d0%ba%d0%b0-%d0%b0%d0%ba%d0%ba%d0%b0%d1%83%d0%bd%d1%82%d0%b0">Привязка аккаунта
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#starlight">starlight
         </a>
       </li>
       <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
-        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#%d0%b3%d0%be%d0%bb%d0%be%d1%81%d0%be%d0%b2%d1%8b%d0%b5-%d0%ba%d0%be%d0%bc%d0%b0%d0%bd%d0%b4%d1%8b">Голосовые команды
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#bamboo">bamboo
         </a>
       </li>
       <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
-        <a class="hx:font-medium hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#%d1%82%d1%80%d0%b5%d0%b1%d0%be%d0%b2%d0%b0%d0%bd%d0%b8%d1%8f">Требования
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#unimay">unimay
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#eneyida">eneyida
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#animeon">animeon
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#mikai">mikai
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#klonfun">klonfun
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#kinoukr">kinoukr
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#ashdi">ashdi
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#uaflix">uaflix
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-medium hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#%d0%ba%d0%b0%d0%ba-%d0%bf%d0%be%d0%bd%d1%8f%d1%82%d1%8c-%d1%87%d1%82%d0%be-%d1%81%d0%bb%d0%be%d0%bc%d0%b0%d0%bd%d0%be">Как понять что сломано
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#1-%d0%bf%d1%80%d0%be%d0%b2%d0%b5%d1%80%d1%8c%d1%82%d0%b5-%d1%80%d0%be%d1%83%d1%82-%d1%80%d1%83%d0%ba%d0%b0%d0%bc%d0%b8">1. Проверьте роут руками
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#2-%d0%bf%d0%be%d1%81%d0%bc%d0%be%d1%82%d1%80%d0%b8%d1%82%d0%b5-%d0%bb%d0%be%d0%b3%d0%b8-%d0%bc%d0%be%d0%b4%d1%83%d0%bb%d1%8f">2. Посмотрите логи модуля
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#3-%d1%82%d0%b8%d0%bf%d0%b8%d1%87%d0%bd%d1%8b%d0%b5-%d0%bf%d1%80%d0%be%d0%b1%d0%bb%d0%b5%d0%bc%d1%8b">3. Типичные проблемы
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#4-%d0%be%d1%82%d0%ba%d0%b0%d1%82-%d0%bd%d0%b0-go-%d0%b1%d0%b0%d0%bb%d0%b0%d0%bd%d1%81%d0%b5%d1%80">4. Откат на Go-балансер
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-medium hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#%d0%b2%d0%ba%d0%bb%d0%b0%d0%b4-%d0%b2-%d0%bc%d0%be%d0%b4%d1%83%d0%bb%d0%b8">Вклад в модули
         </a>
       </li></ul>
       <div class="hx:mt-8 hx:border-t hx:bg-white hx:pt-8 hx:shadow-[0_-12px_16px_white] hx:dark:bg-dark hx:dark:shadow-[0_-12px_16px_#111] hx:sticky hx:bottom-0 hx:flex hx:flex-col hx:items-start hx:gap-2 hx:pb-8 hx:border-gray-200 hx:dark:border-neutral-800 hx:contrast-more:border-t hx:contrast-more:border-neutral-400 hx:contrast-more:shadow-none hx:contrast-more:dark:border-neutral-400">
@@ -1197,34 +1352,112 @@
           <a href="../../index.html">Введение</a>
         </div><svg class="hx:w-3.5 hx:shrink-0 hx:rtl:-rotate-180" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
         <div class="hx:whitespace-nowrap hx:transition-colors hx:min-w-[24px] hx:overflow-hidden hx:text-ellipsis hx:hover:text-gray-900 hx:dark:hover:text-gray-100">
-          <a href="../index.html">Плагины</a>
-        </div><svg class="hx:w-3.5 hx:shrink-0 hx:rtl:-rotate-180" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg><div class="hx:whitespace-nowrap hx:transition-colors hx:font-medium hx:text-gray-700 hx:contrast-more:font-bold hx:contrast-more:text-current hx:dark:text-gray-100 hx:contrast-more:dark:text-current">Яндекс Алиса</div>
+          <a href="../index.html">Балансеры</a>
+        </div><svg class="hx:w-3.5 hx:shrink-0 hx:rtl:-rotate-180" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg><div class="hx:whitespace-nowrap hx:transition-colors hx:font-medium hx:text-gray-700 hx:contrast-more:font-bold hx:contrast-more:text-current hx:dark:text-gray-100 hx:contrast-more:dark:text-current">Украинские источники</div>
   </div>
 
         <div class="content">
-          <h1>Яндекс Алиса</h1>
-          <div class="hx:overflow-x-auto hx:mt-6 hx:flex hx:rounded-lg hx:border hx:py-2 hx:ltr:pr-4 hx:rtl:pl-4 hx:contrast-more:border-current hx:contrast-more:dark:border-current hx:border-blue-200 hx:bg-blue-100 hx:text-blue-900 hx:dark:border-blue-200/30 hx:dark:bg-blue-900/30 hx:dark:text-blue-200">
+          <h1>Украинские источники</h1>
+          <p>В <code>lampac-go</code> идут <strong>11 готовых JS-модулей</strong> украинских источников, портированные из внутренних Go-балансеров. Все находятся в <a href="https://github.com/lampame/lampac-ukraine"target="_blank" rel="noopener"><code>modules/</code></a> и включаются через админку.</p>
+<div class="hx:overflow-x-auto hx:mt-6 hx:flex hx:rounded-lg hx:border hx:py-2 hx:ltr:pr-4 hx:rtl:pl-4 hx:contrast-more:border-current hx:contrast-more:dark:border-current hx:border-blue-200 hx:bg-blue-100 hx:text-blue-900 hx:dark:border-blue-200/30 hx:dark:bg-blue-900/30 hx:dark:text-blue-200">
   <div class="hx:ltr:pl-3 hx:ltr:pr-2 hx:rtl:pr-3 hx:rtl:pl-2"><svg height=1.2em class="hx:inline-block hx:align-middle" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div>
 
   <div class="hx:w-full hx:min-w-0 hx:leading-7">
-    <div class="hx:mt-6 hx:leading-7 hx:first:mt-0"><strong>0.3 NEW</strong> — Голосовое управление Lampa через Яндекс Алису.</div>
+    <div class="hx:mt-6 hx:leading-7 hx:first:mt-0">JS-модули <strong>перехватывают</strong> соответствующие Go-балансеры с тем же ID (<code>starlight</code> → <code>/lite/starlight</code> идёт в JS). Выключите модуль в админке — и роут вернётся к встроенному Go-коду, если он есть.</div>
   </div>
 </div>
 
-<p>Интеграция с Яндекс Алисой позволяет искать и запускать фильмы/сериалы голосом через Яндекс Станцию или приложение Алиса.</p>
-<h2>Настройка<span class="hx:absolute hx:-mt-20" id="настройка"></span>
-    <a href="#%d0%bd%d0%b0%d1%81%d1%82%d1%80%d0%be%d0%b9%d0%ba%d0%b0" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><h3>1. Создание навыка<span class="hx:absolute hx:-mt-20" id="1-создание-навыка"></span>
-    <a href="#1-%d1%81%d0%be%d0%b7%d0%b4%d0%b0%d0%bd%d0%b8%d0%b5-%d0%bd%d0%b0%d0%b2%d1%8b%d0%ba%d0%b0" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><ol>
-<li>Перейдите в <a href="https://dialogs.yandex.ru/"target="_blank" rel="noopener">Яндекс Диалоги</a></li>
-<li>Создайте новый навык</li>
-<li>Укажите Webhook URL: <code>https://ваш-сервер/api/alice/webhook</code></li>
-</ol>
-<h3>2. Конфигурация сервера<span class="hx:absolute hx:-mt-20" id="2-конфигурация-сервера"></span>
-    <a href="#2-%d0%ba%d0%be%d0%bd%d1%84%d0%b8%d0%b3%d1%83%d1%80%d0%b0%d1%86%d0%b8%d1%8f-%d1%81%d0%b5%d1%80%d0%b2%d0%b5%d1%80%d0%b0" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+<h2>Матрица источников<span class="hx:absolute hx:-mt-20" id="матрица-источников"></span>
+    <a href="#%d0%bc%d0%b0%d1%82%d1%80%d0%b8%d1%86%d0%b0-%d0%b8%d1%81%d1%82%d0%be%d1%87%d0%bd%d0%b8%d0%ba%d0%be%d0%b2" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><table>
+  <thead>
+      <tr>
+          <th>Модуль</th>
+          <th>Тип</th>
+          <th>Источник</th>
+          <th>Особенности</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><strong><a href="#uafilmme">uafilmme</a></strong></td>
+          <td>Фильмы + сериалы</td>
+          <td>uafilm.me (REST API)</td>
+          <td>Пагинация сезонов/эпизодов, matching по IMDB/TMDB</td>
+      </tr>
+      <tr>
+          <td><strong><a href="#starlight">starlight</a></strong></td>
+          <td>Сериалы / TV</td>
+          <td>teleportal.ua (<code>tp-back.starlight.digital</code>)</td>
+          <td>Live-search + hash-based player-api</td>
+      </tr>
+      <tr>
+          <td><strong><a href="#bamboo">bamboo</a></strong></td>
+          <td>Аниме / дорама</td>
+          <td>bambooua.com</td>
+          <td>HTML-scrape, sub/dub треки</td>
+      </tr>
+      <tr>
+          <td><strong><a href="#unimay">unimay</a></strong></td>
+          <td>Аниме</td>
+          <td><code>api.unimay.media/v1</code></td>
+          <td>Чистый REST, HLS master</td>
+      </tr>
+      <tr>
+          <td><strong><a href="#eneyida">eneyida</a></strong></td>
+          <td>Фильмы + сериалы</td>
+          <td>eneyida.tv</td>
+          <td>DLE-поиск, iframe → Playerjs</td>
+      </tr>
+      <tr>
+          <td><strong><a href="#animeon">animeon</a></strong></td>
+          <td>Аниме</td>
+          <td>animeon.club</td>
+          <td>REST, fundubs (озвучки), translations</td>
+      </tr>
+      <tr>
+          <td><strong><a href="#mikai">mikai</a></strong></td>
+          <td>Аниме</td>
+          <td><code>api.mikai.me/v1</code></td>
+          <td>Множественные озвучки (teams) + субтитры</td>
+      </tr>
+      <tr>
+          <td><strong><a href="#klonfun">klonfun</a></strong></td>
+          <td>Фильмы + сериалы</td>
+          <td>klon.fun</td>
+          <td>HTML + Playerjs tree</td>
+      </tr>
+      <tr>
+          <td><strong><a href="#kinoukr">kinoukr</a></strong></td>
+          <td>Фильмы + сериалы</td>
+          <td>kinoukr.tv</td>
+          <td><code>xfsearch</code> (Cloudflare-bypass), ashdi/tortuga iframe</td>
+      </tr>
+      <tr>
+          <td><strong><a href="#ashdi">ashdi</a></strong></td>
+          <td>Озвучка</td>
+          <td>ashdi.vip</td>
+          <td>Wormhole API (imdb_id, без токена)</td>
+      </tr>
+      <tr>
+          <td><strong><a href="#uaflix">uaflix</a></strong></td>
+          <td>Фильмы + сериалы</td>
+          <td>uafix.net</td>
+          <td>Упрощённая реализация, без DLE-auth и uTLS</td>
+      </tr>
+  </tbody>
+</table>
+<h2>Установка по умолчанию<span class="hx:absolute hx:-mt-20" id="установка-по-умолчанию"></span>
+    <a href="#%d1%83%d1%81%d1%82%d0%b0%d0%bd%d0%be%d0%b2%d0%ba%d0%b0-%d0%bf%d0%be-%d1%83%d0%bc%d0%be%d0%bb%d1%87%d0%b0%d0%bd%d0%b8%d1%8e" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><p>Модули поставляются в папке <code>modules/</code> вместе с сервером. После первого запуска появятся в админке → <strong>Модули</strong>.</p>
+<div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
 
-<div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-toml" data-lang="toml"><span class="line"><span class="cl"><span class="p">[</span><span class="nx">alice</span><span class="p">]</span>
-</span></span><span class="line"><span class="cl"><span class="nx">enable</span> <span class="p">=</span> <span class="kc">true</span>
-</span></span><span class="line"><span class="cl"><span class="c"># skill_id = &#34;&#34;  # опционально: валидация входящих запросов по skill_id</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+<div><pre><code>modules/
+  uafilmme/
+    manifest.json
+    index.js
+  starlight/
+    manifest.json
+    index.js
+  ...</code></pre></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
   <button
     class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
     title="Скопировать код"
@@ -1234,33 +1467,193 @@
   </button>
 </div>
 </div>
-<h2>Использование<span class="hx:absolute hx:-mt-20" id="использование"></span>
-    <a href="#%d0%b8%d1%81%d0%bf%d0%be%d0%bb%d1%8c%d0%b7%d0%be%d0%b2%d0%b0%d0%bd%d0%b8%d0%b5" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><h3>Привязка аккаунта<span class="hx:absolute hx:-mt-20" id="привязка-аккаунта"></span>
-    <a href="#%d0%bf%d1%80%d0%b8%d0%b2%d1%8f%d0%b7%d0%ba%d0%b0-%d0%b0%d0%ba%d0%ba%d0%b0%d1%83%d0%bd%d1%82%d0%b0" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><ol>
-<li>В Telegram-боте нажмите <strong>🔊 Алиса</strong> или отправьте <code>/alice</code></li>
-<li>Бот покажет 4-значный PIN-код</li>
-<li>Скажите Алисе: «Запусти навык [название]»</li>
-<li>Назовите PIN-код голосом</li>
-<li>Аккаунт привязан — Алиса запомнит ваше устройство</li>
-</ol>
-<h3>Голосовые команды<span class="hx:absolute hx:-mt-20" id="голосовые-команды"></span>
-    <a href="#%d0%b3%d0%be%d0%bb%d0%be%d1%81%d0%be%d0%b2%d1%8b%d0%b5-%d0%ba%d0%be%d0%bc%d0%b0%d0%bd%d0%b4%d1%8b" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><p>После привязки скажите Алисе:</p>
+<p>Чтобы получить обновления — обновите сервер (<code>git pull</code> / новую версию бинаря) или стяните с репозитория отдельно:</p>
+<div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+
+<div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nb">cd</span> modules
+</span></span><span class="line"><span class="cl">rm -rf starlight
+</span></span><span class="line"><span class="cl">curl -L https://github.com/&lt;repo&gt;/archive/refs/heads/main.zip -o tmp.zip
+</span></span><span class="line"><span class="cl">unzip -o tmp.zip <span class="s1">&#39;*/modules/starlight/*&#39;</span> -d .</span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+  <button
+    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+    title="Скопировать код"
+  >
+    <div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
+<div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
+  </button>
+</div>
+</div>
+<p>Или через админку → <strong>Установить из URL</strong>.</p>
+<h2>Детали модулей<span class="hx:absolute hx:-mt-20" id="детали-модулей"></span>
+    <a href="#%d0%b4%d0%b5%d1%82%d0%b0%d0%bb%d0%b8-%d0%bc%d0%be%d0%b4%d1%83%d0%bb%d0%b5%d0%b9" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><h3>uafilmme<span class="hx:absolute hx:-mt-20" id="uafilmme"></span>
+    <a href="#uafilmme" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><ul>
+<li><strong>Репозиторий-референс:</strong> <a href="https://github.com/lampame/lampac-ukraine/tree/main/LME.UafilmME"target="_blank" rel="noopener">lampame/lampac-ukraine → LME.UafilmME</a></li>
+<li><strong>API-path:</strong> <code>GET /api/v1/search/{query}</code>, <code>GET /api/v1/titles/{id}</code>, <code>GET /api/v1/titles/{id}/seasons</code>, <code>GET /api/v1/titles/{id}/seasons/{s}/episodes</code>, <code>GET /api/v1/watch/{videoId}</code></li>
+<li><strong>Особенности:</strong> paginated API (cursor <code>next_page</code>), best-match scoring, поддерживает <code>movie</code> и <code>serial</code></li>
+<li><strong>Настройки:</strong> <code>host</code>, <code>userAgent</code>, <code>timeout</code>, три TTL для кэша, <code>proxyStreams</code></li>
+</ul>
+<h3>starlight<span class="hx:absolute hx:-mt-20" id="starlight"></span>
+    <a href="#starlight" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><ul>
+<li><strong>API:</strong> <code>GET /{lang}/live-search?q={query}</code> → <code>GET {href}</code> (project) → <code>GET {playerAPI}/{hash}?referer=...&amp;lang=ua</code></li>
+<li><strong>Формат:</strong> Hash-based episodes, мультивыбор сезонов через <code>seasonsGallery</code></li>
+<li><strong>Ограничение:</strong> контент доступен только на украинских IP или через VPN</li>
+</ul>
+<h3>bamboo<span class="hx:absolute hx:-mt-20" id="bamboo"></span>
+    <a href="#bamboo" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><ul>
+<li><strong>Парсинг:</strong> HTML-scrape через regex (<code>&lt;li class=&quot;slide-item&quot;&gt;</code>, <code>&lt;span data-file=&quot;...&quot; data-type=&quot;sub|dub&quot;&gt;</code>)</li>
+<li><strong>Два трека:</strong> субтитры и дубляж — переключение через <code>?t=sub|dub</code></li>
+<li><strong>Стримы:</strong> прямые ссылки на CDN с <code>.m3u8</code></li>
+</ul>
+<h3>unimay<span class="hx:absolute hx:-mt-20" id="unimay"></span>
+    <a href="#unimay" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><ul>
+<li><strong>API:</strong> <code>GET /v1/release/search?title={q}</code>, <code>GET /v1/release?code={slug}</code></li>
+<li><strong>Формат:</strong> <code>playlist[].hls.master</code> — HLS master manifest per episode</li>
+<li><strong>Скорость:</strong> один самых быстрых модулей — чистый JSON, без HTML</li>
+</ul>
+<h3>eneyida<span class="hx:absolute hx:-mt-20" id="eneyida"></span>
+    <a href="#eneyida" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><ul>
+<li><strong>Flow:</strong> <code>POST /index.php?do=search</code> → iframe из film page → iframe HTML → <code>file:</code> из Playerjs</li>
+<li><strong>Структура Playerjs:</strong> voice → seasons → episodes tree (JSON массив)</li>
+<li><strong>Fallback:</strong> если <code>file:</code> — одна строка (фильм), показывает single-stream</li>
+</ul>
+<h3>animeon<span class="hx:absolute hx:-mt-20" id="animeon"></span>
+    <a href="#animeon" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><ul>
+<li><strong>API:</strong> <code>GET /api/anime/search?text=</code>, <code>GET /api/player/{id}/translations</code>, <code>GET /api/player/{id}/episodes?...</code></li>
+<li><strong>Особенности:</strong> фандабы (озвучки) → players → episodes, поля в camelCase (<code>titleUa</code>, <code>episodeNum</code>, <code>videoUrl</code>)</li>
+<li><strong>Серийность:</strong> один anime-ID обычно = один сезон; несколько результатов на поиск = разные сезоны</li>
+</ul>
+<h3>mikai<span class="hx:absolute hx:-mt-20" id="mikai"></span>
+    <a href="#mikai" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><ul>
+<li><strong>API:</strong> <code>GET /v1/anime/search?name=</code>, <code>GET /v1/anime/{id}</code></li>
+<li><strong>Voices:</strong> <code>anime.players[].team.name</code> + <code>isSubs</code> → ключ озвучки/субтитров</li>
+<li><strong>Структура:</strong> несколько provider per voice, каждый — свой «сезон» (seasonCounter)</li>
+</ul>
+<h3>klonfun<span class="hx:absolute hx:-mt-20" id="klonfun"></span>
+    <a href="#klonfun" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><ul>
+<li><strong>Flow:</strong> <code>POST /index.php?do=search</code> → iframe из film page → Playerjs <code>file:</code></li>
+<li><strong>Edge cases:</strong> multi-quality строка <code>[720p]url1,[1080p]url2</code> → строит <code>quality</code> map</li>
+<li><strong>Нюанс:</strong> на сайте много редиректов, иногда нужны повторные попытки</li>
+</ul>
+<h3>kinoukr<span class="hx:absolute hx:-mt-20" id="kinoukr"></span>
+    <a href="#kinoukr" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><ul>
+<li><strong>Поиск:</strong> <code>GET /xfsearch/{query}/</code> — обходит Cloudflare POST-challenge (работает с английскими названиями или <code>%20</code>-joined)</li>
+<li><strong>Iframe:</strong> ashdi/tortuga — приоритет ashdi</li>
+<li><strong>Playerjs:</strong> такое же дерево как у eneyida</li>
+</ul>
+<h3>ashdi<span class="hx:absolute hx:-mt-20" id="ashdi"></span>
+    <a href="#ashdi" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><ul>
+<li><strong>Wormhole API:</strong> <code>GET {wormholeHost}/?imdb_id={id}</code> → <code>{play: &quot;https://ashdi.vip/vod/123&quot;}</code></li>
+<li><strong>Без токена:</strong> полностью bypass через wormhole-прокси</li>
+<li><strong>Flow:</strong> <code>play</code> URL + <code>?multivoice</code> → Playerjs → voices JSON array</li>
+<li><strong>CDN typo-fix:</strong> заменяет <code>0yql3tj</code> → <code>oyql3tj</code> в URL (знаменитая ашди-опечатка)</li>
+</ul>
+<h3>uaflix<span class="hx:absolute hx:-mt-20" id="uaflix"></span>
+    <a href="#uaflix" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><ul>
+<li><strong>Упрощённая реализация</strong> — полный Go-балансер умеет больше:
 <ul>
-<li><strong>«Найди Интерстеллар»</strong> — поиск фильма</li>
-<li><strong>«Включи Игру в кальмара»</strong> — поиск сериала</li>
-<li><strong>«Что сейчас идёт?»</strong> — текущее воспроизведение</li>
+<li>DLE-cookie auth (cookie можно вставить вручную в настройках модуля)</li>
+<li>AMSP-bypass, pagination probes — <strong>не портированы</strong></li>
+<li>DDoS-Guard bypass через uTLS — <strong>не портирован</strong>, нужен Go</li>
 </ul>
-<p>Алиса найдёт фильм в TMDB, определит Kinopoisk ID и отправит команду на привязанное устройство.</p>
-<h2>Требования<span class="hx:absolute hx:-mt-20" id="требования"></span>
-    <a href="#%d1%82%d1%80%d0%b5%d0%b1%d0%be%d0%b2%d0%b0%d0%bd%d0%b8%d1%8f" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><ul>
-<li>HTTPS-доступ к серверу (Яндекс требует HTTPS для webhook)</li>
-<li>Telegram-бот настроен (для привязки PIN)</li>
-<li>Устройство Lampa онлайн через WebSocket</li>
+</li>
+<li><strong>Когда переключаться на Go:</strong> если сайт возвращает 403/Cloudflare challenge — выключите JS-модуль, Go-версия подхватит</li>
 </ul>
+<h2>Как понять что сломано<span class="hx:absolute hx:-mt-20" id="как-понять-что-сломано"></span>
+    <a href="#%d0%ba%d0%b0%d0%ba-%d0%bf%d0%be%d0%bd%d1%8f%d1%82%d1%8c-%d1%87%d1%82%d0%be-%d1%81%d0%bb%d0%be%d0%bc%d0%b0%d0%bd%d0%be" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><p>Если какой-то источник перестал работать:</p>
+<h3>1. Проверьте роут руками<span class="hx:absolute hx:-mt-20" id="1-проверьте-роут-руками"></span>
+    <a href="#1-%d0%bf%d1%80%d0%be%d0%b2%d0%b5%d1%80%d1%8c%d1%82%d0%b5-%d1%80%d0%be%d1%83%d1%82-%d1%80%d1%83%d0%ba%d0%b0%d0%bc%d0%b8" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+
+<div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">curl -s <span class="s1">&#39;http://lampac:888/lite/starlight?checksearch=true&#39;</span> <span class="p">|</span> jq
+</span></span><span class="line"><span class="cl"><span class="c1"># {&#34;rch&#34;:false}  ← источник недоступен</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># {&#34;rch&#34;:true,&#34;type&#34;:&#34;movie&#34;,&#34;quality&#34;:&#34;FHD&#34;}  ← работает</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+  <button
+    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+    title="Скопировать код"
+  >
+    <div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
+<div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
+  </button>
+</div>
+</div>
+<h3>2. Посмотрите логи модуля<span class="hx:absolute hx:-mt-20" id="2-посмотрите-логи-модуля"></span>
+    <a href="#2-%d0%bf%d0%be%d1%81%d0%bc%d0%be%d1%82%d1%80%d0%b8%d1%82%d0%b5-%d0%bb%d0%be%d0%b3%d0%b8-%d0%bc%d0%be%d0%b4%d1%83%d0%bb%d1%8f" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><p>Админка → <strong>Модули</strong> → карточка → <strong>Логи</strong>. Все <code>console.warn</code> / <code>console.error</code> из модуля + runtime-ошибки.</p>
+<h3>3. Типичные проблемы<span class="hx:absolute hx:-mt-20" id="3-типичные-проблемы"></span>
+    <a href="#3-%d1%82%d0%b8%d0%bf%d0%b8%d1%87%d0%bd%d1%8b%d0%b5-%d0%bf%d1%80%d0%be%d0%b1%d0%bb%d0%b5%d0%bc%d1%8b" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><table>
+  <thead>
+      <tr>
+          <th>Проблема</th>
+          <th>Диагностика</th>
+          <th>Лечение</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>{&quot;rch&quot;:false}</code> у всех запросов</td>
+          <td>Сайт-источник упал или изменил API</td>
+          <td>Дождаться / обновить модуль</td>
+      </tr>
+      <tr>
+          <td>403 в логах</td>
+          <td>Геоблок или Cloudflare</td>
+          <td>VPN, или включить Go-балансер (uTLS)</td>
+      </tr>
+      <tr>
+          <td><code>JSON parse failed</code></td>
+          <td>API вернул HTML-капчу</td>
+          <td>Смотреть <code>res.text.slice(0,300)</code></td>
+      </tr>
+      <tr>
+          <td>Воспроизводится, но с лагами</td>
+          <td>CDN зарегулирован или нужен proxy</td>
+          <td>Включить <code>proxyStreams: true</code> в настройках</td>
+      </tr>
+      <tr>
+          <td>Рассинхрон озвучка/эпизоды</td>
+          <td>Кэш устарел</td>
+          <td>Кнопка <strong>↻</strong> на карточке (или <code>cache.clear()</code> в коде)</td>
+      </tr>
+  </tbody>
+</table>
+<h3>4. Откат на Go-балансер<span class="hx:absolute hx:-mt-20" id="4-откат-на-go-балансер"></span>
+    <a href="#4-%d0%be%d1%82%d0%ba%d0%b0%d1%82-%d0%bd%d0%b0-go-%d0%b1%d0%b0%d0%bb%d0%b0%d0%bd%d1%81%d0%b5%d1%80" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><p>Если модуль критически сломан и нужна срочность:</p>
+<ol>
+<li>Админка → <strong>Модули</strong> → <strong>выключить</strong> toggle на карточке</li>
+<li>Роут <code>/lite/&lt;id&gt;</code> автоматически вернётся к встроенному Go-балансеру</li>
+<li>Чинить JS-модуль можно спокойно потом</li>
+</ol>
+<h2>Вклад в модули<span class="hx:absolute hx:-mt-20" id="вклад-в-модули"></span>
+    <a href="#%d0%b2%d0%ba%d0%bb%d0%b0%d0%b4-%d0%b2-%d0%bc%d0%be%d0%b4%d1%83%d0%bb%d0%b8" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><p>Портированные модули живут в репозитории проекта в папке <code>modules/</code>. Если нашли баг или хотите добавить фичу:</p>
+<ol>
+<li>Отредактируйте <code>index.js</code> в админке → Сохранить и перезагрузить</li>
+<li>Если работает — сделайте PR с изменённым файлом</li>
+<li>Бонусы за: новые источники, паттерны анти-бота, оптимизации регэкспов</li>
+</ol>
+<p>Идеи для новых модулей из <a href="https://github.com/lampame/lampac-ukraine"target="_blank" rel="noopener">lampac-ukraine</a>:</p>
+<ul>
+<li><strong>LME.Makhno</strong> — wormhole-based, похож на ashdi</li>
+<li><strong>LME.NMoonAnime</strong> — MAL-based search + base64/JSON обфускация</li>
+<li><strong>LME.JackTor</strong> — Jackett indexer integration</li>
+</ul>
+<div class="hextra-cards hx:mt-4 hx:gap-4 hx:grid not-prose" style="--hextra-cards-grid-cols: 3;">
+  <a
+    class="hextra-card hx:group hx:flex hx:flex-col hx:justify-start hx:overflow-hidden hx:rounded-lg hx:border hx:border-gray-200 hx:text-current hx:no-underline hx:dark:shadow-none hx:hover:shadow-gray-100 hx:dark:hover:shadow-none hx:shadow-gray-100 hx:active:shadow-sm hx:active:shadow-gray-200 hx:transition-all hx:duration-200 hx:hover:border-gray-300 hx:bg-transparent hx:shadow-xs hx:dark:border-neutral-800 hx:hover:bg-slate-50 hx:hover:shadow-md hx:dark:hover:border-neutral-700 hx:dark:hover:bg-neutral-900"href="../modules/index.html"
+      ><span class="hextra-card-icon hx:flex hx:font-semibold hx:items-start hx:gap-2 hx:pt-4 hx:px-4 hx:text-gray-700 hx:hover:text-gray-900 hx:dark:text-neutral-200 hx:dark:hover:text-neutral-50"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/></svg>Как устроены JS-модули</span><div class="hextra-card-subtitle hx:line-clamp-3 hx:text-sm hx:font-normal hx:text-gray-500 hx:dark:text-gray-400 hx:px-4 hx:mb-4 hx:mt-2">Обзор системы и API песочницы</div></a>
+  <a
+    class="hextra-card hx:group hx:flex hx:flex-col hx:justify-start hx:overflow-hidden hx:rounded-lg hx:border hx:border-gray-200 hx:text-current hx:no-underline hx:dark:shadow-none hx:hover:shadow-gray-100 hx:dark:hover:shadow-none hx:shadow-gray-100 hx:active:shadow-sm hx:active:shadow-gray-200 hx:transition-all hx:duration-200 hx:hover:border-gray-300 hx:bg-transparent hx:shadow-xs hx:dark:border-neutral-800 hx:hover:bg-slate-50 hx:hover:shadow-md hx:dark:hover:border-neutral-700 hx:dark:hover:bg-neutral-900"href="../module-guide/index.html"
+      ><span class="hextra-card-icon hx:flex hx:font-semibold hx:items-start hx:gap-2 hx:pt-4 hx:px-4 hx:text-gray-700 hx:hover:text-gray-900 hx:dark:text-neutral-200 hx:dark:hover:text-neutral-50"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path d="M12 14l9-5-9-5-9 5 9 5z"/><path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222"/></svg>Напишите свой модуль</span><div class="hextra-card-subtitle hx:line-clamp-3 hx:text-sm hx:font-normal hx:text-gray-500 hx:dark:text-gray-400 hx:px-4 hx:mb-4 hx:mt-2">Пошаговое руководство</div></a>
+  <a
+    class="hextra-card hx:group hx:flex hx:flex-col hx:justify-start hx:overflow-hidden hx:rounded-lg hx:border hx:border-gray-200 hx:text-current hx:no-underline hx:dark:shadow-none hx:hover:shadow-gray-100 hx:dark:hover:shadow-none hx:shadow-gray-100 hx:active:shadow-sm hx:active:shadow-gray-200 hx:transition-all hx:duration-200 hx:hover:border-gray-300 hx:bg-transparent hx:shadow-xs hx:dark:border-neutral-800 hx:hover:bg-slate-50 hx:hover:shadow-md hx:dark:hover:border-neutral-700 hx:dark:hover:bg-neutral-900"href="../../admin/modules/index.html"
+      ><span class="hextra-card-icon hx:flex hx:font-semibold hx:items-start hx:gap-2 hx:pt-4 hx:px-4 hx:text-gray-700 hx:hover:text-gray-900 hx:dark:text-neutral-200 hx:dark:hover:text-neutral-50"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>Вкладка «Модули»</span><div class="hextra-card-subtitle hx:line-clamp-3 hx:text-sm hx:font-normal hx:text-gray-500 hx:dark:text-gray-400 hx:px-4 hx:mb-4 hx:mt-2">Установка и редактирование в админке</div></a>
+</div>
+
 
         </div>
         <div class="hx:mt-16"></div>
-        
+        <div class="hx:mb-8 hx:flex hx:items-center hx:border-t hx:pt-8 hx:border-gray-200 hx:dark:border-neutral-800 hx:contrast-more:border-neutral-400 hx:dark:contrast-more:border-neutral-400 hx:print:hidden"><a
+        href="../custom/index.html"
+        title="Кастомные балансеры (Go)"
+        class="hx:flex hx:max-w-[50%] hx:items-center hx:gap-1 hx:py-4 hx:text-base hx:font-medium hx:text-gray-600 hx:transition-colors [word-break:break-word] hx:hover:text-primary-600 hx:dark:text-gray-300 hx:md:text-lg hx:ltr:pr-4 hx:rtl:pl-4"
+      ><svg class="hx:inline hx:h-5 hx:shrink-0 hx:ltr:rotate-180" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>Кастомные балансеры (Go)</a></div>
         
       </main>
     </article>
@@ -1277,5 +1670,5 @@
         <script defer src="../../../en.search.min.f193b44840cc2e87b97c0c80d6975880cc7f1211ddb89e5ac51ce34372225eab.js" integrity="sha256-8ZO0SEDMLoe5fAyA1pdYgMx/EhHduJ5axRzjQ3IiXqs="></script>
   </body>
 
-<!-- Mirrored from wiki.alcopa.cc/docs/plugins/alice/ by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 21 Apr 2026 11:05:50 GMT -->
+<!-- Mirrored from wiki.alcopa.cc/docs/balancers/ukrainian-sources/ by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 21 Apr 2026 11:05:34 GMT -->
 </html>
