@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
-<!-- Mirrored from wiki.alcopa.cc/docs/balancers/modules/ by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 24 Apr 2026 05:34:07 GMT -->
+<!-- Mirrored from wiki.alcopa.cc/docs/balancers/modules/ by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 24 Apr 2026 08:00:23 GMT -->
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="robots" content="index, follow" />
@@ -106,7 +106,7 @@ modules/
   <meta itemprop="name" content="JS-модули источников">
   <meta itemprop="description" content="JS-модули — современный способ подключить новый источник контента без пересборки сервера и без Go-тулчейна у пользователя. Каждый модуль — это одна JavaScript-функция в изолированной песочнице (Goja), которая принимает HTTP-запрос от Lampa и возвращает JSON в формате плейлиста.
 JS-модули — это эволюция старых кастомных балансеров (Go-subprocess). Старый механизм продолжает работать для обратной совместимости, но новые источники лучше писать как JS-модули. Они проще, быстрее ставятся, работают hot-reload и не требуют Go на машине пользователя. Почему JS, а не Go Критерий Go-subprocess (custom balancers) JS-модуль (новый) Размер артефакта ~9 МБ бинарь на плагин 5–20 КБ .js файл Нужен Go на машине Да Нет Hot-reload После go build и restart subprocess Мгновенно, по кнопке в админке Запуск Отдельный процесс &#43; TCP Внутри основного процесса, in-process handler Порог входа Go, конкурентность, net/http JavaScript &#43; «fetch-like» API Deploy Скомпилировать 11 бинарей под каждую ОС Скопировать папку Редактирование IDE &#43; компилятор Прямо в браузере через админку Архитектура modules/ &lt;module-id&gt;/ manifest.json # метаданные &#43; схема настроек index.js # код модуля config.json # (опционально) сохранённые настройки пользователя &lt;любые файлы&gt; # иконки, README, тест-фикстуры… При старте lampac-go:">
-  <meta itemprop="wordCount" content="1528">
+  <meta itemprop="wordCount" content="2458">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="JS-модули источников">
   <meta name="twitter:description" content="JS-модули — современный способ подключить новый источник контента без пересборки сервера и без Go-тулчейна у пользователя. Каждый модуль — это одна JavaScript-функция в изолированной песочнице (Goja), которая принимает HTTP-запрос от Lampa и возвращает JSON в формате плейлиста.
@@ -493,6 +493,12 @@ JS-модули — это эволюция старых кастомных ба
                 href="#%d0%bf%d0%be%d0%bb%d0%bd%d1%8b%d0%b9-%d0%bf%d1%80%d0%b8%d0%bc%d0%b5%d1%80-%d0%bc%d0%be%d0%b4%d1%83%d0%bb%d1%8f"
                 class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50"
               >Полный пример модуля</a>
+            </li>
+          <li>
+              <a
+                href="#%d1%87%d0%b0%d1%81%d1%82%d1%8b%d0%b5-%d0%b3%d1%80%d0%b0%d0%b1%d0%bb%d0%b8"
+                class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50"
+              >Частые грабли</a>
             </li>
           <li>
               <a
@@ -1318,6 +1324,10 @@ JS-модули — это эволюция старых кастомных ба
         </a>
       </li>
       <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#%d1%87%d1%82%d0%be-%d1%80%d0%b5%d0%b0%d0%bb%d1%8c%d0%bd%d0%be-%d1%88%d0%bb%d1%91%d1%82-lampa-%d0%b2-invquery">Что реально шлёт Lampa в inv.query
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
         <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#%d0%be%d1%82%d0%b2%d0%b5%d1%82">Ответ
         </a>
       </li>
@@ -1351,6 +1361,42 @@ JS-модули — это эволюция старых кастомных ба
       </li>
       <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
         <a class="hx:font-medium hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#%d0%bf%d0%be%d0%bb%d0%bd%d1%8b%d0%b9-%d0%bf%d1%80%d0%b8%d0%bc%d0%b5%d1%80-%d0%bc%d0%be%d0%b4%d1%83%d0%bb%d1%8f">Полный пример модуля
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-medium hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#%d1%87%d0%b0%d1%81%d1%82%d1%8b%d0%b5-%d0%b3%d1%80%d0%b0%d0%b1%d0%bb%d0%b8">Частые грабли
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#1-lampa-%d0%bf%d0%b8%d1%88%d0%b5%d1%82-%d0%bf%d0%be%d0%b8%d1%81%d0%ba-%d0%bd%d0%b5-%d0%b4%d0%b0%d0%bb-%d1%80%d0%b5%d0%b7%d1%83%d0%bb%d1%8c%d1%82%d0%b0%d1%82%d0%be%d0%b2-%d0%b0-curl-%d0%b2%d0%be%d0%b7%d0%b2%d1%80%d0%b0%d1%89%d0%b0%d0%b5%d1%82-json">1. Lampa пишет «Поиск не дал результатов», а curl возвращает JSON
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#2-%d0%b8%d1%81%d1%82%d0%be%d1%87%d0%bd%d0%b8%d0%ba-%d0%b2%d0%b8%d0%b4%d0%b5%d0%bd-%d0%b2-ui-%d0%bd%d0%be-%d0%b2%d1%81%d0%b5%d0%b3%d0%b4%d0%b0-%d0%bd%d0%b5-%d0%b4%d0%b0%d0%bb-%d1%80%d0%b5%d0%b7%d1%83%d0%bb%d1%8c%d1%82%d0%b0%d1%82%d0%be%d0%b2">2. Источник виден в UI, но всегда «не дал результатов»
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#3-%d1%81%d1%82%d1%80%d0%b8%d0%bc-%d0%bd%d0%b5-%d0%b8%d0%b3%d1%80%d0%b0%d0%b5%d1%82-url-%d1%82%d0%b8%d0%bf%d0%b0-ib9a27s8m3u8-%d0%b1%d0%b5%d0%b7-%d1%85%d0%be%d1%81%d1%82%d0%b0">3. Стрим не играет: URL типа ib9a27S8...m3u8 без хоста
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#4-url-%d0%b2-%d0%be%d1%82%d0%b2%d0%b5%d1%82%d0%b5-%d1%81%d0%be%d0%b4%d0%b5%d1%80%d0%b6%d0%b8%d1%82-127001888-%d0%b2%d0%bc%d0%b5%d1%81%d1%82%d0%be-%d1%80%d0%b5%d0%b0%d0%bb%d1%8c%d0%bd%d0%be%d0%b3%d0%be-%d0%b4%d0%be%d0%bc%d0%b5%d0%bd%d0%b0">4. url в ответе содержит 127.0.0.1:888 вместо реального домена
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#5-%d0%bc%d0%be%d0%b4%d1%83%d0%bb%d1%8c-%d0%bd%d0%b5-%d0%bf%d0%b5%d1%80%d0%b5%d0%b7%d0%b0%d0%b3%d1%80%d1%83%d0%b6%d0%b0%d0%b5%d1%82%d1%81%d1%8f-%d0%bf%d1%80%d0%b8-%d0%b8%d0%b7%d0%bc%d0%b5%d0%bd%d0%b5%d0%bd%d0%b8%d0%b8-indexjs">5. Модуль не перезагружается при изменении index.js
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#6-objectassign--arrayprototypeincludes-%d0%bd%d0%b5-%d1%80%d0%b0%d0%b1%d0%be%d1%82%d0%b0%d1%8e%d1%82">6. Object.assign / Array.prototype.includes не работают
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#7-%d1%81%d0%b0%d0%b9%d1%82-%d1%82%d1%80%d0%b5%d0%b1%d1%83%d0%b5%d1%82-cookie-%d0%bc%d0%b5%d0%b6%d0%b4%d1%83-%d0%b7%d0%b0%d0%bf%d1%80%d0%be%d1%81%d0%b0%d0%bc%d0%b8">7. Сайт требует Cookie между запросами
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:break-words" href="#8-cdn-%d0%b1%d0%bb%d0%be%d0%ba%d0%b8%d1%80%d1%83%d0%b5%d1%82-%d0%bf%d0%be-originreferer">8. CDN блокирует по Origin/Referer
         </a>
       </li>
       <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
@@ -1823,6 +1869,8 @@ JS-модули — это эволюция старых кастомных ба
 </span></span></span><span class="line"><span class="cl"><span class="nx">util</span><span class="p">.</span><span class="nx">trim</span><span class="p">(</span><span class="nx">s</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl"><span class="nx">util</span><span class="p">.</span><span class="nx">sleep</span><span class="p">(</span><span class="nx">ms</span><span class="p">)</span>        <span class="c1">// поспать (с учётом глобального таймаута)
 </span></span></span><span class="line"><span class="cl"><span class="nx">util</span><span class="p">.</span><span class="nx">buildEpisodeIdent</span><span class="p">(</span><span class="nx">base</span><span class="p">,</span> <span class="nx">s</span><span class="p">,</span> <span class="nx">e</span><span class="p">,</span> <span class="nx">t</span><span class="p">)</span>  <span class="c1">// &#34;base_s_e_t&#34; для Lampa ident
+</span></span></span><span class="line"><span class="cl"><span class="nx">util</span><span class="p">.</span><span class="nx">normalizeTitle</span><span class="p">(</span><span class="nx">s</span><span class="p">)</span>  <span class="c1">// lowercase, убирает пунктуацию/диакритику, коллапс пробелов
+</span></span></span><span class="line"><span class="cl">                        <span class="c1">// — полезно для strict-match по названию в checksearch
 </span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
   <button
     class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
@@ -1887,7 +1935,7 @@ JS-модули — это эволюция старых кастомных ба
 <div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="cl"><span class="kd">function</span> <span class="nx">handle</span><span class="p">(</span><span class="nx">inv</span><span class="p">)</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">  <span class="c1">// inv.query       — { title: &#39;Inception&#39;, year: &#39;2010&#39;, ... } (HTTP query params)
 </span></span></span><span class="line"><span class="cl">  <span class="c1">// inv.headers     — { accept: &#39;...&#39;, ... } (lowercase)
-</span></span></span><span class="line"><span class="cl">  <span class="c1">// inv.host        — &#39;http://lampac.example.com:888&#39; (URL самого сервера)
+</span></span></span><span class="line"><span class="cl">  <span class="c1">// inv.host        — &#39;https://lampac.example.com&#39; (URL самого сервера с хостом)
 </span></span></span><span class="line"><span class="cl">  <span class="c1">// inv.requestIP   — IP клиента
 </span></span></span><span class="line"><span class="cl">  <span class="c1">// inv.path        — &#39;mysource/play&#39; (без /lite/ префикса)
 </span></span></span><span class="line"><span class="cl">  <span class="c1">// inv.life        — true для автоматической выдачи (`?life=true`)
@@ -1904,12 +1952,145 @@ JS-модули — это эволюция старых кастомных ба
   </button>
 </div>
 </div>
+<h3>Что реально шлёт Lampa в <code>inv.query</code><span class="hx:absolute hx:-mt-20" id="что-реально-шлёт-lampa-в-invquery"></span>
+    <a href="#%d1%87%d1%82%d0%be-%d1%80%d0%b5%d0%b0%d0%bb%d1%8c%d0%bd%d0%be-%d1%88%d0%bb%d1%91%d1%82-lampa-%d0%b2-invquery" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><p>При открытии фильма/сериала клиент Lampa отправляет:</p>
+<table>
+  <thead>
+      <tr>
+          <th>Ключ</th>
+          <th>Пример</th>
+          <th>Описание</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>id</code></td>
+          <td><code>157336</code></td>
+          <td>TMDB ID (или внутренний Lampa ID)</td>
+      </tr>
+      <tr>
+          <td><code>imdb_id</code></td>
+          <td><code>tt0816692</code></td>
+          <td>IMDB идентификатор</td>
+      </tr>
+      <tr>
+          <td><code>kinopoisk_id</code></td>
+          <td><code>258687</code></td>
+          <td><strong>На самом деле TMDB ID</strong> — несмотря на название (исторически)</td>
+      </tr>
+      <tr>
+          <td><code>title</code></td>
+          <td><code>Интерстеллар</code></td>
+          <td>Название на языке интерфейса (рус/укр/анг)</td>
+      </tr>
+      <tr>
+          <td><code>original_title</code></td>
+          <td><code>Interstellar</code></td>
+          <td>Оригинальное английское название</td>
+      </tr>
+      <tr>
+          <td><code>year</code></td>
+          <td><code>2014</code></td>
+          <td>Год релиза</td>
+      </tr>
+      <tr>
+          <td><code>serial</code></td>
+          <td><code>0</code> / <code>1</code></td>
+          <td>1 = сериал, 0 = фильм</td>
+      </tr>
+      <tr>
+          <td><code>original_language</code></td>
+          <td><code>en</code> / <code>ja</code> / <code>ko</code></td>
+          <td>ISO язык оригинала (аниме ≈ <code>ja</code>)</td>
+      </tr>
+      <tr>
+          <td><code>source</code></td>
+          <td><code>tmdb</code> / <code>cub</code></td>
+          <td>Откуда пришли метаданные</td>
+      </tr>
+      <tr>
+          <td><code>clarification</code></td>
+          <td><code>0</code> / <code>1</code></td>
+          <td>1 = пользователь вручную уточняет поиск</td>
+      </tr>
+      <tr>
+          <td><code>similar</code></td>
+          <td><code>false</code> / <code>true</code></td>
+          <td>Lampa просит список «похожих»</td>
+      </tr>
+      <tr>
+          <td><code>rchtype</code></td>
+          <td><code>web</code> / <code>apk</code> / <code>cors</code></td>
+          <td>Тип клиента (браузер / Android / iframe)</td>
+      </tr>
+      <tr>
+          <td><code>uid</code>, <code>token</code>, <code>fp</code>, <code>nws_id</code></td>
+          <td><code>...</code></td>
+          <td>Клиентские идентификаторы, сервер использует для аутентификации</td>
+      </tr>
+      <tr>
+          <td><code>rjson</code></td>
+          <td><code>true</code></td>
+          <td><strong>Если присутствует — вернуть JSON</strong>; иначе runtime сконвертит в HTML</td>
+      </tr>
+      <tr>
+          <td><code>checksearch</code></td>
+          <td><code>true</code></td>
+          <td>Пинг-запрос «есть ли что-то» — вернуть <code>{rch:true/false}</code></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Главный совет:</strong> Lampa обычно шлёт <code>title</code> <strong>на языке интерфейса</strong> (часто русский/украинский), а ваш источник может индексировать только украинский/английский. <strong>Всегда пробуйте оба варианта</strong>:</p>
+<div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+
+<div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="cl"><span class="kd">function</span> <span class="nx">searchAllQueries</span><span class="p">(</span><span class="nx">inv</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="kd">var</span> <span class="nx">tried</span> <span class="o">=</span> <span class="p">{};</span>
+</span></span><span class="line"><span class="cl">  <span class="kd">var</span> <span class="nx">queries</span> <span class="o">=</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">    <span class="p">(</span><span class="nx">inv</span><span class="p">.</span><span class="nx">query</span><span class="p">.</span><span class="nx">original_title</span> <span class="o">||</span> <span class="s1">&#39;&#39;</span><span class="p">).</span><span class="nx">trim</span><span class="p">(),</span>  <span class="c1">// английский — часто совпадает с индексом
+</span></span></span><span class="line"><span class="cl">    <span class="p">(</span><span class="nx">inv</span><span class="p">.</span><span class="nx">query</span><span class="p">.</span><span class="nx">title</span> <span class="o">||</span> <span class="s1">&#39;&#39;</span><span class="p">).</span><span class="nx">trim</span><span class="p">(),</span>           <span class="c1">// язык UI — запасной вариант
+</span></span></span><span class="line"><span class="cl">    <span class="p">(</span><span class="nx">inv</span><span class="p">.</span><span class="nx">query</span><span class="p">.</span><span class="nx">imdb_id</span> <span class="o">||</span> <span class="s1">&#39;&#39;</span><span class="p">).</span><span class="nx">trim</span><span class="p">()</span>          <span class="c1">// по IMDB, если API поддерживает
+</span></span></span><span class="line"><span class="cl">  <span class="p">];</span>
+</span></span><span class="line"><span class="cl">  <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">queries</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">var</span> <span class="nx">q</span> <span class="o">=</span> <span class="nx">queries</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">q</span> <span class="o">||</span> <span class="nx">tried</span><span class="p">[</span><span class="nx">q</span><span class="p">.</span><span class="nx">toLowerCase</span><span class="p">()])</span> <span class="k">continue</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">tried</span><span class="p">[</span><span class="nx">q</span><span class="p">.</span><span class="nx">toLowerCase</span><span class="p">()]</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">var</span> <span class="nx">r</span> <span class="o">=</span> <span class="nx">searchSite</span><span class="p">(</span><span class="nx">inv</span><span class="p">,</span> <span class="nx">q</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="nx">r</span> <span class="o">&amp;&amp;</span> <span class="nx">r</span><span class="p">.</span><span class="nx">length</span><span class="p">)</span> <span class="k">return</span> <span class="nx">r</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="p">[];</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+  <button
+    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+    title="Скопировать код"
+  >
+    <div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
+<div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
+  </button>
+</div>
+</div>
 <h3>Ответ<span class="hx:absolute hx:-mt-20" id="ответ"></span>
     <a href="#%d0%be%d1%82%d0%b2%d0%b5%d1%82" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><p>Возвращайте обычный JS-объект/массив — runtime сериализует его в JSON и отдаёт клиенту. Поддерживаемые форматы описаны в разделе «Формат ответа» далее.</p>
+<div class="hx:overflow-x-auto hx:mt-6 hx:flex hx:rounded-lg hx:border hx:py-2 hx:ltr:pr-4 hx:rtl:pl-4 hx:contrast-more:border-current hx:contrast-more:dark:border-current hx:border-amber-200 hx:bg-amber-100 hx:text-amber-900 hx:dark:border-amber-200/30 hx:dark:bg-amber-900/30 hx:dark:text-amber-200">
+  <div class="hx:ltr:pl-3 hx:ltr:pr-2 hx:rtl:pr-3 hx:rtl:pl-2"><svg height=1.2em class="hx:inline-block hx:align-middle" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg></div>
+
+  <div class="hx:w-full hx:min-w-0 hx:leading-7">
+    <div class="hx:mt-6 hx:leading-7 hx:first:mt-0"><p><strong>Lampa ждёт HTML, если клиент не прислал <code>?rjson=true</code>.</strong> Ваш модуль всегда возвращает JS-объект — runtime сам конвертирует его в HTML-формат Lampa (<code>&lt;div class=&quot;videos__item videos__movie selector&quot; data-json='...'&gt;</code>) когда в query нет <code>rjson=true</code> и это не <code>checksearch</code>. Поэтому <strong>не нужно</strong> формировать HTML вручную.</p>
+<p>Что остаётся под JSON:</p>
+<ul>
+<li><code>?checksearch=true</code> — всегда JSON (<code>{rch:true/false,...}</code>)</li>
+<li><code>?rjson=true</code> — всегда JSON</li>
+<li>Play-ответ (top-level <code>method:&quot;play&quot;</code> + <code>url</code> без поля <code>data</code>) — всегда JSON</li>
+</ul>
+<p>Если видите что Lampa пишет «Поиск не дал результатов», а curl возвращает JSON — значит Lampa-клиент ожидал HTML. Проверьте что ваш бинарь <code>lampac-go</code> свежий (содержит <code>convertJSONToHTML</code> в <code>jsmodules/handler.go</code>).</p>
+</div>
+  </div>
+</div>
+
 <h2>Формат ответа Lampa<span class="hx:absolute hx:-mt-20" id="формат-ответа-lampa"></span>
     <a href="#%d1%84%d0%be%d1%80%d0%bc%d0%b0%d1%82-%d0%be%d1%82%d0%b2%d0%b5%d1%82%d0%b0-lampa" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><p>Lampa ожидает один из нескольких «типов» ответа в зависимости от этапа:</p>
 <h3><code>checksearch</code> — есть ли что-то для этого тайтла<span class="hx:absolute hx:-mt-20" id="checksearch--есть-ли-что-то-для-этого-тайтла"></span>
-    <a href="#checksearch--%d0%b5%d1%81%d1%82%d1%8c-%d0%bb%d0%b8-%d1%87%d1%82%d0%be-%d1%82%d0%be-%d0%b4%d0%bb%d1%8f-%d1%8d%d1%82%d0%be%d0%b3%d0%be-%d1%82%d0%b0%d0%b9%d1%82%d0%bb%d0%b0" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+    <a href="#checksearch--%d0%b5%d1%81%d1%82%d1%8c-%d0%bb%d0%b8-%d1%87%d1%82%d0%be-%d1%82%d0%be-%d0%b4%d0%bb%d1%8f-%d1%8d%d1%82%d0%be%d0%b3%d0%be-%d1%82%d0%b0%d0%b9%d1%82%d0%bb%d0%b0" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><p>Lampa дёргает этот эндпоинт для <strong>каждого</strong> источника при открытии фильма. Если вернули <code>rch:true</code> — ваш источник появится в списке. Если <code>rch:false</code> — не появится.</p>
+<div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
 
 <div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="cl"><span class="k">if</span> <span class="p">(</span><span class="nx">inv</span><span class="p">.</span><span class="nx">checksearch</span><span class="p">)</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">  <span class="kd">var</span> <span class="nx">results</span> <span class="o">=</span> <span class="nx">searchAPI</span><span class="p">(</span><span class="nx">query</span><span class="p">);</span>
@@ -1926,7 +2107,50 @@ JS-модули — это эволюция старых кастомных ба
   </button>
 </div>
 </div>
-<p>Клиент дёргает этот эндпоинт, чтобы решить — показывать источник в выдаче или нет.</p>
+<div class="hx:overflow-x-auto hx:mt-6 hx:flex hx:rounded-lg hx:border hx:py-2 hx:ltr:pr-4 hx:rtl:pl-4 hx:contrast-more:border-current hx:contrast-more:dark:border-current hx:border-amber-200 hx:bg-amber-100 hx:text-amber-900 hx:dark:border-amber-200/30 hx:dark:bg-amber-900/30 hx:dark:text-amber-200">
+  <div class="hx:ltr:pl-3 hx:ltr:pr-2 hx:rtl:pr-3 hx:rtl:pl-2"><svg height=1.2em class="hx:inline-block hx:align-middle" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg></div>
+
+  <div class="hx:w-full hx:min-w-0 hx:leading-7">
+    <div class="hx:mt-6 hx:leading-7 hx:first:mt-0"><p><strong>Критически важно: возвращайте <code>rch:true</code> только когда фильм реально есть в каталоге источника.</strong> Многие API (особенно DLE-based сайты) при промахе возвращают fallback-список произвольных тайтлов. Если вы посмотрите на <code>.length &gt; 0</code> — источник засветится в UI для каждого фильма, но при клике покажет «Поиск не дал результатов» — и пользователь не поймёт что это не ваш источник, а просто каталог пустой.</p>
+<p>Правильно — делать <strong>strict match</strong> по ID (<code>imdb_id</code>, <code>tmdb_id</code>) или по <code>year</code> + нормализованному названию. Пример:</p>
+<div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+
+<div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="cl"><span class="kd">function</span> <span class="nx">strictMatch</span><span class="p">(</span><span class="nx">results</span><span class="p">,</span> <span class="nx">inv</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">results</span><span class="p">.</span><span class="nx">length</span><span class="p">)</span> <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="kd">var</span> <span class="nx">want</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">year</span><span class="o">:</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">inv</span><span class="p">.</span><span class="nx">query</span><span class="p">.</span><span class="nx">year</span> <span class="o">||</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">imdb</span><span class="o">:</span> <span class="p">(</span><span class="nx">inv</span><span class="p">.</span><span class="nx">query</span><span class="p">.</span><span class="nx">imdb_id</span> <span class="o">||</span> <span class="s1">&#39;&#39;</span><span class="p">).</span><span class="nx">trim</span><span class="p">(),</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">tmdb</span><span class="o">:</span> <span class="p">(</span><span class="nx">inv</span><span class="p">.</span><span class="nx">query</span><span class="p">.</span><span class="nx">kinopoisk_id</span> <span class="o">||</span> <span class="s1">&#39;&#39;</span><span class="p">).</span><span class="nx">trim</span><span class="p">()</span>  <span class="c1">// Lampa шлёт TMDB id в kinopoisk_id
+</span></span></span><span class="line"><span class="cl">  <span class="p">};</span>
+</span></span><span class="line"><span class="cl">  <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">results</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">var</span> <span class="nx">r</span> <span class="o">=</span> <span class="nx">results</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="nx">want</span><span class="p">.</span><span class="nx">imdb</span> <span class="o">&amp;&amp;</span> <span class="nx">r</span><span class="p">.</span><span class="nx">imdb_id</span> <span class="o">===</span> <span class="nx">want</span><span class="p">.</span><span class="nx">imdb</span><span class="p">)</span> <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="nx">want</span><span class="p">.</span><span class="nx">tmdb</span> <span class="o">&amp;&amp;</span> <span class="nb">String</span><span class="p">(</span><span class="nx">r</span><span class="p">.</span><span class="nx">tmdb_id</span> <span class="o">||</span> <span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="o">===</span> <span class="nx">want</span><span class="p">.</span><span class="nx">tmdb</span><span class="p">)</span> <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="nx">want</span><span class="p">.</span><span class="nx">year</span> <span class="o">&amp;&amp;</span> <span class="nb">String</span><span class="p">(</span><span class="nx">r</span><span class="p">.</span><span class="nx">year</span> <span class="o">||</span> <span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="o">===</span> <span class="nb">String</span><span class="p">(</span><span class="nx">want</span><span class="p">.</span><span class="nx">year</span><span class="p">))</span> <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">function</span> <span class="nx">handleChecksearch</span><span class="p">(</span><span class="nx">inv</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="kd">var</span> <span class="nx">r</span> <span class="o">=</span> <span class="nx">searchAPI</span><span class="p">(</span><span class="nx">inv</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="nx">strictMatch</span><span class="p">(</span><span class="nx">r</span><span class="p">,</span> <span class="nx">inv</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="o">?</span> <span class="p">{</span> <span class="nx">rch</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span> <span class="nx">type</span><span class="o">:</span> <span class="s1">&#39;movie&#39;</span><span class="p">,</span> <span class="nx">quality</span><span class="o">:</span> <span class="nx">manifest</span><span class="p">.</span><span class="nx">quality</span> <span class="o">||</span> <span class="s1">&#39;FHD&#39;</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="o">:</span> <span class="p">{</span> <span class="nx">rch</span><span class="o">:</span> <span class="kc">false</span> <span class="p">};</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+  <button
+    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+    title="Скопировать код"
+  >
+    <div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
+<div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
+  </button>
+</div>
+</div>
+<p>Для HTML-скрейперов где нет ID — используйте встроенный хелпер <code>util.normalizeTitle(s)</code> и сравнивайте с <code>inv.query.original_title</code> / <code>inv.query.title</code>.</p>
+</div>
+  </div>
+</div>
+
 <h3>Список похожих (<code>similar</code>)<span class="hx:absolute hx:-mt-20" id="список-похожих-similar"></span>
     <a href="#%d1%81%d0%bf%d0%b8%d1%81%d0%be%d0%ba-%d0%bf%d0%be%d1%85%d0%be%d0%b6%d0%b8%d1%85-similar" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><p>Когда одному поиску совпадает несколько тайтлов — пусть пользователь выберет:</p>
 <div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
@@ -2144,6 +2368,94 @@ JS-модули — это эволюция старых кастомных ба
 </div>
 </div>
 <p>Положите обе файла в <code>modules/hello/</code>, зайдите в админку → <strong>Модули</strong> → увидите карточку. Включите, откройте <code>/lite/hello?title=Test&amp;checksearch=true</code> — должно вернуть <code>{rch:true,...}</code> если API отвечает.</p>
+<h2>Частые грабли<span class="hx:absolute hx:-mt-20" id="частые-грабли"></span>
+    <a href="#%d1%87%d0%b0%d1%81%d1%82%d1%8b%d0%b5-%d0%b3%d1%80%d0%b0%d0%b1%d0%bb%d0%b8" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><p>Собрали в одном списке ошибки, на которые наступают разработчики при первом запуске модуля:</p>
+<h3>1. Lampa пишет «Поиск не дал результатов», а curl возвращает JSON<span class="hx:absolute hx:-mt-20" id="1-lampa-пишет-поиск-не-дал-результатов-а-curl-возвращает-json"></span>
+    <a href="#1-lampa-%d0%bf%d0%b8%d1%88%d0%b5%d1%82-%d0%bf%d0%be%d0%b8%d1%81%d0%ba-%d0%bd%d0%b5-%d0%b4%d0%b0%d0%bb-%d1%80%d0%b5%d0%b7%d1%83%d0%bb%d1%8c%d1%82%d0%b0%d1%82%d0%be%d0%b2-%d0%b0-curl-%d0%b2%d0%be%d0%b7%d0%b2%d1%80%d0%b0%d1%89%d0%b0%d0%b5%d1%82-json" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><p><strong>Причина:</strong> клиент без <code>rjson=true</code> ждёт HTML. Наш runtime сам конвертирует JSON в HTML — но только если <code>lampac-go</code> скомпилирован с <code>convertJSONToHTML()</code>. Обновите бинарь.</p>
+<p><strong>Проверка:</strong></p>
+<div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+
+<div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">curl -sv -H <span class="s2">&#34;Accept-Encoding: identity&#34;</span> <span class="s2">&#34;http://localhost:888/lite/yourmod?title=Test&amp;year=2024&#34;</span> 2&gt;<span class="p">&amp;</span><span class="m">1</span> <span class="p">|</span> grep Content-Type
+</span></span><span class="line"><span class="cl"><span class="c1"># Должно: text/html; charset=utf-8   ← runtime сконвертил в HTML</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># Если application/json — бинарь старый, без авто-конвертера</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+  <button
+    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+    title="Скопировать код"
+  >
+    <div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
+<div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
+  </button>
+</div>
+</div>
+<h3>2. Источник виден в UI, но всегда «не дал результатов»<span class="hx:absolute hx:-mt-20" id="2-источник-виден-в-ui-но-всегда-не-дал-результатов"></span>
+    <a href="#2-%d0%b8%d1%81%d1%82%d0%be%d1%87%d0%bd%d0%b8%d0%ba-%d0%b2%d0%b8%d0%b4%d0%b5%d0%bd-%d0%b2-ui-%d0%bd%d0%be-%d0%b2%d1%81%d0%b5%d0%b3%d0%b4%d0%b0-%d0%bd%d0%b5-%d0%b4%d0%b0%d0%bb-%d1%80%d0%b5%d0%b7%d1%83%d0%bb%d1%8c%d1%82%d0%b0%d1%82%d0%be%d0%b2" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><p><strong>Причина:</strong> <code>checksearch</code> возвращает <code>rch:true</code> слишком либерально (на любой непустой ответ API). Реальный поиск даёт мусор вместо конкретного фильма → при клике Lampa видит <code>data:[]</code> или <code>similar</code> без точного совпадения.</p>
+<p><strong>Лечение:</strong> strict-match в <code>checksearch</code> по IMDB/TMDB/year (см. callout выше).</p>
+<h3>3. Стрим не играет: URL типа <code>ib9a27S8...m3u8</code> без хоста<span class="hx:absolute hx:-mt-20" id="3-стрим-не-играет-url-типа-ib9a27s8m3u8-без-хоста"></span>
+    <a href="#3-%d1%81%d1%82%d1%80%d0%b8%d0%bc-%d0%bd%d0%b5-%d0%b8%d0%b3%d1%80%d0%b0%d0%b5%d1%82-url-%d1%82%d0%b8%d0%bf%d0%b0-ib9a27s8m3u8-%d0%b1%d0%b5%d0%b7-%d1%85%d0%be%d1%81%d1%82%d0%b0" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><p><strong>Причина:</strong> старая версия <code>proxy.url()</code>, которая возвращала только хеш. Новые версии бинаря строят <code>&lt;host&gt;/proxy/&lt;hash&gt;</code> автоматически. Обновите <code>lampac-go</code>.</p>
+<h3>4. <code>url</code> в ответе содержит <code>127.0.0.1:888</code> вместо реального домена<span class="hx:absolute hx:-mt-20" id="4-url-в-ответе-содержит-127001888-вместо-реального-домена"></span>
+    <a href="#4-url-%d0%b2-%d0%be%d1%82%d0%b2%d0%b5%d1%82%d0%b5-%d1%81%d0%be%d0%b4%d0%b5%d1%80%d0%b6%d0%b8%d1%82-127001888-%d0%b2%d0%bc%d0%b5%d1%81%d1%82%d0%be-%d1%80%d0%b5%d0%b0%d0%bb%d1%8c%d0%bd%d0%be%d0%b3%d0%be-%d0%b4%d0%be%d0%bc%d0%b5%d0%bd%d0%b0" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><p><strong>Причина:</strong> nginx не передаёт <code>Host: $host</code> в upstream. Добавьте в nginx:</p>
+<div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+
+<div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-nginx" data-lang="nginx"><span class="line"><span class="cl"><span class="k">location</span> <span class="s">/</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kn">proxy_pass</span> <span class="s">http://127.0.0.1:888</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kn">proxy_set_header</span> <span class="s">Host</span> <span class="nv">$host</span><span class="p">;</span>                 <span class="c1"># &lt;-- обязательно
+</span></span></span><span class="line"><span class="cl">    <span class="kn">proxy_set_header</span> <span class="s">X-Forwarded-Proto</span> <span class="nv">$scheme</span><span class="p">;</span>  <span class="c1"># &lt;-- обязательно
+</span></span></span><span class="line"><span class="cl">    <span class="kn">proxy_set_header</span> <span class="s">X-Forwarded-For</span> <span class="nv">$proxy_add_x_forwarded_for</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+  <button
+    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+    title="Скопировать код"
+  >
+    <div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
+<div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
+  </button>
+</div>
+</div>
+<p><code>hostFromRequest()</code> смотрит сперва <code>X-Forwarded-Host</code>, потом <code>Host</code>, потом использует схему из <code>X-Forwarded-Proto</code> (fallback: <code>http</code>).</p>
+<h3>5. Модуль не перезагружается при изменении <code>index.js</code><span class="hx:absolute hx:-mt-20" id="5-модуль-не-перезагружается-при-изменении-indexjs"></span>
+    <a href="#5-%d0%bc%d0%be%d0%b4%d1%83%d0%bb%d1%8c-%d0%bd%d0%b5-%d0%bf%d0%b5%d1%80%d0%b5%d0%b7%d0%b0%d0%b3%d1%80%d1%83%d0%b6%d0%b0%d0%b5%d1%82%d1%81%d1%8f-%d0%bf%d1%80%d0%b8-%d0%b8%d0%b7%d0%bc%d0%b5%d0%bd%d0%b5%d0%bd%d0%b8%d0%b8-indexjs" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><p><strong>Причина:</strong> Goja держит скомпилированную программу в памяти. Просто <code>scp</code> нового файла <strong>не обновит</strong> поведение.</p>
+<p><strong>Лечение:</strong> после редактирования — нажать «↻ Перезагрузить» на карточке модуля в админке, либо сделать <code>POST /&lt;admin&gt;/api/modules/{id}/reload</code>, либо перезапустить сервис целиком.</p>
+<h3>6. <code>Object.assign</code> / <code>Array.prototype.includes</code> не работают<span class="hx:absolute hx:-mt-20" id="6-objectassign--arrayprototypeincludes-не-работают"></span>
+    <a href="#6-objectassign--arrayprototypeincludes-%d0%bd%d0%b5-%d1%80%d0%b0%d0%b1%d0%be%d1%82%d0%b0%d1%8e%d1%82" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><p><strong>Причина:</strong> Goja реализует ES5.1. Фичи ES2015+ (Object.assign, async/await, arrow-functions, let/const, shorthand) <strong>не поддерживаются</strong>.</p>
+<p><strong>Лечение:</strong> пишите ES5 (var, function, for-loop). Полифилы можно подключить вручную, но обычно проще не усложнять.</p>
+<h3>7. Сайт требует <code>Cookie</code> между запросами<span class="hx:absolute hx:-mt-20" id="7-сайт-требует-cookie-между-запросами"></span>
+    <a href="#7-%d1%81%d0%b0%d0%b9%d1%82-%d1%82%d1%80%d0%b5%d0%b1%d1%83%d0%b5%d1%82-cookie-%d0%bc%d0%b5%d0%b6%d0%b4%d1%83-%d0%b7%d0%b0%d0%bf%d1%80%d0%be%d1%81%d0%b0%d0%bc%d0%b8" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><p>Goja не даёт cookie-jar «из коробки». Сохраняйте cookies вручную через <code>cache</code>:</p>
+<div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+
+<div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="cl"><span class="kd">var</span> <span class="nx">jar</span> <span class="o">=</span> <span class="nx">cache</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;cookies&#39;</span><span class="p">)</span> <span class="o">||</span> <span class="p">{};</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// Первый запрос
+</span></span></span><span class="line"><span class="cl"><span class="kd">var</span> <span class="nx">r1</span> <span class="o">=</span> <span class="nx">http</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="nx">loginURL</span><span class="p">,</span> <span class="p">{</span> <span class="nx">headers</span><span class="o">:</span> <span class="p">{</span> <span class="s1">&#39;Cookie&#39;</span><span class="o">:</span> <span class="nx">jar</span><span class="p">.</span><span class="nx">sid</span> <span class="o">?</span> <span class="s1">&#39;sid=&#39;</span><span class="o">+</span><span class="nx">jar</span><span class="p">.</span><span class="nx">sid</span> <span class="o">:</span> <span class="s1">&#39;&#39;</span> <span class="p">}});</span>
+</span></span><span class="line"><span class="cl"><span class="p">(</span><span class="nx">r1</span><span class="p">.</span><span class="nx">cookies</span> <span class="o">||</span> <span class="p">[]).</span><span class="nx">forEach</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">c</span><span class="p">){</span> <span class="nx">jar</span><span class="p">[</span><span class="nx">c</span><span class="p">.</span><span class="nx">name</span><span class="p">]</span> <span class="o">=</span> <span class="nx">c</span><span class="p">.</span><span class="nx">value</span><span class="p">;</span> <span class="p">});</span>
+</span></span><span class="line"><span class="cl"><span class="nx">cache</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;cookies&#39;</span><span class="p">,</span> <span class="nx">jar</span><span class="p">,</span> <span class="mi">3600</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// Последующие запросы
+</span></span></span><span class="line"><span class="cl"><span class="kd">var</span> <span class="nx">r2</span> <span class="o">=</span> <span class="nx">http</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="nx">dataURL</span><span class="p">,</span> <span class="p">{</span> <span class="nx">headers</span><span class="o">:</span> <span class="p">{</span> <span class="s1">&#39;Cookie&#39;</span><span class="o">:</span> <span class="nb">Object</span><span class="p">.</span><span class="nx">keys</span><span class="p">(</span><span class="nx">jar</span><span class="p">).</span><span class="nx">map</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">k</span><span class="p">){</span> <span class="k">return</span> <span class="nx">k</span><span class="o">+</span><span class="s1">&#39;=&#39;</span><span class="o">+</span><span class="nx">jar</span><span class="p">[</span><span class="nx">k</span><span class="p">];</span> <span class="p">}).</span><span class="nx">join</span><span class="p">(</span><span class="s1">&#39;; &#39;</span><span class="p">)</span> <span class="p">}});</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+  <button
+    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+    title="Скопировать код"
+  >
+    <div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
+<div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
+  </button>
+</div>
+</div>
+<h3>8. CDN блокирует по <code>Origin</code>/<code>Referer</code><span class="hx:absolute hx:-mt-20" id="8-cdn-блокирует-по-originreferer"></span>
+    <a href="#8-cdn-%d0%b1%d0%bb%d0%be%d0%ba%d0%b8%d1%80%d1%83%d0%b5%d1%82-%d0%bf%d0%be-originreferer" class="subheading-anchor" aria-label="Permalink for this section"></a></h3><p>Используйте <code>proxy.urlWithHeaders()</code>:</p>
+<div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+
+<div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="cl"><span class="kd">var</span> <span class="nx">safeURL</span> <span class="o">=</span> <span class="nx">proxy</span><span class="p">.</span><span class="nx">urlWithHeaders</span><span class="p">(</span><span class="nx">streamURL</span><span class="p">,</span> <span class="s1">&#39;mysource&#39;</span><span class="p">,</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="s1">&#39;Origin&#39;</span><span class="o">:</span> <span class="s1">&#39;https://cdn-origin.example.com&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="s1">&#39;Referer&#39;</span><span class="o">:</span> <span class="s1">&#39;https://player.example.com/&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="p">});</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+  <button
+    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+    title="Скопировать код"
+  >
+    <div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
+<div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
+  </button>
+</div>
+</div>
 <h2>Дальше<span class="hx:absolute hx:-mt-20" id="дальше"></span>
     <a href="#%d0%b4%d0%b0%d0%bb%d1%8c%d1%88%d0%b5" class="subheading-anchor" aria-label="Permalink for this section"></a></h2><div class="hextra-cards hx:mt-4 hx:gap-4 hx:grid not-prose" style="--hextra-cards-grid-cols: 3;">
   <a
@@ -2185,5 +2497,5 @@ JS-модули — это эволюция старых кастомных ба
         <script defer src="../../../en.search.min.f193b44840cc2e87b97c0c80d6975880cc7f1211ddb89e5ac51ce34372225eab.js" integrity="sha256-8ZO0SEDMLoe5fAyA1pdYgMx/EhHduJ5axRzjQ3IiXqs="></script>
   </body>
 
-<!-- Mirrored from wiki.alcopa.cc/docs/balancers/modules/ by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 24 Apr 2026 05:34:10 GMT -->
+<!-- Mirrored from wiki.alcopa.cc/docs/balancers/modules/ by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 24 Apr 2026 08:00:26 GMT -->
 </html>

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
-<!-- Mirrored from wiki.alcopa.cc/docs/balancers/module-guide/ by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 24 Apr 2026 05:34:10 GMT -->
+<!-- Mirrored from wiki.alcopa.cc/docs/balancers/module-guide/ by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 24 Apr 2026 08:00:26 GMT -->
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="robots" content="index, follow" />
@@ -52,7 +52,7 @@
   <meta itemprop="name" content="Гайд — свой модуль за 30 минут">
   <meta itemprop="description" content="Пошаговое руководство: с нуля до работающего модуля-источника на JS. В качестве примера — вымышленный сайт example-anime.com с JSON-API.
 Перед чтением ознакомьтесь с обзором системы — это краткая справка по API песочницы. Здесь мы применяем её на практике. Что будем делать Поиск аниме по названию Список сезонов и эпизодов Переключатель озвучек Плеер с проксированием HLS-стрима Шаг 1. Анализ исходника Прежде чем писать код, разберитесь как устроен сайт. Типичные ситуации:">
-  <meta itemprop="wordCount" content="1538">
+  <meta itemprop="wordCount" content="1840">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="Гайд — свой модуль за 30 минут">
   <meta name="twitter:description" content="Пошаговое руководство: с нуля до работающего модуля-источника на JS. В качестве примера — вымышленный сайт example-anime.com с JSON-API.
@@ -1497,14 +1497,58 @@ GET /api/stream/{episodeId}     → {m3u8, quality}</code></pre></div><div class
   </button>
 </div>
 </div>
+<p>Lampa обычно шлёт <code>title</code> на языке интерфейса (рус/укр), а источник может знать только английский — пробуем оба:</p>
+<div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+
+<div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="cl"><span class="kd">function</span> <span class="nx">searchAllQueries</span><span class="p">(</span><span class="nx">inv</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="kd">var</span> <span class="nx">tried</span> <span class="o">=</span> <span class="p">{};</span>
+</span></span><span class="line"><span class="cl">  <span class="kd">var</span> <span class="nx">queries</span> <span class="o">=</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">    <span class="p">(</span><span class="nx">inv</span><span class="p">.</span><span class="nx">query</span><span class="p">.</span><span class="nx">original_title</span> <span class="o">||</span> <span class="s1">&#39;&#39;</span><span class="p">).</span><span class="nx">trim</span><span class="p">(),</span>
+</span></span><span class="line"><span class="cl">    <span class="p">(</span><span class="nx">inv</span><span class="p">.</span><span class="nx">query</span><span class="p">.</span><span class="nx">title</span> <span class="o">||</span> <span class="s1">&#39;&#39;</span><span class="p">).</span><span class="nx">trim</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">  <span class="p">];</span>
+</span></span><span class="line"><span class="cl">  <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">queries</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">var</span> <span class="nx">q</span> <span class="o">=</span> <span class="nx">queries</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">q</span> <span class="o">||</span> <span class="nx">tried</span><span class="p">[</span><span class="nx">q</span><span class="p">.</span><span class="nx">toLowerCase</span><span class="p">()])</span> <span class="k">continue</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">tried</span><span class="p">[</span><span class="nx">q</span><span class="p">.</span><span class="nx">toLowerCase</span><span class="p">()]</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">var</span> <span class="nx">r</span> <span class="o">=</span> <span class="nx">search</span><span class="p">(</span><span class="nx">inv</span><span class="p">,</span> <span class="nx">q</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="nx">r</span> <span class="o">&amp;&amp;</span> <span class="nx">r</span><span class="p">.</span><span class="nx">length</span><span class="p">)</span> <span class="k">return</span> <span class="nx">r</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="p">[];</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+  <button
+    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+    title="Скопировать код"
+  >
+    <div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
+<div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
+  </button>
+</div>
+</div>
 <p>Теперь добавим ветку «мне пришёл просто title, ещё без id» в <code>handle</code>:</p>
 <div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
 
-<div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="cl"><span class="kd">function</span> <span class="nx">handle</span><span class="p">(</span><span class="nx">inv</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">  <span class="c1">// checksearch — быстрый пинг: есть ли что-то по этому тайтлу
+<div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="cl"><span class="c1">// Strict-match: проверяем что результат соответствует ЗАПРОШЕННОМУ фильму.
+</span></span></span><span class="line"><span class="cl"><span class="c1">// Многие API возвращают fallback-мусор на промах — без этой проверки
+</span></span></span><span class="line"><span class="cl"><span class="c1">// пользователь увидит источник в списке, а при клике — «не дал результатов».
+</span></span></span><span class="line"><span class="cl"><span class="kd">function</span> <span class="nx">strictMatch</span><span class="p">(</span><span class="nx">results</span><span class="p">,</span> <span class="nx">inv</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">results</span><span class="p">.</span><span class="nx">length</span><span class="p">)</span> <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="kd">var</span> <span class="nx">imdb</span> <span class="o">=</span> <span class="p">(</span><span class="nx">inv</span><span class="p">.</span><span class="nx">query</span><span class="p">.</span><span class="nx">imdb_id</span> <span class="o">||</span> <span class="s1">&#39;&#39;</span><span class="p">).</span><span class="nx">trim</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">  <span class="kd">var</span> <span class="nx">tmdb</span> <span class="o">=</span> <span class="p">(</span><span class="nx">inv</span><span class="p">.</span><span class="nx">query</span><span class="p">.</span><span class="nx">kinopoisk_id</span> <span class="o">||</span> <span class="s1">&#39;&#39;</span><span class="p">).</span><span class="nx">trim</span><span class="p">();</span>  <span class="c1">// Lampa шлёт TMDB id сюда
+</span></span></span><span class="line"><span class="cl">  <span class="kd">var</span> <span class="nx">year</span> <span class="o">=</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">inv</span><span class="p">.</span><span class="nx">query</span><span class="p">.</span><span class="nx">year</span> <span class="o">||</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">results</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">var</span> <span class="nx">r</span> <span class="o">=</span> <span class="nx">results</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="nx">imdb</span> <span class="o">&amp;&amp;</span> <span class="nx">r</span><span class="p">.</span><span class="nx">imdb_id</span> <span class="o">===</span> <span class="nx">imdb</span><span class="p">)</span> <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="nx">tmdb</span> <span class="o">&amp;&amp;</span> <span class="nb">String</span><span class="p">(</span><span class="nx">r</span><span class="p">.</span><span class="nx">tmdb_id</span> <span class="o">||</span> <span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="o">===</span> <span class="nx">tmdb</span><span class="p">)</span> <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="nx">year</span> <span class="o">&amp;&amp;</span> <span class="nx">r</span><span class="p">.</span><span class="nx">year</span> <span class="o">===</span> <span class="nx">year</span><span class="p">)</span> <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">function</span> <span class="nx">handle</span><span class="p">(</span><span class="nx">inv</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="c1">// checksearch — быстрый пинг: реально ли этот фильм есть?
 </span></span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="nx">inv</span><span class="p">.</span><span class="nx">checksearch</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="kd">var</span> <span class="nx">r</span> <span class="o">=</span> <span class="nx">search</span><span class="p">(</span><span class="nx">inv</span><span class="p">,</span> <span class="nx">inv</span><span class="p">.</span><span class="nx">query</span><span class="p">.</span><span class="nx">title</span> <span class="o">||</span> <span class="nx">inv</span><span class="p">.</span><span class="nx">query</span><span class="p">.</span><span class="nx">original_title</span> <span class="o">||</span> <span class="s1">&#39;&#39;</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="nx">r</span><span class="p">.</span><span class="nx">length</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">var</span> <span class="nx">r</span> <span class="o">=</span> <span class="nx">searchAllQueries</span><span class="p">(</span><span class="nx">inv</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="nx">strictMatch</span><span class="p">(</span><span class="nx">r</span><span class="p">,</span> <span class="nx">inv</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">      <span class="o">?</span> <span class="p">{</span> <span class="nx">rch</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span> <span class="nx">type</span><span class="o">:</span> <span class="s1">&#39;movie&#39;</span><span class="p">,</span> <span class="nx">quality</span><span class="o">:</span> <span class="nx">manifest</span><span class="p">.</span><span class="nx">quality</span> <span class="o">||</span> <span class="s1">&#39;FHD&#39;</span> <span class="p">}</span>
 </span></span><span class="line"><span class="cl">      <span class="o">:</span> <span class="p">{</span> <span class="nx">rch</span><span class="o">:</span> <span class="kc">false</span> <span class="p">};</span>
 </span></span><span class="line"><span class="cl">  <span class="p">}</span>
@@ -1513,11 +1557,22 @@ GET /api/stream/{episodeId}     → {m3u8, quality}</code></pre></div><div class
 </span></span><span class="line"><span class="cl">  <span class="kd">var</span> <span class="nx">id</span> <span class="o">=</span> <span class="p">(</span><span class="nx">inv</span><span class="p">.</span><span class="nx">query</span><span class="p">.</span><span class="nx">id</span> <span class="o">||</span> <span class="s1">&#39;&#39;</span><span class="p">).</span><span class="nx">trim</span><span class="p">();</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">id</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="c1">// Шаг поиска — возможно покажем список похожих
-</span></span></span><span class="line"><span class="cl">    <span class="kd">var</span> <span class="nx">results</span> <span class="o">=</span> <span class="nx">search</span><span class="p">(</span><span class="nx">inv</span><span class="p">,</span> <span class="nx">title</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">var</span> <span class="nx">results</span> <span class="o">=</span> <span class="nx">searchAllQueries</span><span class="p">(</span><span class="nx">inv</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">results</span><span class="p">.</span><span class="nx">length</span><span class="p">)</span> <span class="k">return</span> <span class="p">{</span> <span class="nx">type</span><span class="o">:</span> <span class="s1">&#39;movie&#39;</span><span class="p">,</span> <span class="nx">data</span><span class="o">:</span> <span class="p">[]</span> <span class="p">};</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="nx">results</span><span class="p">.</span><span class="nx">length</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// Если нашёлся точный матч — сразу переходим на детали (auto-drill).
+</span></span></span><span class="line"><span class="cl">    <span class="c1">// Иначе показываем список «похожих» для ручного выбора.
+</span></span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="nx">results</span><span class="p">.</span><span class="nx">length</span> <span class="o">===</span> <span class="mi">1</span> <span class="o">||</span> <span class="nx">strictMatch</span><span class="p">(</span><span class="nx">results</span><span class="p">,</span> <span class="nx">inv</span><span class="p">))</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="kd">var</span> <span class="nx">best</span> <span class="o">=</span> <span class="nx">results</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">      <span class="c1">// Если API возвращает несколько, а strictMatch нашёл конкретный —
+</span></span></span><span class="line"><span class="cl">      <span class="c1">// выберем именно его, а не первый попавшийся.
+</span></span></span><span class="line"><span class="cl">      <span class="kd">var</span> <span class="nx">imdb</span> <span class="o">=</span> <span class="p">(</span><span class="nx">inv</span><span class="p">.</span><span class="nx">query</span><span class="p">.</span><span class="nx">imdb_id</span> <span class="o">||</span> <span class="s1">&#39;&#39;</span><span class="p">).</span><span class="nx">trim</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">      <span class="k">if</span> <span class="p">(</span><span class="nx">imdb</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="kd">var</span> <span class="nx">m</span> <span class="o">=</span> <span class="nx">results</span><span class="p">.</span><span class="nx">filter</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">x</span><span class="p">){</span> <span class="k">return</span> <span class="nx">x</span><span class="p">.</span><span class="nx">imdb_id</span> <span class="o">===</span> <span class="nx">imdb</span><span class="p">;</span> <span class="p">});</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="nx">m</span><span class="p">.</span><span class="nx">length</span><span class="p">)</span> <span class="nx">best</span> <span class="o">=</span> <span class="nx">m</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">      <span class="p">}</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">id</span> <span class="o">=</span> <span class="nx">best</span><span class="p">.</span><span class="nx">id</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">      <span class="k">return</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">        <span class="nx">type</span><span class="o">:</span> <span class="s1">&#39;similar&#39;</span><span class="p">,</span>
 </span></span><span class="line"><span class="cl">        <span class="nx">data</span><span class="o">:</span> <span class="nx">results</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">r</span><span class="p">)</span> <span class="p">{</span>
@@ -1529,7 +1584,6 @@ GET /api/stream/{episodeId}     → {m3u8, quality}</code></pre></div><div class
 </span></span><span class="line"><span class="cl">        <span class="p">})</span>
 </span></span><span class="line"><span class="cl">      <span class="p">};</span>
 </span></span><span class="line"><span class="cl">    <span class="p">}</span>
-</span></span><span class="line"><span class="cl">    <span class="nx">id</span> <span class="o">=</span> <span class="nx">results</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">id</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">  <span class="p">}</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">  <span class="c1">// Пока заглушка — завершим на следующем шаге
@@ -1544,6 +1598,16 @@ GET /api/stream/{episodeId}     → {m3u8, quality}</code></pre></div><div class
   </button>
 </div>
 </div>
+<div class="hx:overflow-x-auto hx:mt-6 hx:flex hx:rounded-lg hx:border hx:py-2 hx:ltr:pr-4 hx:rtl:pl-4 hx:contrast-more:border-current hx:contrast-more:dark:border-current hx:border-blue-200 hx:bg-blue-100 hx:text-blue-900 hx:dark:border-blue-200/30 hx:dark:bg-blue-900/30 hx:dark:text-blue-200">
+  <div class="hx:ltr:pl-3 hx:ltr:pr-2 hx:rtl:pr-3 hx:rtl:pl-2"><svg height=1.2em class="hx:inline-block hx:align-middle" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div>
+
+  <div class="hx:w-full hx:min-w-0 hx:leading-7">
+    <div class="hx:mt-6 hx:leading-7 hx:first:mt-0"><p><strong>Почему <code>strictMatch</code> — must-have?</strong> Если <code>checksearch</code> вернёт <code>rch:true</code> на любое непустое результата, источник засветится в UI для <strong>каждого</strong> фильма. При клике пользователь увидит «не дал результатов», потому что на самом деле API не знал этого тайтла. Хуже: Lampa запомнит что «uafilmme есть для этого фильма» и будет дёргать его всегда, впустую тратя запросы.</p>
+<p>С <code>strictMatch</code> — источник появляется только когда реально сможет его отдать.</p>
+</div>
+  </div>
+</div>
+
 <p><strong>Проверка:</strong> в админке нажмите «Код» → вставьте изменения → «Сохранить и перезагрузить». Затем:</p>
 <div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
 
@@ -1882,5 +1946,5 @@ GET /api/stream/{episodeId}     → {m3u8, quality}</code></pre></div><div class
         <script defer src="../../../en.search.min.f193b44840cc2e87b97c0c80d6975880cc7f1211ddb89e5ac51ce34372225eab.js" integrity="sha256-8ZO0SEDMLoe5fAyA1pdYgMx/EhHduJ5axRzjQ3IiXqs="></script>
   </body>
 
-<!-- Mirrored from wiki.alcopa.cc/docs/balancers/module-guide/ by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 24 Apr 2026 05:34:10 GMT -->
+<!-- Mirrored from wiki.alcopa.cc/docs/balancers/module-guide/ by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 24 Apr 2026 08:00:26 GMT -->
 </html>
